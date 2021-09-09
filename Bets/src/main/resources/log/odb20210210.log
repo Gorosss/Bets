@@ -1,0 +1,289 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 16:33:13 #1 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\bets.temp' is opened by 13704@U110132
+
+[2021-02-10 16:33:13 #2 type.registry] 
+New type domain.Question
+
+[2021-02-10 16:33:13 #3 type] 
+Type domain.Question is not enhanced.
+
+[2021-02-10 16:33:13 #4 type.registry] 
+New type domain.Event
+
+[2021-02-10 16:33:13 #5 type] 
+Type domain.Event is not enhanced.
+
+[2021-02-10 16:33:13 #6 type.registry] 
+New type java.util.Vector<domain.Question>
+
+[2021-02-10 16:33:13 #7 type.registry] 
+New type java.util.Vector<java.lang.Object>
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 16:34:01 #1 server] 
+Server on port 6136 has started by 12004@U110132
+
+[2021-02-10 16:34:08 #2 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\db\src\main\resources\bets.temp' is opened by 12004@U110132
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 16:34:09 #1 type.registry] 
+New type domain.Question
+
+[2021-02-10 16:34:09 #2 type] 
+Type domain.Question is not enhanced.
+
+[2021-02-10 16:34:09 #3 type.registry] 
+New type domain.Event
+
+[2021-02-10 16:34:09 #4 type] 
+Type domain.Event is not enhanced.
+
+[2021-02-10 16:34:09 #5 type.registry] 
+New type java.util.Vector<domain.Question>
+
+[2021-02-10 16:34:09 #6 type.registry] 
+New type java.util.Vector<java.lang.Object>
+
+[2021-02-10 16:35:44 #3 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\db\src\main\resources\bets.temp' is closed by 12004@U110132
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 16:51:39 #1 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\bets.temp' is opened by 10124@U110132
+
+[2021-02-10 16:51:39 #2 type.registry] 
+New type domain.Question
+
+[2021-02-10 16:51:39 #3 type] 
+Type domain.Question is not enhanced.
+
+[2021-02-10 16:51:39 #4 type.registry] 
+New type domain.Event
+
+[2021-02-10 16:51:39 #5 type] 
+Type domain.Event is not enhanced.
+
+[2021-02-10 16:51:39 #6 type.registry] 
+New type java.util.Vector<domain.Question>
+
+[2021-02-10 16:51:39 #7 type.registry] 
+New type java.util.Vector<java.lang.Object>
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 16:52:34 #1 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\bets.temp' is opened by 17140@U110132
+
+[2021-02-10 16:52:34 #2 type.registry] 
+New type domain.Question
+
+[2021-02-10 16:52:34 #3 type] 
+Type domain.Question is not enhanced.
+
+[2021-02-10 16:52:34 #4 type.registry] 
+New type domain.Event
+
+[2021-02-10 16:52:34 #5 type] 
+Type domain.Event is not enhanced.
+
+[2021-02-10 16:52:34 #6 type.registry] 
+New type java.util.Vector<domain.Question>
+
+[2021-02-10 16:52:34 #7 type.registry] 
+New type java.util.Vector<java.lang.Object>
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 16:53:11 #1 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\bets.temp' is opened by 7908@U110132
+
+[2021-02-10 16:53:12 #2 type.registry] 
+New type domain.Question
+
+[2021-02-10 16:53:12 #3 type] 
+Type domain.Question is not enhanced.
+
+[2021-02-10 16:53:12 #4 type.registry] 
+New type domain.Event
+
+[2021-02-10 16:53:12 #5 type] 
+Type domain.Event is not enhanced.
+
+[2021-02-10 16:53:12 #6 type.registry] 
+New type java.util.Vector<domain.Question>
+
+[2021-02-10 16:53:12 #7 type.registry] 
+New type java.util.Vector<java.lang.Object>
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 16:56:21 #1 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\bets.temp' is opened by 5588@U110132
+
+[2021-02-10 16:56:21 #2 type.registry] 
+New type domain.Question
+
+[2021-02-10 16:56:21 #3 type] 
+Type domain.Question is not enhanced.
+
+[2021-02-10 16:56:21 #4 type.registry] 
+New type domain.Event
+
+[2021-02-10 16:56:21 #5 type] 
+Type domain.Event is not enhanced.
+
+[2021-02-10 16:56:21 #6 type.registry] 
+New type java.util.Vector<domain.Question>
+
+[2021-02-10 16:56:21 #7 type.registry] 
+New type java.util.Vector<java.lang.Object>
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 17:09:49 #1 server] 
+java.net.BindException: Address already in use: bind
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:469)
+	at java.base/sun.nio.ch.Net.bind(Net.java:458)
+	at java.base/sun.nio.ch.NioSocketImpl.bind(NioSocketImpl.java:643)
+	at java.base/java.net.ServerSocket.bind(ServerSocket.java:374)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:260)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:204)
+	at com.objectdb.o.SMR.I(SMR.java:259)
+	at com.objectdb.o.SMR.n(SMR.java:159)
+	at com.objectdb.o.TOL.run(TOL.java:116)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 17:53:19 #1 server] 
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.bind(Unknown Source)
+	at java.net.PlainSocketImpl.bind(Unknown Source)
+	at java.net.ServerSocket.bind(Unknown Source)
+	at java.net.ServerSocket.<init>(Unknown Source)
+	at java.net.ServerSocket.<init>(Unknown Source)
+	at com.objectdb.o.SMR.I(SMR.java:259)
+	at com.objectdb.o.SMR.n(SMR.java:159)
+	at com.objectdb.o.TOL.run(TOL.java:116)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
+[2021-02-10 17:53:52 #4 server] 
+Server on port 6136 has stopped by 12004@U110132
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 17:53:59 #1 server] 
+Server on port 6136 has started by 12980@U110132
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 17:55:01 #1 server] 
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.bind(Unknown Source)
+	at java.net.PlainSocketImpl.bind(Unknown Source)
+	at java.net.ServerSocket.bind(Unknown Source)
+	at java.net.ServerSocket.<init>(Unknown Source)
+	at java.net.ServerSocket.<init>(Unknown Source)
+	at com.objectdb.o.SMR.I(SMR.java:259)
+	at com.objectdb.o.SMR.n(SMR.java:159)
+	at com.objectdb.o.TOL.run(TOL.java:116)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
+[2021-02-10 17:55:07 #2 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\db\src\main\resources\bets.temp' is opened by 12980@U110132
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 17:55:07 #1 type.registry] 
+New type domain.Question
+
+[2021-02-10 17:55:07 #2 type] 
+Type domain.Question is not enhanced.
+
+[2021-02-10 17:55:07 #3 type.registry] 
+New type domain.Event
+
+[2021-02-10 17:55:07 #4 type] 
+Type domain.Event is not enhanced.
+
+[2021-02-10 17:55:07 #5 type.registry] 
+New type java.util.Vector<domain.Question>
+
+[2021-02-10 17:55:07 #6 type.registry] 
+New type java.util.Vector<java.lang.Object>
+
+[2021-02-10 17:55:31 #3 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\db\src\main\resources\bets.temp' is closed by 12980@U110132
+
+[2021-02-10 17:55:39 #4 server] 
+Server on port 6136 has stopped by 12980@U110132
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 17:56:04 #1 server] 
+Server on port 6136 has started by 5736@U110132
+
+[2021-02-10 17:56:08 #2 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\db\src\main\resources\bets.temp' is opened by 5736@U110132
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 17:56:08 #1 type.registry] 
+New type domain.Question
+
+[2021-02-10 17:56:08 #2 type] 
+Type domain.Question is not enhanced.
+
+[2021-02-10 17:56:08 #3 type.registry] 
+New type domain.Event
+
+[2021-02-10 17:56:08 #4 type] 
+Type domain.Event is not enhanced.
+
+[2021-02-10 17:56:08 #5 type.registry] 
+New type java.util.Vector<domain.Question>
+
+[2021-02-10 17:56:08 #6 type.registry] 
+New type java.util.Vector<java.lang.Object>
+
+[2021-02-10 17:56:31 #3 store] 
+Database 'C:\Users\jipgosaa\ownCloud\alfredo2011\WORKSPACES\eclipse-workspace2019-09\Bets21-master\Bets21-master\src\main\resources\db\src\main\resources\bets.temp' is closed by 5736@U110132
+
+[2021-02-10 17:59:19 #4 server] 
+Server on port 6136 has stopped by 5736@U110132
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2021-02-10 18:03:11 #1 server] 
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(Unknown Source)
+	at java.net.AbstractPlainSocketImpl.bind(Unknown Source)
+	at java.net.PlainSocketImpl.bind(Unknown Source)
+	at java.net.ServerSocket.bind(Unknown Source)
+	at java.net.ServerSocket.<init>(Unknown Source)
+	at java.net.ServerSocket.<init>(Unknown Source)
+	at com.objectdb.o.SMR.I(SMR.java:259)
+	at com.objectdb.o.SMR.n(SMR.java:159)
+	at com.objectdb.o.TOL.run(TOL.java:116)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
