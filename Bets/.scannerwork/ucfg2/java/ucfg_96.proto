@@ -1,17 +1,33 @@
 
-7configuration.ConfigXML#getPassword()Ljava/lang/String;Q
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java= =("1*ç
-1Q
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java>	 >(Ÿ
-œ
-Q
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java>	 >(
-%0java.lang.String"__id*)*'
-configuration.ConfigXML"
-
-password"m
-Q
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java> >(
+WbusinessLogic.BLFacadeImplementation#getEventsMonth(Ljava/util/Date;)Ljava/util/Vector;^
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javah  h(."startingBlock*©
+startingBlock^
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javah. h(9ž
+›
+^
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javah h(
+%0"
+__annotate*
+	WebMethod*
 
-%0java.lang.StringB
-configuration.ConfigXML
+datejava.util.Date‘
+Ž
+^
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javah4 h(8
+datejava.util.Date"__annotation*
+
+%0*
+1*ñ
+1^
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javai i(Œ
+‰
+^
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaj j(5
+datesjava.util.Vector"__id*
+"""}
+^
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javal l(
+
+datesjava.util.Vector:
+datejava.util.DateB(&
+$businessLogic.BLFacadeImplementation

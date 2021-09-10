@@ -1,16 +1,17 @@
 
--domain.Question#getResult()Ljava/lang/String;I
-?/Users/iturrioz/git/Bets2021/src/main/java/domain/Question.javat t("1*≈
+/domain.Question#getQuestion()Ljava/lang/String;I
+?C:/Users/jongo/git/bets/Bets/src/main/java/domain/Question.javao o("1*«
 1I
-?/Users/iturrioz/git/Bets2021/src/main/java/domain/Question.javau	 u(ç
-ä
+?C:/Users/jongo/git/bets/Bets/src/main/java/domain/Question.javap	 p(è
+å
 I
-?/Users/iturrioz/git/Bets2021/src/main/java/domain/Question.javau	 u(
-%0java.lang.String"__id**
-domain.Question"
-result"e
+?C:/Users/jongo/git/bets/Bets/src/main/java/domain/Question.javap	 p(
+%0java.lang.String"__id*!*
+domain.Question"
+
+question"e
 I
-?/Users/iturrioz/git/Bets2021/src/main/java/domain/Question.javau u(
+?C:/Users/jongo/git/bets/Bets/src/main/java/domain/Question.javap p(
 
 %0java.lang.StringB
 domain.Question

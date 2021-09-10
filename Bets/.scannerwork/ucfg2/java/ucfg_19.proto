@@ -1,9 +1,16 @@
 
- domain.Question#getBetMinimum()FI
-?/Users/iturrioz/git/Bets2021/src/main/java/domain/Question.java^ ^("1*£
+6domain.Question#getQuestionNumber()Ljava/lang/Integer;I
+?C:/Users/jongo/git/bets/Bets/src/main/java/domain/Question.java[ [(!"1*Ï
 1I
-?/Users/iturrioz/git/Bets2021/src/main/java/domain/Question.java_	 _("S
+?C:/Users/jongo/git/bets/Bets/src/main/java/domain/Question.java\	 \(–
+“
 I
-?/Users/iturrioz/git/Bets2021/src/main/java/domain/Question.java_ _(
-""B
+?C:/Users/jongo/git/bets/Bets/src/main/java/domain/Question.java\	 \(
+%0java.lang.Integer"__id*'*%
+domain.Question"
+questionNumber"f
+I
+?C:/Users/jongo/git/bets/Bets/src/main/java/domain/Question.java\ \(
+
+%0java.lang.IntegerB
 domain.Question

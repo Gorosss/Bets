@@ -1,16 +1,9 @@
 
-@configuration.ConfigXML#getBusinessLogicPort()Ljava/lang/String;S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java– –(#"1*ö
-1S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java—	 —(ª
-§
-S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java—	 —(
-%0java.lang.String"__id*2*0
-configuration.ConfigXML"
-businessLogicPort"o
-S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java— —(
-
-%0java.lang.StringB
-configuration.ConfigXML
+FbusinessLogic.BLFacadeImplementation#lastEventNum()Ljava/lang/Integer;`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaÉ É("1*Ñ
+1`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaÊ Ê("j
+`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaÎ Î(*
+""B(&
+$businessLogic.BLFacadeImplementation

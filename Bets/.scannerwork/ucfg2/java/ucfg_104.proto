@@ -1,16 +1,35 @@
 
-@configuration.ConfigXML#getBusinessLogicName()Ljava/lang/String;S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.javaš š(#"1*ö
-1S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java›	 ›(ª
-§
-S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java›	 ›(
-%0java.lang.String"__id*2*0
-configuration.ConfigXML"
-businessLogicName"o
-S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.java› ›(
-
-%0java.lang.StringB
-configuration.ConfigXML
+mbusinessLogic.BLFacadeImplementation#getQuestionMultiplerFromNumber(Ljava/lang/Integer;)Ljava/util/ArrayList;`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaá á(:"startingBlock*¹
+startingBlock`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaá: á(J¥
+¢
+`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaà à(
+%0"
+__annotate*
+	WebMethod*
+
+numerojava.lang.Integer˜
+•
+`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaáC á(I
+numerojava.lang.Integer"__annotation*
+
+%0*
+1*ˆ
+1`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaâ â(–
+“
+`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaã ã(U!
+
+multiplersjava.util.ArrayList"__id*
+"""‡
+`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaå å(#
+!
+
+multiplersjava.util.ArrayList:
+numerojava.lang.IntegerB(&
+$businessLogic.BLFacadeImplementation

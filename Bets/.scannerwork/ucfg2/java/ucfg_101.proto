@@ -1,16 +1,36 @@
 
->configuration.ConfigXML#getInstance()Lconfiguration/ConfigXML;S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.javaé é($"1*˛
-1S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.javaè	 è(´
-®
-S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.javaè	 è(
-%0configuration.ConfigXML"__id*,**
-configuration.ConfigXML"
-theInstance"v
-S
-G/Users/iturrioz/git/Bets2021/src/main/java/configuration/ConfigXML.javaè è(
-
-%0configuration.ConfigXMLB"
-configuration.ConfigXML
+/businessLogic.BLFacadeImplementation#isAdmin()Z`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaØ Ø("4*—
+2`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.java≤ ≤("j
+`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.java≥ ≥(
+""*≠
+3`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.java± ±((Ω
+∫
+`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.java±9 ±(C
+%1java.lang.String"__id*8*6&
+$businessLogic.BLFacadeImplementation"
+
+loggedUser*
+2
+1*≠
+4`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.java∞ ∞(Ω
+∫
+`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.java±	 ±(
+%0java.lang.String"__id*8*6&
+$businessLogic.BLFacadeImplementation"
+
+loggedUser*
+3
+1*—
+1`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.javaµ µ("j
+`
+TC:/Users/jongo/git/bets/Bets/src/main/java/businessLogic/BLFacadeImplementation.java∂ ∂(
+""B(&
+$businessLogic.BLFacadeImplementation
