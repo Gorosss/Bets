@@ -87,7 +87,6 @@ public class ForecastsListGUI extends JFrame {
 							row.add(f.getForecastNumber());
 							row.add(f.toString());
 							
-							System.out.println("Медведь просит есть");
 							row.add(f); 
 							tableModelForecasts.addRow(row);		
 						}

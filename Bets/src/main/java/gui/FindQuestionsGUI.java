@@ -163,7 +163,6 @@ public class FindQuestionsGUI extends JFrame {
 							row.add(ev.getEventNumber());
 							row.add(ev.getDescription());
 							
-							System.out.println("Медведь просит есть");
 							row.add(ev); // ev object added in order to obtain it with tableModelEvents.getValueAt(i,2)
 							tableModelEvents.addRow(row);		
 						}

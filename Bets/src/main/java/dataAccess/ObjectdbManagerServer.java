@@ -71,7 +71,7 @@ public class ObjectdbManagerServer extends JDialog {
 								System.exit(1);
 							
 						} catch (Exception e1) {
-							System.out.println(e1.getMessage());
+							textArea.append("Something has happened in ObjectDbManagerServer: "+e.toString());
 						}
 					    
 					    System.exit(1);

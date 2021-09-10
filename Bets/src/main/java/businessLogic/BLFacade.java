@@ -24,8 +24,12 @@ public interface BLFacade  {
 	 * Tries to add a user to the database
 	 * 
 	 * @param pUsername
-	 * @param pPassword
-	 * @return returns whether if the account has been made or not
+	 * @param pUserPassword
+	 * @param pUserEmail
+	 * @param pBankCardNumber
+	 * @param pUserRealName
+	 * @param pUserSurname
+	 * @return
 	 */
 	@WebMethod public boolean addUser(String pUsername, String pUserPassword, String pUserEmail, String pBankCardNumber, String pUserRealName, String pUserSurname);
 	
