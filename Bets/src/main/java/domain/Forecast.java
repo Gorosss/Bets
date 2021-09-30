@@ -33,6 +33,14 @@ public class Forecast {
 		this.user = LoginRegisterGUI.getBusinessLogic().getLoggedUsername();
 		this.win=win;
 	}
+	public Forecast(Question pQuestion, double pBet, String pGuess, double win,String u) {
+		this.forecastNumber = Forecast.numberOfForecasts++;
+		this.question = pQuestion;
+		this.myBet = pBet;
+		this.myGuess = pGuess;
+		this.win=win;
+		this.user=u;
+	}
 	
 	
 

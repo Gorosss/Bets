@@ -75,7 +75,7 @@ public class BLFacadeImplementation  implements BLFacade {
 			throw new EventFinished(ResourceBundle.getBundle("Etiquetas").getString("ErrorEventHasFinished"));
 				
 		
-		 qry=dbManager.createQuestion(event,question,betMinimum, questionType, pMultipliers);		
+		qry=dbManager.createQuestion(event,question,betMinimum, questionType, pMultipliers);		
 
 		dbManager.close();
 		
@@ -337,29 +337,39 @@ public class BLFacadeImplementation  implements BLFacade {
     
     
     /**
-     * Method to paid the user when they win a guess
+     * Method to paid the user when they win a guess, checking all questions and forecast
+     * 
+     * @param queries of question that you want to check
+     * @throws NullPointerException if the queries or question is null 
+     * @throws RuntimeExceptionhas if the question has no event
      */
     @WebMethod
-    public void paidUsers(Vector<Question> queries) {
-    	
+    public void paidUsers(Vector<Question> queries) throws NullPointerException,RuntimeException {
+
     	dbManager.open(false);
+
+    	if(queries==null) {
+    		throw new NullPointerException("queries is null");
+    	}
+
+    	for(Question q:queries) {
+    		if(q==null || q.getEvent()==null) {
+    			throw new NullPointerException("There is a question that is null or has no event");
+    		}
+    	}
+
     	for(Question q:queries) {
     		ArrayList<Forecast> forecasts=(ArrayList<Forecast>) dbManager.getForecastsOfQuestion(q);
-    		
-    		if(forecasts!=null) {
     		for(Forecast f:forecasts) {
     			if(q.getResult().equals(f.getMyGuess())) {
     				dbManager.paid(f.getUser(),f.getWin());
     			}
-    			
-    			
-    		}}
-    			
+    		}
+
     	}
     	dbManager.close();
-
     }
-    
+
     /**
      * Method to paid user when the cancel a forecast
      */
@@ -374,7 +384,8 @@ public class BLFacadeImplementation  implements BLFacade {
     
     
     /**
-     * Method that return the usr wallet
+     * Method that return the user wallet
+     * 
      */
     @WebMethod
     public double getUserWallet(String username) {

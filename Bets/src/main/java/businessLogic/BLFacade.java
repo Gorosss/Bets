@@ -171,7 +171,7 @@ public interface BLFacade  {
 	 * Method to paid a user
 	 * @param queries
 	 */
-	@WebMethod public void paidUsers(Vector<Question> queries);
+	@WebMethod public void paidUsers(Vector<Question> queries)throws NullPointerException,RuntimeException;
 	
 	/**
 	 * Method to get the actual user information

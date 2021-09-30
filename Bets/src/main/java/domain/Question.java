@@ -50,6 +50,16 @@ public class Question implements Serializable {
 		
 	}
 
+	public Question(Integer qNum,String query, float betMinimum, Event event, int questionType,String pMultipliers) {
+		super();
+		this.questionNumber = qNum;
+		this.question = query;
+		this.betMinimum=betMinimum;
+		this.event = event;
+		this.questionType = questionType;
+		addMultipliers(pMultipliers);
+		
+	}
 
 	/**
 	*	Adds multipliers to the multipliers ArrayList

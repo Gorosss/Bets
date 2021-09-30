@@ -26,7 +26,8 @@ public class Event implements Serializable {
 	private Integer eventNumber;
 	private String description; 
 	private Date eventDate;
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Vector<Question> questions=new Vector<Question>();
 
 	public Vector<Question> getQuestions() {
@@ -48,6 +49,7 @@ public class Event implements Serializable {
 	}
 	
 	public Event( String description,Date eventDate) {
+		
 		this.description = description;
 		this.eventDate=eventDate;
 	}
@@ -93,6 +95,7 @@ public class Event implements Serializable {
         questions.add(q);
         return q;
 	}
+	
 
 	
 	/**
@@ -103,6 +106,9 @@ public class Event implements Serializable {
 	 */
 	public boolean DoesQuestionExists(String question)  {	
 		for (Question q:this.getQuestions()){
+			System.out.println("-----------------------");
+			System.out.println(question.toString());
+			System.out.println(q.toString());
 			if (q.getQuestion().compareTo(question)==0)
 				return true;
 		}
