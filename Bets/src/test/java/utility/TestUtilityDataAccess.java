@@ -127,8 +127,9 @@ public class TestUtilityDataAccess {
 			Account a =db.find(Account.class, loggedUser);
 			Forecast f= db.find(Forecast.class, forecast.getForecastNumber());
 			a.deletIndexForecast(f);
-			db.remove(f);		
-			db.remove(a);
+			db.remove(f);	
+			if(a.getAllUserForecast().isEmpty()) {
+			db.remove(a);}
 			db.getTransaction().commit();
 			return true;
 		}

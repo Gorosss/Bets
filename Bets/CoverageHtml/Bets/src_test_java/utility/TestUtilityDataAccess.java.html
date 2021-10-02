@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestUtilityDataAccess.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">utility</a> &gt; <span class="el_source">TestUtilityDataAccess.java</span></div><h1>TestUtilityDataAccess.java</h1><pre class="source lang-java linenums">package utility;
+
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+
+import configuration.ConfigXML;
+import domain.Account;
+import domain.Event;
+import domain.Forecast;
+import domain.Question;
+
+public class TestUtilityDataAccess {
+	protected  EntityManager  db;
+	protected  EntityManagerFactory emf;
+
+<span class="fc" id="L25">	ConfigXML  c=ConfigXML.getInstance();</span>
+
+
+<span class="fc" id="L28">	public TestUtilityDataAccess()  {		</span>
+<span class="fc" id="L29">		System.out.println(&quot;Creating TestDataAccess instance&quot;);</span>
+
+<span class="fc" id="L31">		open();		</span>
+<span class="fc" id="L32">	}</span>
+
+	
+	public void open(){
+		
+<span class="fc" id="L37">		System.out.println(&quot;Opening TestDataAccess instance &quot;);</span>
+
+<span class="fc" id="L39">		String fileName=c.getDbFilename();</span>
+		
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">		if (c.isDatabaseLocal()) {</span>
+<span class="fc" id="L42">			  emf = Persistence.createEntityManagerFactory(&quot;objectdb:&quot;+fileName);</span>
+<span class="fc" id="L43">			  db = emf.createEntityManager();</span>
+<span class="fc" id="L44">		} else {</span>
+<span class="nc" id="L45">			Map&lt;String, String&gt; properties = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L46">			  properties.put(&quot;javax.persistence.jdbc.user&quot;, c.getUser());</span>
+<span class="nc" id="L47">			  properties.put(&quot;javax.persistence.jdbc.password&quot;, c.getPassword());</span>
+
+<span class="nc" id="L49">			  emf = Persistence.createEntityManagerFactory(&quot;objectdb://&quot;+c.getDatabaseNode()+&quot;:&quot;+c.getDatabasePort()+&quot;/&quot;+fileName, properties);</span>
+
+<span class="nc" id="L51">			  db = emf.createEntityManager();</span>
+    	   }
+		
+<span class="fc" id="L54">	}</span>
+	public void close(){
+<span class="fc" id="L56">		db.close();</span>
+<span class="fc" id="L57">		System.out.println(&quot;DataBase closed&quot;);</span>
+<span class="fc" id="L58">	}</span>
+
+	public boolean removeEvent(Event ev) {
+<span class="fc" id="L61">		System.out.println(&quot;&gt;&gt; DataAccessTest: removeEvent&quot;);</span>
+<span class="fc" id="L62">		Event e = db.find(Event.class, ev.getEventNumber());</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">		if (e!=null) {</span>
+<span class="fc" id="L64">			db.getTransaction().begin();</span>
+<span class="fc" id="L65">			db.remove(e);</span>
+<span class="fc" id="L66">			db.getTransaction().commit();</span>
+<span class="fc" id="L67">			return true;</span>
+		} else 
+<span class="nc" id="L69">		return false;</span>
+    }
+		
+	
+		public Event addEventWithQuestion(Integer evNum,String desc, Date d, String question, float qty) {
+<span class="fc" id="L74">			System.out.println(&quot;&gt;&gt; DataAccessTest: addEvent&quot;);</span>
+<span class="fc" id="L75">			Event ev=null;</span>
+<span class="fc" id="L76">			int questionType= 2;</span>
+<span class="fc" id="L77">			String multipliers=&quot;2,3&quot;;</span>
+			
+<span class="fc" id="L79">				db.getTransaction().begin();</span>
+				try {
+<span class="fc" id="L81">				    ev=new Event(evNum,desc,d);</span>
+<span class="fc" id="L82">				    ev.addQuestion(question,  qty, questionType,multipliers);</span>
+<span class="fc" id="L83">					db.persist(ev);</span>
+<span class="fc" id="L84">					db.getTransaction().commit();</span>
+<span class="fc" id="L85">				}</span>
+<span class="nc" id="L86">				catch (Exception e){</span>
+<span class="nc" id="L87">					e.printStackTrace();</span>
+				}
+<span class="fc" id="L89">				return ev;</span>
+	    }
+		
+		public Vector&lt;Event&gt; getEvents(Date date) {
+<span class="fc" id="L93">			System.out.println(&quot;&gt;&gt; DataAccess: getEvents&quot;);</span>
+<span class="fc" id="L94">			Vector&lt;Event&gt; res = new Vector&lt;Event&gt;();	</span>
+<span class="fc" id="L95">			TypedQuery&lt;Event&gt; query = db.createQuery(&quot;SELECT ev FROM Event ev WHERE ev.eventDate=?1&quot;,Event.class);   </span>
+<span class="fc" id="L96">			query.setParameter(1, date);</span>
+<span class="fc" id="L97">			List&lt;Event&gt; events = query.getResultList();</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		 	 for (Event ev:events){</span>
+<span class="fc" id="L99">		 	   System.out.println(ev.toString());		 </span>
+<span class="fc" id="L100">			   res.add(ev);</span>
+			  }
+<span class="fc" id="L102">		 	return res;</span>
+		}
+		
+		public boolean existQuestion(Event event, String question) {
+<span class="nc" id="L106">			System.out.println(&quot;&gt;&gt; DataAccess: existQuestion=&gt; event= &quot;+event+&quot; question= &quot;+question);</span>
+<span class="nc" id="L107">			Event ev = db.find(Event.class, event.getEventNumber());</span>
+<span class="nc" id="L108">			return ev.DoesQuestionExists(question);</span>
+			
+		}
+		
+		public void removeQuestion(Question Question) {
+<span class="nc" id="L113">			db.getTransaction().begin();</span>
+<span class="nc" id="L114">			Question q= db.find(Question.class, Question.getQuestionNumber());</span>
+<span class="nc" id="L115">			db.remove(q);</span>
+<span class="nc" id="L116">			db.getTransaction().commit();</span>
+<span class="nc" id="L117">		}</span>
+		
+
+		public void storeForecast(Forecast pForecast) {
+<span class="fc" id="L121">			db.getTransaction().begin();</span>
+<span class="fc" id="L122">			db.persist(pForecast);</span>
+<span class="fc" id="L123">			db.getTransaction().commit();</span>
+<span class="fc" id="L124">		}</span>
+		public boolean deleteForecastAndUser(Forecast forecast,String loggedUser) {
+<span class="fc" id="L126">			db.getTransaction().begin();</span>
+<span class="fc" id="L127">			Account a =db.find(Account.class, loggedUser);</span>
+<span class="fc" id="L128">			Forecast f= db.find(Forecast.class, forecast.getForecastNumber());</span>
+<span class="fc" id="L129">			a.deletIndexForecast(f);</span>
+<span class="fc" id="L130">			db.remove(f);		</span>
+<span class="fc" id="L131">			db.remove(a);</span>
+<span class="fc" id="L132">			db.getTransaction().commit();</span>
+<span class="fc" id="L133">			return true;</span>
+		}
+		
+		public void storeAccount(Account user) {
+<span class="fc" id="L137">	        db.getTransaction().begin();</span>
+<span class="fc" id="L138">	        db.persist(user);</span>
+<span class="fc" id="L139">	        db.getTransaction().commit();</span>
+<span class="fc" id="L140">		}</span>
+		
+		
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

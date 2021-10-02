@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CreateForecastGUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">CreateForecastGUI.java</span></div><h1>CreateForecastGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import businessLogic.BLFacade;
+import configuration.UtilDate;
+
+import com.toedter.calendar.JCalendar;
+
+import domain.Account;
+import domain.Question;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.beans.*;
+import java.text.DateFormat;
+import java.util.*;
+
+import javax.swing.table.DefaultTableModel;
+import com.toedter.components.JSpinField;
+
+
+public class CreateForecastGUI extends JFrame {
+	private static final long serialVersionUID = 1L;
+
+<span class="nc" id="L24">	private final JLabel jLabelEventDate = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;EventDate&quot;));</span>
+<span class="nc" id="L25">	private final JLabel jLabelQueries = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Queries&quot;)); </span>
+<span class="nc" id="L26">	private final JLabel jLabelEvents = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Events&quot;)); </span>
+
+<span class="nc" id="L28">	private JButton jButtonClose = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Close&quot;));</span>
+
+	// Code for JCalendar
+<span class="nc" id="L31">	private JCalendar jCalendar1 = new JCalendar();</span>
+<span class="nc" id="L32">	private Calendar calendarAnt = null;</span>
+<span class="nc" id="L33">	private Calendar calendarAct = null;</span>
+<span class="nc" id="L34">	private JScrollPane scrollPaneEvents = new JScrollPane();</span>
+<span class="nc" id="L35">	private JScrollPane scrollPaneQueries = new JScrollPane();</span>
+<span class="nc" id="L36">	private JLabel lblAddForecast = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.lblAddForecast.text&quot;));</span>
+<span class="nc" id="L37">	private JLabel lblAddBet = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.lblAddBet.text&quot;));</span>
+<span class="nc" id="L38">	private JSpinField spinField = new JSpinField();</span>
+<span class="nc" id="L39">	private JButton btnBet = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.btnBet.text&quot;));</span>
+<span class="nc" id="L40">	private JToggleButton buttonOne = new JToggleButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.toggleButton.text&quot;));</span>
+<span class="nc" id="L41">	private JToggleButton buttonX = new JToggleButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.tglbtnX.text&quot;));</span>
+<span class="nc" id="L42">	private JToggleButton buttonTwo = new JToggleButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.toggleButton_2.text&quot;));</span>
+<span class="nc" id="L43">	private JSpinField numericAnswerSP = new JSpinField();</span>
+	
+<span class="nc" id="L45">	private Vector&lt;Date&gt; datesWithEventsCurrentMonth = new Vector&lt;Date&gt;();</span>
+
+<span class="nc" id="L47">	private JTable tableEvents= new JTable();</span>
+<span class="nc" id="L48">	private JTable tableQueries = new JTable();</span>
+
+	private DefaultTableModel tableModelEvents;
+	private DefaultTableModel tableModelQueries;
+	
+	private Question selectedQuestion;
+	private String selectedAnswer;
+	
+	private Float earning;
+	private JButton btnCalculateEarnings;
+	private JLabel earnings;
+	private JLabel lblEarnings;
+
+	
+<span class="nc" id="L62">	private String[] columnNamesEvents = new String[] {</span>
+<span class="nc" id="L63">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;EventN&quot;), </span>
+<span class="nc" id="L64">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Event&quot;), </span>
+
+	};
+<span class="nc" id="L67">	private String[] columnNamesQueries = new String[] {</span>
+<span class="nc" id="L68">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QueryN&quot;), </span>
+<span class="nc" id="L69">			ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Query&quot;)</span>
+
+	};
+<span class="nc" id="L72">	private final ButtonGroup buttonGroup = new ButtonGroup();</span>
+<span class="nc" id="L73">	private final JTextField stringAnswer = new JTextField();</span>
+<span class="nc" id="L74">	private final JLabel minBetLbl = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.minBetLbl.text&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L75">	private final JLabel lblNewLabel = new JLabel(); //$NON-NLS-1$ //$NON-NLS-2$</span>
+
+<span class="nc" id="L77">	public CreateForecastGUI()</span>
+	{
+		//stringAnswer.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.textField.text&quot;)); //$NON-NLS-1$ //$NON-NLS-2$
+		
+		//stringAnswer.setColumns(10);
+		try
+		{
+<span class="nc" id="L84">			jbInit();</span>
+<span class="nc" id="L85">		}</span>
+<span class="nc" id="L86">		catch(Exception e)</span>
+		{
+<span class="nc" id="L88">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L90">	}</span>
+
+	
+	private void jbInit() throws Exception
+	{
+
+<span class="nc" id="L96">		this.getContentPane().setLayout(null);</span>
+<span class="nc" id="L97">		this.setSize(new Dimension(700, 500));</span>
+<span class="nc" id="L98">		this.setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;QueryQueries&quot;));</span>
+
+<span class="nc" id="L100">		jLabelEventDate.setBounds(new Rectangle(40, 15, 140, 25));</span>
+<span class="nc" id="L101">		stringAnswer.setBounds(new Rectangle(441, 238, 167, 25));</span>
+<span class="nc" id="L102">		jLabelQueries.setBounds(40, 213, 389, 14);</span>
+<span class="nc" id="L103">		jLabelEvents.setBounds(295, 19, 259, 16);</span>
+
+<span class="nc" id="L105">		this.getContentPane().add(stringAnswer, null);</span>
+<span class="nc" id="L106">		this.getContentPane().add(jLabelEventDate, null);</span>
+<span class="nc" id="L107">		this.getContentPane().add(jLabelQueries);</span>
+<span class="nc" id="L108">		this.getContentPane().add(jLabelEvents);</span>
+<span class="nc" id="L109">		jButtonClose.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 20));</span>
+
+<span class="nc" id="L111">		jButtonClose.setBounds(new Rectangle(40, 410, 130, 30));</span>
+
+<span class="nc" id="L113">		jButtonClose.addActionListener(new ActionListener()</span>
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+<span class="nc" id="L117">				jButton2_actionPerformed(e);</span>
+<span class="nc" id="L118">			}</span>
+		});
+
+<span class="nc" id="L121">		this.getContentPane().add(jButtonClose, null);</span>
+
+
+<span class="nc" id="L124">		jCalendar1.setBounds(new Rectangle(40, 50, 225, 150));</span>
+
+<span class="nc" id="L126">		BLFacade facade = LoginRegisterGUI.getBusinessLogic();</span>
+<span class="nc" id="L127">		datesWithEventsCurrentMonth=facade.getEventsMonth(jCalendar1.getDate());</span>
+<span class="nc" id="L128">		CreateQuestionGUI.paintDaysWithEvents(jCalendar1,datesWithEventsCurrentMonth);</span>
+
+		// Code for JCalendar
+<span class="nc" id="L131">		this.jCalendar1.addPropertyChangeListener(new PropertyChangeListener()</span>
+		{
+			public void propertyChange(PropertyChangeEvent propertychangeevent)
+			{
+
+<span class="nc bnc" id="L136" title="All 2 branches missed.">				if (propertychangeevent.getPropertyName().equals(&quot;locale&quot;))</span>
+				{
+<span class="nc" id="L138">					jCalendar1.setLocale((Locale) propertychangeevent.getNewValue());</span>
+<span class="nc" id="L139">				}</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">				else if (propertychangeevent.getPropertyName().equals(&quot;calendar&quot;))</span>
+				{
+<span class="nc" id="L142">					calendarAnt = (Calendar) propertychangeevent.getOldValue();</span>
+<span class="nc" id="L143">					calendarAct = (Calendar) propertychangeevent.getNewValue();</span>
+<span class="nc" id="L144">					DateFormat dateformat1 = DateFormat.getDateInstance(1, jCalendar1.getLocale());</span>
+//					jCalendar1.setCalendar(calendarAct);
+<span class="nc" id="L146">					Date firstDay=UtilDate.trim(new Date(jCalendar1.getCalendar().getTime().getTime()));</span>
+
+					 
+					
+<span class="nc" id="L150">					int monthAnt = calendarAnt.get(Calendar.MONTH);</span>
+<span class="nc" id="L151">					int monthAct = calendarAct.get(Calendar.MONTH);</span>
+					
+<span class="nc bnc" id="L153" title="All 2 branches missed.">					if (monthAct!=monthAnt) {</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">						if (monthAct==monthAnt+2) {</span>
+							// Si en JCalendar está 30 de enero y se avanza al mes siguiente, devolvería 2 de marzo (se toma como equivalente a 30 de febrero)
+							// Con este código se dejará como 1 de febrero en el JCalendar
+<span class="nc" id="L157">							calendarAct.set(Calendar.MONTH, monthAnt+1);</span>
+<span class="nc" id="L158">							calendarAct.set(Calendar.DAY_OF_MONTH, 1);</span>
+						}						
+						
+<span class="nc" id="L161">						jCalendar1.setCalendar(calendarAct);</span>
+
+<span class="nc" id="L163">						BLFacade facade = LoginRegisterGUI.getBusinessLogic();</span>
+
+<span class="nc" id="L165">						datesWithEventsCurrentMonth=facade.getEventsMonth(jCalendar1.getDate());</span>
+					}
+
+
+
+<span class="nc" id="L170">					CreateQuestionGUI.paintDaysWithEvents(jCalendar1,datesWithEventsCurrentMonth);</span>
+													
+					
+
+					try {
+<span class="nc" id="L175">						tableModelEvents.setDataVector(null, columnNamesEvents);</span>
+<span class="nc" id="L176">						tableModelEvents.setColumnCount(3); // another column added to allocate ev objects</span>
+
+<span class="nc" id="L178">						BLFacade facade=LoginRegisterGUI.getBusinessLogic();</span>
+
+<span class="nc" id="L180">						Vector&lt;domain.Event&gt; events=facade.getEvents(firstDay);</span>
+
+<span class="nc bnc" id="L182" title="All 2 branches missed.">						if (events.isEmpty() ) jLabelEvents.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;NoEvents&quot;)+ &quot;: &quot;+dateformat1.format(calendarAct.getTime()));</span>
+<span class="nc" id="L183">						else jLabelEvents.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;Events&quot;)+ &quot;: &quot;+dateformat1.format(calendarAct.getTime()));</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">						for (domain.Event ev:events){</span>
+<span class="nc" id="L185">							Vector&lt;Object&gt; row = new Vector&lt;Object&gt;();</span>
+
+<span class="nc" id="L187">							System.out.println(&quot;Events &quot;+ev);</span>
+
+<span class="nc" id="L189">							row.add(ev.getEventNumber());</span>
+<span class="nc" id="L190">							row.add(ev.getDescription());</span>
+<span class="nc" id="L191">							row.add(ev); // ev object added in order to obtain it with tableModelEvents.getValueAt(i,2)</span>
+<span class="nc" id="L192">							tableModelEvents.addRow(row);		</span>
+						}
+<span class="nc" id="L194">						tableEvents.getColumnModel().getColumn(0).setPreferredWidth(25);</span>
+<span class="nc" id="L195">						tableEvents.getColumnModel().getColumn(1).setPreferredWidth(268);</span>
+<span class="nc" id="L196">						tableEvents.getColumnModel().removeColumn(tableEvents.getColumnModel().getColumn(2)); // not shown in JTable</span>
+<span class="nc" id="L197">					} catch (Exception e1) {</span>
+
+<span class="nc" id="L199">						jLabelQueries.setText(e1.getMessage());</span>
+					}
+
+				}
+<span class="nc" id="L203">			} </span>
+		});
+
+<span class="nc" id="L206">		this.getContentPane().add(jCalendar1, null);</span>
+		
+<span class="nc" id="L208">		scrollPaneEvents.setBounds(new Rectangle(292, 50, 346, 150));</span>
+<span class="nc" id="L209">		scrollPaneQueries.setBounds(new Rectangle(40, 233, 389, 116));</span>
+
+<span class="nc" id="L211">		tableEvents.addMouseListener(new MouseAdapter() {</span>
+			@Override
+			public void mouseClicked(MouseEvent e) {
+<span class="nc" id="L214">				int i=tableEvents.getSelectedRow();</span>
+<span class="nc" id="L215">				domain.Event ev=(domain.Event)tableModelEvents.getValueAt(i,2); // obtain ev object</span>
+<span class="nc" id="L216">				Vector&lt;Question&gt; queries=ev.getQuestions();</span>
+
+<span class="nc" id="L218">				tableModelQueries.setDataVector(null, columnNamesQueries);</span>
+
+<span class="nc bnc" id="L220" title="All 2 branches missed.">				if (queries.isEmpty())</span>
+<span class="nc" id="L221">					jLabelQueries.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;NoQueries&quot;)+&quot;: &quot;+ev.getDescription());</span>
+				else 
+<span class="nc" id="L223">					jLabelQueries.setText(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;SelectedEvent&quot;)+&quot; &quot;+ev.getDescription());</span>
+
+<span class="nc bnc" id="L225" title="All 2 branches missed.">				for (domain.Question q:queries){</span>
+<span class="nc" id="L226">					Vector&lt;Object&gt; row = new Vector&lt;Object&gt;();</span>
+
+<span class="nc" id="L228">					row.add(q.getQuestionNumber());</span>
+<span class="nc" id="L229">					row.add(q.getQuestion());</span>
+<span class="nc" id="L230">					tableModelQueries.addRow(row);	</span>
+				}
+<span class="nc" id="L232">				tableQueries.getColumnModel().getColumn(0).setPreferredWidth(25);</span>
+<span class="nc" id="L233">				tableQueries.getColumnModel().getColumn(1).setPreferredWidth(268);</span>
+<span class="nc" id="L234">			}</span>
+		});
+
+<span class="nc" id="L237">		scrollPaneEvents.setViewportView(tableEvents);</span>
+<span class="nc" id="L238">		tableModelEvents = new DefaultTableModel(null, columnNamesEvents);</span>
+
+		
+		
+<span class="nc" id="L242">		tableEvents.setModel(tableModelEvents);</span>
+<span class="nc" id="L243">		tableEvents.getColumnModel().getColumn(0).setPreferredWidth(25);</span>
+<span class="nc" id="L244">		tableEvents.getColumnModel().getColumn(1).setPreferredWidth(268);</span>
+<span class="nc" id="L245">		tableQueries.addMouseListener(new MouseAdapter() {	</span>
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+<span class="nc" id="L248">				int i = tableQueries.getSelectedRow();	</span>
+<span class="nc" id="L249">				Integer numeroPregunta = (Integer)tableQueries.getValueAt(i, 0);</span>
+<span class="nc" id="L250">				selectedQuestion = facade.getQuestionFromNumber(numeroPregunta);</span>
+<span class="nc" id="L251">				String minBet = Float.toString(selectedQuestion.getBetMinimum());</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">				if(selectedQuestion==null) {</span>
+<span class="nc" id="L253">					System.out.println(&quot;La pregunta ha devuelto null&quot;);</span>
+<span class="nc" id="L254">				}</span>
+				else {
+<span class="nc" id="L256">					System.out.println(&quot;Se ha conseguido la pregunta&quot;);</span>
+				}
+<span class="nc" id="L258">				int tipo = selectedQuestion.getQuestionType();</span>
+<span class="nc" id="L259">				spinField.setMinimum((int) selectedQuestion.getBetMinimum());</span>
+<span class="nc bnc" id="L260" title="All 5 branches missed.">				switch(tipo) {</span>
+				case 1:
+<span class="nc" id="L262">					System.out.println(&quot;TIPO 1&quot;);</span>
+<span class="nc" id="L263">					lblEarnings.setVisible(true);</span>
+<span class="nc" id="L264">					earnings.setVisible(true);</span>
+<span class="nc" id="L265">					btnCalculateEarnings.setVisible(true);</span>
+<span class="nc" id="L266">					lblAddForecast.setVisible(true);</span>
+<span class="nc" id="L267">					lblAddBet.setVisible(true);</span>
+<span class="nc" id="L268">					spinField.setVisible(true);</span>
+<span class="nc" id="L269">					btnBet.setVisible(true);</span>
+<span class="nc" id="L270">					buttonOne.setVisible(true);</span>
+<span class="nc" id="L271">					buttonX.setVisible(true);</span>
+<span class="nc" id="L272">					buttonTwo.setVisible(true);</span>
+<span class="nc" id="L273">					numericAnswerSP.setVisible(false);</span>
+<span class="nc" id="L274">					stringAnswer.setVisible(false);</span>
+<span class="nc" id="L275">					minBetLbl.setVisible(true);</span>
+<span class="nc" id="L276">					lblNewLabel.setVisible(true);</span>
+<span class="nc" id="L277">					lblNewLabel.setText(minBet);</span>
+<span class="nc" id="L278">					break;</span>
+				case 2:
+<span class="nc" id="L280">					System.out.println(&quot;TIPO 2&quot;);</span>
+<span class="nc" id="L281">					lblEarnings.setVisible(true);</span>
+<span class="nc" id="L282">					earnings.setVisible(true);</span>
+<span class="nc" id="L283">					btnCalculateEarnings.setVisible(true);</span>
+<span class="nc" id="L284">					lblAddForecast.setVisible(true);</span>
+<span class="nc" id="L285">					lblAddBet.setVisible(true);</span>
+<span class="nc" id="L286">					spinField.setVisible(true);</span>
+<span class="nc" id="L287">					btnBet.setVisible(true);</span>
+<span class="nc" id="L288">					buttonOne.setVisible(true);</span>
+<span class="nc" id="L289">					buttonX.setVisible(false);</span>
+<span class="nc" id="L290">					buttonTwo.setVisible(true);</span>
+<span class="nc" id="L291">					numericAnswerSP.setVisible(false);</span>
+<span class="nc" id="L292">					stringAnswer.setVisible(false);</span>
+<span class="nc" id="L293">					minBetLbl.setVisible(true);</span>
+<span class="nc" id="L294">					lblNewLabel.setVisible(true);</span>
+<span class="nc" id="L295">					lblNewLabel.setText(minBet);</span>
+<span class="nc" id="L296">					break;</span>
+				case 3:
+<span class="nc" id="L298">					System.out.println(&quot;TIPO 3&quot;);</span>
+<span class="nc" id="L299">					lblEarnings.setVisible(true);</span>
+<span class="nc" id="L300">					earnings.setVisible(true);</span>
+<span class="nc" id="L301">					btnCalculateEarnings.setVisible(true);</span>
+<span class="nc" id="L302">					numericAnswerSP.setMinimum(0);</span>
+<span class="nc" id="L303">					lblAddForecast.setVisible(true);</span>
+<span class="nc" id="L304">					lblAddBet.setVisible(true);</span>
+<span class="nc" id="L305">					spinField.setVisible(true);</span>
+<span class="nc" id="L306">					btnBet.setVisible(true);</span>
+<span class="nc" id="L307">					buttonOne.setVisible(false);</span>
+<span class="nc" id="L308">					buttonX.setVisible(false);</span>
+<span class="nc" id="L309">					buttonTwo.setVisible(false);</span>
+<span class="nc" id="L310">					numericAnswerSP.setVisible(true);</span>
+<span class="nc" id="L311">					stringAnswer.setVisible(false);</span>
+<span class="nc" id="L312">					minBetLbl.setVisible(true);</span>
+<span class="nc" id="L313">					lblNewLabel.setVisible(true);</span>
+<span class="nc" id="L314">					lblNewLabel.setText(minBet);</span>
+<span class="nc" id="L315">					break;</span>
+				case 4:
+<span class="nc" id="L317">					System.out.println(&quot;TIPO 4&quot;);</span>
+<span class="nc" id="L318">					lblEarnings.setVisible(true);</span>
+<span class="nc" id="L319">					earnings.setVisible(true);</span>
+<span class="nc" id="L320">					btnCalculateEarnings.setVisible(true);</span>
+<span class="nc" id="L321">					lblAddForecast.setVisible(true);</span>
+<span class="nc" id="L322">					lblAddBet.setVisible(true);</span>
+<span class="nc" id="L323">					spinField.setVisible(true);</span>
+<span class="nc" id="L324">					btnBet.setVisible(true);</span>
+<span class="nc" id="L325">					buttonOne.setVisible(false);</span>
+<span class="nc" id="L326">					buttonX.setVisible(false);</span>
+<span class="nc" id="L327">					buttonTwo.setVisible(false);</span>
+<span class="nc" id="L328">					numericAnswerSP.setVisible(false);</span>
+<span class="nc" id="L329">					stringAnswer.setVisible(true);</span>
+<span class="nc" id="L330">					minBetLbl.setVisible(true);</span>
+<span class="nc" id="L331">					lblNewLabel.setVisible(true);</span>
+<span class="nc" id="L332">					lblNewLabel.setText(minBet);</span>
+					break;
+				}
+<span class="nc" id="L335">			}</span>
+		});
+		
+
+<span class="nc" id="L339">		scrollPaneQueries.setViewportView(tableQueries);</span>
+<span class="nc" id="L340">		tableModelQueries = new DefaultTableModel(null, columnNamesQueries);</span>
+
+<span class="nc" id="L342">		tableQueries.setModel(tableModelQueries);</span>
+<span class="nc" id="L343">		tableQueries.getColumnModel().getColumn(0).setPreferredWidth(25);</span>
+<span class="nc" id="L344">		tableQueries.getColumnModel().getColumn(1).setPreferredWidth(268);</span>
+
+<span class="nc" id="L346">		this.getContentPane().add(scrollPaneEvents, null);</span>
+<span class="nc" id="L347">		this.getContentPane().add(scrollPaneQueries, null);</span>
+		
+		
+<span class="nc" id="L350">		lblAddForecast.setVisible(false);</span>
+<span class="nc" id="L351">		lblAddForecast.setBounds(441, 212, 195, 16);</span>
+<span class="nc" id="L352">		getContentPane().add(lblAddForecast);</span>
+		
+<span class="nc" id="L354">		JLabel balance = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.label.text&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L355">		balance.setForeground(new Color(0, 255, 255));</span>
+<span class="nc" id="L356">		balance.setBounds(613, 332, 46, 14);</span>
+<span class="nc" id="L357">		getContentPane().add(balance);</span>
+		
+<span class="nc" id="L359">		lblAddBet.setVisible(false);</span>
+<span class="nc" id="L360">		lblAddBet.setBounds(441, 305, 210, 16);</span>
+<span class="nc" id="L361">		getContentPane().add(lblAddBet);</span>
+		
+		
+<span class="nc" id="L364">		earnings = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.label.text&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L365">		earnings.setForeground(Color.CYAN);</span>
+<span class="nc" id="L366">		earnings.setBounds(592, 306, 32, 14);</span>
+<span class="nc" id="L367">		getContentPane().add(earnings);</span>
+<span class="nc" id="L368">		earnings.setVisible(false);</span>
+<span class="nc" id="L369">		lblNewLabel.setVisible(false);</span>
+		
+		
+		
+<span class="nc" id="L373">		spinField.setVisible(false);</span>
+<span class="nc" id="L374">		spinField.setBounds(441, 325, 77, 22);</span>
+<span class="nc" id="L375">		getContentPane().add(spinField);	</span>
+		
+			
+		
+		
+<span class="nc" id="L380">		btnBet.setVisible(false);</span>
+<span class="nc" id="L381">		btnBet.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L383">				boolean error = true;</span>
+<span class="nc bnc" id="L384" title="All 5 branches missed.">				switch (selectedQuestion.getQuestionType()) {</span>
+					case 1:
+<span class="nc bnc" id="L386" title="All 2 branches missed.">						if (buttonOne.isSelected()) {</span>
+<span class="nc" id="L387">							selectedAnswer = &quot;1&quot;;</span>
+<span class="nc" id="L388">							error = false;</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">						} else if(buttonX.isSelected()) {</span>
+<span class="nc" id="L390">							selectedAnswer = &quot;x&quot;;</span>
+<span class="nc" id="L391">							error = false;</span>
+<span class="nc bnc" id="L392" title="All 2 branches missed.">						} else if(buttonTwo.isSelected()) {</span>
+<span class="nc" id="L393">							selectedAnswer = &quot;2&quot;;</span>
+<span class="nc" id="L394">							error = false;</span>
+						}
+<span class="nc" id="L396">						break;</span>
+					case 2:
+<span class="nc bnc" id="L398" title="All 2 branches missed.">						if (buttonOne.isSelected()) {</span>
+<span class="nc" id="L399">							selectedAnswer = &quot;1&quot;;</span>
+<span class="nc" id="L400">							error = false;</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">						} else if(buttonTwo.isSelected()) {</span>
+<span class="nc" id="L402">							selectedAnswer = &quot;2&quot;;</span>
+<span class="nc" id="L403">							error = false;</span>
+						}
+<span class="nc" id="L405">						break;</span>
+					case 3:
+<span class="nc" id="L407">						selectedAnswer =  Float.toString(numericAnswerSP.getValue());</span>
+<span class="nc" id="L408">						error = false;</span>
+<span class="nc" id="L409">						break;</span>
+					case 4:
+<span class="nc bnc" id="L411" title="All 4 branches missed.">						if (stringAnswer.getText() != null &amp;&amp; stringAnswer.getText() != &quot;&quot;) {</span>
+<span class="nc" id="L412">							selectedAnswer=stringAnswer.getText();</span>
+<span class="nc" id="L413">							error = false;</span>
+						}
+<span class="nc" id="L415">						break;</span>
+					default:
+<span class="nc" id="L417">						System.out.println(&quot;Question not selected.&quot;);</span>
+						break;
+				}
+<span class="nc" id="L420">				System.out.println(&quot;User answer: &quot; + selectedAnswer);</span>
+
+<span class="nc" id="L422">				Double wallet = LoginRegisterGUI.getBusinessLogic().getUserWallet(LoginRegisterGUI.getBusinessLogic().getLoggedUsername());	</span>
+				
+<span class="nc bnc" id="L424" title="All 2 branches missed.">				if(spinField.getValue()&lt;selectedQuestion.getBetMinimum()) {</span>
+<span class="nc" id="L425">					System.out.println(&quot;Minimum bet&quot;);</span>
+<span class="nc" id="L426">					error=true;</span>
+				}
+				
+<span class="nc bnc" id="L429" title="All 2 branches missed.">				if(spinField.getValue()&gt;wallet) {</span>
+<span class="nc" id="L430">					System.out.println(&quot;Not enought money&quot;);</span>
+<span class="nc" id="L431">					error=true;</span>
+				}
+				
+				
+<span class="nc bnc" id="L435" title="All 2 branches missed.">				if (!error) {</span>
+					
+<span class="nc" id="L437">					LoginRegisterGUI.getBusinessLogic().restUserMoney(LoginRegisterGUI.getBusinessLogic().getLoggedUsername(), (double) spinField.getValue());</span>
+<span class="nc" id="L438">					calculateEarning(e);</span>
+<span class="nc" id="L439">					LoginRegisterGUI.getBusinessLogic().addForecast(selectedQuestion, spinField.getValue(), selectedAnswer,earning);}</span>
+				else 
+<span class="nc" id="L441">					System.out.println(&quot;Error. Bet input format illegal. Code 8.&quot;);</span>
+				
+<span class="nc" id="L443">			}</span>
+		});
+<span class="nc" id="L445">		btnBet.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 22));</span>
+<span class="nc" id="L446">		btnBet.setBounds(540, 399, 111, 51);</span>
+<span class="nc" id="L447">		getContentPane().add(btnBet);</span>
+		
+		
+<span class="nc" id="L450">		buttonGroup.add(buttonOne);</span>
+<span class="nc" id="L451">		buttonOne.setVisible(false);</span>
+<span class="nc" id="L452">		buttonOne.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+				
+<span class="nc" id="L455">			}</span>
+		});
+<span class="nc" id="L457">		buttonOne.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 26));</span>
+<span class="nc" id="L458">		buttonOne.setBounds(441, 241, 53, 51);</span>
+<span class="nc" id="L459">		getContentPane().add(buttonOne);</span>
+		
+		
+<span class="nc" id="L462">		buttonGroup.add(buttonX);</span>
+<span class="nc" id="L463">		buttonX.setVisible(false);</span>
+<span class="nc" id="L464">		buttonX.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 26));</span>
+<span class="nc" id="L465">		buttonX.setBounds(506, 241, 53, 51);</span>
+<span class="nc" id="L466">		getContentPane().add(buttonX);</span>
+		
+		
+<span class="nc" id="L469">		buttonGroup.add(buttonTwo);</span>
+<span class="nc" id="L470">		buttonTwo.setVisible(false);</span>
+<span class="nc" id="L471">		buttonTwo.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 26));</span>
+<span class="nc" id="L472">		buttonTwo.setBounds(571, 241, 53, 51);</span>
+<span class="nc" id="L473">		getContentPane().add(buttonTwo);</span>
+		
+		
+<span class="nc" id="L476">		numericAnswerSP.setBounds(441, 241, 53, 31);</span>
+<span class="nc" id="L477">		getContentPane().add(numericAnswerSP);</span>
+<span class="nc" id="L478">		numericAnswerSP.setVisible(false);</span>
+		
+<span class="nc" id="L480">		getContentPane().add(stringAnswer);</span>
+<span class="nc" id="L481">		minBetLbl.setBounds(441, 358, 98, 16);</span>
+<span class="nc" id="L482">		stringAnswer.setVisible(false);</span>
+		
+<span class="nc" id="L484">		getContentPane().add(minBetLbl);</span>
+<span class="nc" id="L485">		lblNewLabel.setBounds(626, 325, 44, 16);</span>
+<span class="nc" id="L486">		minBetLbl.setVisible(false);</span>
+		
+<span class="nc" id="L488">		getContentPane().add(lblNewLabel);</span>
+		
+<span class="nc" id="L490">		lblEarnings = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.lblEarnings.text&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L491">		lblEarnings.setBounds(540, 306, 46, 14);</span>
+<span class="nc" id="L492">		getContentPane().add(lblEarnings);</span>
+<span class="nc" id="L493">		lblEarnings.setVisible(false);</span>
+		
+<span class="nc" id="L495">		btnCalculateEarnings = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.btnCalculateEarnings.text&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L496">		btnCalculateEarnings.setForeground(new Color(0, 128, 0));</span>
+<span class="nc" id="L497">		btnCalculateEarnings.setVisible(false);</span>
+<span class="nc" id="L498">		btnCalculateEarnings.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+				
+<span class="nc" id="L501">				ArrayList&lt;Float&gt; f=LoginRegisterGUI.getBusinessLogic().getQuestionMultiplerFromNumber(selectedQuestion.getQuestionNumber());</span>
+<span class="nc bnc" id="L502" title="All 4 branches missed.">				switch (selectedQuestion.getQuestionType()) {</span>
+				
+				case 1:
+<span class="nc bnc" id="L505" title="All 2 branches missed.">					if (buttonOne.isSelected()) {</span>
+										
+<span class="nc" id="L507">						 earning=f.get(0)*spinField.getValue();</span>
+						
+<span class="nc" id="L509">						earnings.setText(earning.toString());</span>
+						
+<span class="nc bnc" id="L511" title="All 2 branches missed.">					} else if(buttonX.isSelected()) {</span>
+						
+<span class="nc" id="L513">						 earning=f.get(1)*spinField.getValue();</span>
+						
+<span class="nc" id="L515">						earnings.setText(earning.toString());</span>
+						
+<span class="nc bnc" id="L517" title="All 2 branches missed.">					} else if(buttonTwo.isSelected()) {</span>
+						
+<span class="nc" id="L519">						 earning=f.get(2)*spinField.getValue();</span>
+						
+<span class="nc" id="L521">						earnings.setText(earning.toString());</span>
+					}
+<span class="nc" id="L523">					break;</span>
+				case 2:
+<span class="nc bnc" id="L525" title="All 2 branches missed.">					if (buttonOne.isSelected()) {</span>
+<span class="nc" id="L526">						 earning=f.get(0)*spinField.getValue();</span>
+						
+<span class="nc" id="L528">						earnings.setText(earning.toString());</span>
+<span class="nc bnc" id="L529" title="All 2 branches missed.">					} else if(buttonTwo.isSelected()) {</span>
+						
+<span class="nc" id="L531">						 earning=f.get(1)*spinField.getValue();</span>
+						
+<span class="nc" id="L533">						earnings.setText(earning.toString());</span>
+					}
+<span class="nc" id="L535">					break;</span>
+				case 3:
+				case 4:
+<span class="nc" id="L538">					 earning=f.get(0)*spinField.getValue();</span>
+					
+<span class="nc" id="L540">					earnings.setText(earning.toString());</span>
+<span class="nc" id="L541">					break;</span>
+				
+				default:
+<span class="nc" id="L544">					System.out.println(&quot;Question not selected.&quot;);</span>
+					break;
+			}
+			
+<span class="nc" id="L548">			float res = earning + (float)LoginRegisterGUI.getBusinessLogic().getUserWallet(LoginRegisterGUI.getBusinessLogic().getLoggedUsername()) - spinField.getValue();</span>
+<span class="nc" id="L549">			balance.setText(Float.toString(res));</span>
+			
+<span class="nc" id="L551">			}</span>
+		});
+<span class="nc" id="L553">		btnCalculateEarnings.setBounds(540, 365, 111, 30);</span>
+<span class="nc" id="L554">		getContentPane().add(btnCalculateEarnings);</span>
+		
+<span class="nc" id="L556">		JLabel lblWallet = new JLabel(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;CreateForecastGUI.lblWallet.text&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L557">		lblWallet.setBounds(540, 332, 77, 14);</span>
+<span class="nc" id="L558">		getContentPane().add(lblWallet);</span>
+		
+		
+		
+		
+
+<span class="nc" id="L564">	}</span>
+
+	private void jButton2_actionPerformed(ActionEvent e) {
+<span class="nc" id="L567">		this.setVisible(false);</span>
+<span class="nc" id="L568">	}</span>
+	
+	
+	private void calculateEarning(ActionEvent e) {
+		
+<span class="nc" id="L573">		ArrayList&lt;Float&gt; f=LoginRegisterGUI.getBusinessLogic().getQuestionMultiplerFromNumber(selectedQuestion.getQuestionNumber());</span>
+<span class="nc bnc" id="L574" title="All 4 branches missed.">		switch (selectedQuestion.getQuestionType()) {</span>
+		
+		case 1:
+<span class="nc bnc" id="L577" title="All 2 branches missed.">			if (buttonOne.isSelected()) {</span>
+								
+<span class="nc" id="L579">				 earning=f.get(0)*spinField.getValue();</span>
+				
+<span class="nc" id="L581">				earnings.setText(earning.toString());</span>
+				
+<span class="nc bnc" id="L583" title="All 2 branches missed.">			} else if(buttonX.isSelected()) {</span>
+				
+<span class="nc" id="L585">				 earning=f.get(1)*spinField.getValue();</span>
+				
+<span class="nc" id="L587">				earnings.setText(earning.toString());</span>
+				
+<span class="nc bnc" id="L589" title="All 2 branches missed.">			} else if(buttonTwo.isSelected()) {</span>
+				
+<span class="nc" id="L591">				 earning=f.get(2)*spinField.getValue();</span>
+				
+<span class="nc" id="L593">				earnings.setText(earning.toString());</span>
+			}
+<span class="nc" id="L595">			break;</span>
+		case 2:
+<span class="nc bnc" id="L597" title="All 2 branches missed.">			if (buttonOne.isSelected()) {</span>
+<span class="nc" id="L598">				 earning=f.get(0)*spinField.getValue();</span>
+				
+<span class="nc" id="L600">				earnings.setText(earning.toString());</span>
+<span class="nc bnc" id="L601" title="All 2 branches missed.">			} else if(buttonTwo.isSelected()) {</span>
+				
+<span class="nc" id="L603">				 earning=f.get(1)*spinField.getValue();</span>
+				
+<span class="nc" id="L605">				earnings.setText(earning.toString());</span>
+			}
+<span class="nc" id="L607">			break;</span>
+		case 3:
+		case 4:
+<span class="nc" id="L610">			 earning=f.get(0)*spinField.getValue();</span>
+			
+<span class="nc" id="L612">			earnings.setText(earning.toString());</span>
+<span class="nc" id="L613">			break;</span>
+		
+		default:
+<span class="nc" id="L616">			System.out.println(&quot;Question not selected.&quot;);</span>
+			break;
+	}
+		
+		
+		
+		
+<span class="nc" id="L623">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

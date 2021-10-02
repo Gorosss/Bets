@@ -1,4 +1,4 @@
-import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,9 +13,9 @@ import configuration.ConfigXML;
 import dataAccess.DataAccess;
 import domain.Account;
 import domain.Event;
+import static org.junit.jupiter.api.Assertions.*;
 import domain.Forecast;
 import domain.Question;
-import exceptions.QuestionAlreadyExist;
 import utility.TestUtilityDataAccess;
 
 class GetForecastsOfQuestionDATest {
@@ -236,9 +236,12 @@ class GetForecastsOfQuestionDATest {
 		}finally {
 			testDA.open();	
 			boolean a = testDA.deleteForecastAndUser(f, f.getUser());
+			boolean a2 = testDA.deleteForecastAndUser(f2, f.getUser());
+			boolean a3 = testDA.deleteForecastAndUser(f3, f.getUser());
+
 			boolean b = testDA.removeEvent(ev);						
 			testDA.close();
-			System.out.println("Finally " +a+" "+b);
+			System.out.println("Finally " +a+" "+a2+" "+a3+" "+b);
 		}
 		
 	}

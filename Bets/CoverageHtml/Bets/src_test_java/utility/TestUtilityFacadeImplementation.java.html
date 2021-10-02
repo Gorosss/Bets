@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestUtilityFacadeImplementation.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">utility</a> &gt; <span class="el_source">TestUtilityFacadeImplementation.java</span></div><h1>TestUtilityFacadeImplementation.java</h1><pre class="source lang-java linenums">package utility;
+
+
+
+import java.util.Date;
+import java.util.Vector;
+
+import configuration.ConfigXML;
+import domain.Event;
+
+/**
+ * Utilities to access Data Base
+ * @author IS2
+ *
+ */
+public class TestUtilityFacadeImplementation {
+		private TestUtilityDataAccess dbManagerTest;
+ 	
+    
+<span class="fc" id="L20">	   public TestUtilityFacadeImplementation()  {			</span>
+<span class="fc" id="L21">			System.out.println(&quot;Creating TestFacadeImplementation instance&quot;);</span>
+<span class="fc" id="L22">			ConfigXML.getInstance();</span>
+<span class="fc" id="L23">			dbManagerTest=new TestUtilityDataAccess(); </span>
+<span class="fc" id="L24">			dbManagerTest.close();</span>
+<span class="fc" id="L25">		}</span>
+		
+		 
+		public boolean removeEvent(Event ev) {
+<span class="fc" id="L29">			dbManagerTest.open();</span>
+<span class="fc" id="L30">			boolean b=dbManagerTest.removeEvent(ev);</span>
+<span class="fc" id="L31">			dbManagerTest.close();</span>
+<span class="fc" id="L32">			return b;</span>
+
+		}
+		
+		public Event addEventWithQuestion(Integer evNum,String desc, Date d, String question, float qty) {
+<span class="fc" id="L37">			dbManagerTest.open();</span>
+<span class="fc" id="L38">			Event o=dbManagerTest.addEventWithQuestion(evNum,desc,d, question, qty);</span>
+<span class="fc" id="L39">			dbManagerTest.close();</span>
+<span class="fc" id="L40">			return o;</span>
+
+		}
+		
+		public Vector&lt;Event&gt; getEvents(Date date)  {
+<span class="fc" id="L45">			dbManagerTest.open();</span>
+<span class="fc" id="L46">			Vector&lt;Event&gt;  events=dbManagerTest.getEvents(date);</span>
+<span class="fc" id="L47">			dbManagerTest.close();</span>
+<span class="fc" id="L48">			return events;</span>
+		}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

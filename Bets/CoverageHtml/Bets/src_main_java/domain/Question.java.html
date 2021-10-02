@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Question.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Question.java</span></div><h1>Question.java</h1><pre class="source lang-java linenums">package domain;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+
+@SuppressWarnings(&quot;serial&quot;)
+@XmlAccessorType(XmlAccessType.FIELD)
+@Entity
+public class Question implements Serializable {
+	
+<span class="fc" id="L19">	private static int numberOfQuestions = 0;</span>
+	
+	@Id 
+	@XmlJavaTypeAdapter(IntegerAdapter.class)
+	@GeneratedValue
+	private Integer questionNumber;
+	private String question; 
+	private float betMinimum;
+	private String result;
+	@XmlIDREF
+	private Event event;
+	private int questionType;				//1 --&gt; Con opciones 1, x, 2
+											//2 --&gt; Con opciones SI y NO
+											//3 --&gt; Con opcion de marcar numeros
+											//4 --&gt; Con opcion a escribir
+	
+	
+<span class="pc" id="L36">	private ArrayList&lt;Float&gt; multipliers=new ArrayList&lt;Float&gt;();</span>
+
+	public Question(){
+<span class="fc" id="L39">		super();</span>
+<span class="fc" id="L40">	}</span>
+	
+	public Question(String query, float betMinimum, Event event, int questionType,String pMultipliers) {
+<span class="fc" id="L43">		super();</span>
+<span class="fc" id="L44">		this.questionNumber = Question.numberOfQuestions++;</span>
+<span class="fc" id="L45">		this.question = query;</span>
+<span class="fc" id="L46">		this.betMinimum=betMinimum;</span>
+<span class="fc" id="L47">		this.event = event;</span>
+<span class="fc" id="L48">		this.questionType = questionType;</span>
+<span class="fc" id="L49">		addMultipliers(pMultipliers);</span>
+		
+<span class="fc" id="L51">	}</span>
+
+	public Question(Integer qNum,String query, float betMinimum, Event event, int questionType,String pMultipliers) {
+<span class="nc" id="L54">		super();</span>
+<span class="nc" id="L55">		this.questionNumber = qNum;</span>
+<span class="nc" id="L56">		this.question = query;</span>
+<span class="nc" id="L57">		this.betMinimum=betMinimum;</span>
+<span class="nc" id="L58">		this.event = event;</span>
+<span class="nc" id="L59">		this.questionType = questionType;</span>
+<span class="nc" id="L60">		addMultipliers(pMultipliers);</span>
+		
+<span class="nc" id="L62">	}</span>
+
+	/**
+	*	Adds multipliers to the multipliers ArrayList
+	*/
+	public void addMultipliers(String pMultipliers){
+<span class="fc" id="L68">			String[] mults = pMultipliers.split(&quot;,&quot;);		</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">			for(String s : mults) {</span>
+<span class="fc" id="L70">				multipliers.add(Float.parseFloat(s));</span>
+			}	
+
+<span class="fc" id="L73">	}</span>
+
+	/**
+	*	Get the question type 
+	*
+	* @return Type of the question
+	*/
+	public int getQuestionType() {
+<span class="nc" id="L81">		return questionType;</span>
+	}
+
+	/**
+	* Get multipliers array
+	*	
+	* @return Winning multipliers
+	*/
+	public ArrayList&lt;Float&gt; getMultipliers() {
+<span class="nc" id="L90">		return multipliers;</span>
+	}
+
+
+
+	
+	/**
+	 * Get the  number of the question
+	 * 
+	 * @return the question number
+	 */
+	public Integer getQuestionNumber() {
+<span class="fc" id="L102">		return questionNumber;</span>
+	}
+
+	/**
+	 * Set the bet number to a question
+	 * 
+	 * @param questionNumber to be setted
+	 */
+	public void setQuestionNumber(Integer questionNumber) {
+<span class="nc" id="L111">		this.questionNumber = questionNumber;</span>
+<span class="nc" id="L112">	}</span>
+
+
+	/**
+	 * Get the question description of the bet
+	 * 
+	 * @return the bet question
+	 */
+
+	public String getQuestion() {
+<span class="fc" id="L122">		return question;</span>
+	}
+	
+	/**
+	 * Set the question description of the bet
+	 * 
+	 * @param question to be setted
+	 */	
+	public void setQuestion(String question) {
+<span class="nc" id="L131">		this.question = question;</span>
+<span class="nc" id="L132">	}</span>
+
+
+
+	/**
+	 * Get the minimun ammount of the bet
+	 * 
+	 * @return the minimum bet ammount
+	 */
+	
+	public float getBetMinimum() {
+<span class="fc" id="L143">		return betMinimum;</span>
+	}
+
+
+	/**
+	 * Get the minimun ammount of the bet
+	 * 
+	 * @param  betMinimum minimum bet ammount to be setted
+	 */
+
+	public void setBetMinimum(float betMinimum) {
+<span class="nc" id="L154">		this.betMinimum = betMinimum;</span>
+<span class="nc" id="L155">	}</span>
+
+
+
+	/**
+	 * Get the result of the  query
+	 * 
+	 * @return the the query result
+	 */
+	public String getResult() {
+<span class="fc" id="L165">		return result;</span>
+	}
+
+
+
+	/**
+	 * Get the result of the  query
+	 * 
+	 * @param result of the query to be setted
+	 */
+	
+	public void setResult(String result) {
+<span class="fc" id="L177">		this.result = result;</span>
+<span class="fc" id="L178">	}</span>
+
+
+
+	/**
+	 * Get the event associated to the bet
+	 * 
+	 * @return the associated event
+	 */
+	public Event getEvent() {
+<span class="fc" id="L188">		return event;</span>
+	}
+
+
+
+	/**
+	 * Set the event associated to the bet
+	 * 
+	 * @param event to associate to the bet
+	 */
+	public void setEvent(Event event) {
+<span class="fc" id="L199">		this.event = event;</span>
+<span class="fc" id="L200">	}</span>
+
+	
+	@Override
+	public String toString(){
+<span class="fc" id="L205">		return questionNumber+&quot;;&quot;+question+&quot;;&quot;+Float.toString(betMinimum);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

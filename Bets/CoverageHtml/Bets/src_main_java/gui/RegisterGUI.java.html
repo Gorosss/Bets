@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RegisterGUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">RegisterGUI.java</span></div><h1>RegisterGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+
+public class RegisterGUI extends JFrame {
+	
+	private JTextField userField;
+	private JPasswordField passwordField;
+	private JPasswordField passwordField_1;
+	private JTextField correoElectronicField;
+	private JTextField tarjetaBancariaField;
+	private JTextField NombreField;
+	private JTextField apellidoField;
+
+	private void customCloseWindow() {
+<span class="nc" id="L28">		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));</span>
+<span class="nc" id="L29">	}</span>
+	
+<span class="nc" id="L31">	public RegisterGUI() {</span>
+		
+<span class="nc" id="L33">		getContentPane().setLayout(null);</span>
+<span class="nc" id="L34">		this.setSize(new Dimension(489, 408));</span>
+<span class="nc" id="L35">		setTitle(&quot;Register&quot;);</span>
+		
+<span class="nc" id="L37">		userField = new JTextField();</span>
+<span class="nc" id="L38">		userField.setBounds(155, 91, 156, 20);</span>
+<span class="nc" id="L39">		getContentPane().add(userField);</span>
+<span class="nc" id="L40">		userField.setColumns(10);</span>
+		
+<span class="nc" id="L42">		passwordField = new JPasswordField();</span>
+<span class="nc" id="L43">		passwordField.setBounds(155, 135, 156, 20);</span>
+<span class="nc" id="L44">		getContentPane().add(passwordField);</span>
+		
+<span class="nc" id="L46">		passwordField_1 = new JPasswordField();</span>
+<span class="nc" id="L47">		passwordField_1.setBounds(155, 166, 156, 23);</span>
+<span class="nc" id="L48">		getContentPane().add(passwordField_1);</span>
+
+<span class="nc" id="L50">		JLabel lblRegisteredSuccessfully = new JLabel(&quot;Registered Successfully / Error&quot;);</span>
+<span class="nc" id="L51">		lblRegisteredSuccessfully.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L52">		lblRegisteredSuccessfully.setBounds(66, 282, 185, 32);</span>
+<span class="nc" id="L53">		getContentPane().add(lblRegisteredSuccessfully);</span>
+<span class="nc" id="L54">		lblRegisteredSuccessfully.setVisible(false);</span>
+		
+<span class="nc" id="L56">		JButton jButtonClose = new JButton(&quot;Close&quot;);</span>
+<span class="nc" id="L57">        jButtonClose.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L59">                customCloseWindow();</span>
+<span class="nc" id="L60">            }</span>
+        });
+<span class="nc" id="L62">        jButtonClose.setBounds(new Rectangle(274, 419, 130, 30));</span>
+<span class="nc" id="L63">        jButtonClose.setBounds(28, 326, 113, 32);</span>
+<span class="nc" id="L64">        getContentPane().add(jButtonClose);</span>
+        
+<span class="nc" id="L66">        correoElectronicField = new JTextField();</span>
+<span class="nc" id="L67">		correoElectronicField.setBounds(154, 204, 254, 20);</span>
+<span class="nc" id="L68">		getContentPane().add(correoElectronicField);</span>
+<span class="nc" id="L69">		correoElectronicField.setColumns(10);</span>
+		
+<span class="nc" id="L71">		tarjetaBancariaField = new JTextField();</span>
+<span class="nc" id="L72">		tarjetaBancariaField.setBounds(154, 235, 254, 20);</span>
+<span class="nc" id="L73">		getContentPane().add(tarjetaBancariaField);</span>
+<span class="nc" id="L74">		tarjetaBancariaField.setColumns(10);</span>
+		
+<span class="nc" id="L76">		NombreField = new JTextField();</span>
+<span class="nc" id="L77">		NombreField.setBounds(66, 44, 105, 20);</span>
+<span class="nc" id="L78">		getContentPane().add(NombreField);</span>
+<span class="nc" id="L79">		NombreField.setColumns(10);</span>
+		
+<span class="nc" id="L81">		apellidoField = new JTextField();</span>
+<span class="nc" id="L82">		apellidoField.setBounds(253, 44, 177, 20);</span>
+<span class="nc" id="L83">		getContentPane().add(apellidoField);</span>
+<span class="nc" id="L84">		apellidoField.setColumns(10);</span>
+		
+		
+<span class="nc" id="L87">		JButton btnRegistrarse = new JButton(&quot;Register&quot;);</span>
+<span class="nc" id="L88">		btnRegistrarse.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+				//try {
+<span class="nc" id="L91">					String name=NombreField.getText();</span>
+<span class="nc" id="L92">					String apellido=apellidoField.getText();</span>
+<span class="nc" id="L93">					String card=tarjetaBancariaField.getText();</span>
+					
+<span class="nc" id="L95">					String correw=correoElectronicField.getText();</span>
+					
+<span class="nc" id="L97">                    String nombreUsuario=userField.getText();</span>
+<span class="nc" id="L98">                    String password1= new String(passwordField.getPassword());</span>
+<span class="nc" id="L99">                    String password2= new String(passwordField_1.getPassword());</span>
+                    
+                    
+<span class="nc" id="L102">                    boolean error = false;</span>
+                    
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                    if (nombreUsuario.length() &lt; 1) {</span>
+<span class="nc" id="L105">                        System.out.println(&quot;Error. No username was entered. Code 1.&quot;);</span>
+<span class="nc" id="L106">                        error = true;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">                    } else if (password1.length() &lt; 1){</span>
+<span class="nc" id="L108">                        System.out.println(&quot;Error. No password was entered. Code 2.&quot;);</span>
+<span class="nc" id="L109">                        error = true;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">                    } else if(!password1.equals(password2)) {</span>
+<span class="nc" id="L111">                        System.out.println(&quot;Error. Diferent password was entered. Code 3.&quot;);</span>
+<span class="nc" id="L112">                        error = true;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                    }else if (name.length() &lt; 1){</span>
+<span class="nc" id="L114">                        System.out.println(&quot;Error. No name was entered. Code 2.&quot;);</span>
+<span class="nc" id="L115">                        error = true;</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                    }else if (apellido.length() &lt; 1){</span>
+<span class="nc" id="L117">                        System.out.println(&quot;Error. No surename was entered. Code 2.&quot;);</span>
+<span class="nc" id="L118">                        error = true;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                    }else if (card.length()!=16){</span>
+<span class="nc" id="L120">                        System.out.println(&quot;Error. No bank card was entered. Code 2.&quot;);</span>
+<span class="nc" id="L121">                        error = true;</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                    }else if (correw.length() &lt; 1){</span>
+<span class="nc" id="L123">                        System.out.println(&quot;Error. No correo was entered. Code 2.&quot;);</span>
+<span class="nc" id="L124">                        error = true;</span>
+                    }
+                    
+<span class="nc bnc" id="L127" title="All 2 branches missed.">                    if (!error) {</span>
+<span class="nc" id="L128">                    	error = LoginRegisterGUI.getBusinessLogic().addUser(nombreUsuario, password1,correw,card,name,apellido);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">                    	if (error) </span>
+<span class="nc" id="L130">                    		lblRegisteredSuccessfully.setText(&quot;Successful registration.&quot;);</span>
+                    	else
+<span class="nc" id="L132">                    		lblRegisteredSuccessfully.setText(&quot;Error. Try again.&quot;);		</span>
+<span class="nc" id="L133">                    } else {</span>
+<span class="nc" id="L134">                		lblRegisteredSuccessfully.setText(&quot;Error. Try again.&quot;);		</span>
+                    }
+                    
+<span class="nc" id="L137">                    lblRegisteredSuccessfully.setVisible(true);</span>
+<span class="nc" id="L138">                    System.out.println(&quot;\n\n&quot;);</span>
+				//} catch (Exception e2) {
+                //    System.out.println(&quot;Error. Illegal Format.&quot;);
+                //}
+<span class="nc" id="L142">			}</span>
+		});
+<span class="nc" id="L144">		btnRegistrarse.setBounds(329, 282, 100, 32);</span>
+<span class="nc" id="L145">		getContentPane().add(btnRegistrarse);</span>
+		
+<span class="nc" id="L147">		JLabel lblNewLabel = new JLabel(&quot;Repeat Password&quot;);</span>
+<span class="nc" id="L148">		lblNewLabel.setBounds(28, 162, 143, 31);</span>
+<span class="nc" id="L149">		getContentPane().add(lblNewLabel);</span>
+		
+		
+		
+<span class="nc" id="L153">		JLabel lblNewLabel_1 = new JLabel(&quot;Password&quot;);</span>
+<span class="nc" id="L154">		lblNewLabel_1.setBounds(28, 128, 86, 23);</span>
+<span class="nc" id="L155">		getContentPane().add(lblNewLabel_1);</span>
+		
+<span class="nc" id="L157">		JLabel lblNobreDeUsuario = new JLabel(&quot;Username&quot;);</span>
+<span class="nc" id="L158">		lblNobreDeUsuario.setBounds(28, 86, 113, 31);</span>
+<span class="nc" id="L159">		getContentPane().add(lblNobreDeUsuario);</span>
+		
+<span class="nc" id="L161">		JLabel lblCorreoElectronico = new JLabel(&quot;Email&quot;);</span>
+<span class="nc" id="L162">		lblCorreoElectronico.setBounds(28, 207, 100, 14);</span>
+<span class="nc" id="L163">		getContentPane().add(lblCorreoElectronico);</span>
+		
+<span class="nc" id="L165">		JLabel lblNumeroDeLa = new JLabel(&quot;Bank Card Number&quot;);</span>
+<span class="nc" id="L166">		lblNumeroDeLa.setBounds(28, 238, 161, 14);</span>
+<span class="nc" id="L167">		getContentPane().add(lblNumeroDeLa);</span>
+		
+<span class="nc" id="L169">		JLabel lblNombre = new JLabel(&quot;Name&quot;);</span>
+<span class="nc" id="L170">		lblNombre.setBounds(10, 47, 46, 14);</span>
+<span class="nc" id="L171">		getContentPane().add(lblNombre);</span>
+		
+<span class="nc" id="L173">		JLabel lblApellido = new JLabel(&quot;Surname&quot;);</span>
+<span class="nc" id="L174">		lblApellido.setBounds(197, 35, 46, 38);</span>
+<span class="nc" id="L175">		getContentPane().add(lblApellido);</span>
+		
+		
+		
+		
+<span class="nc" id="L180">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

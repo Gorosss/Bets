@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>UserMainGUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">UserMainGUI.java</span></div><h1>UserMainGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import javax.swing.*;
+
+//import businessLogic.BLFacade;
+
+import java.awt.Font;
+//import java.awt.GridLayout;
+import java.awt.event.WindowEvent;
+
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class UserMainGUI extends JFrame {
+	
+	private void customCloseWindow() {
+<span class="nc" id="L18">		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));</span>
+<span class="nc" id="L19">	}</span>
+	
+<span class="nc" id="L21">	public UserMainGUI() {</span>
+<span class="nc" id="L22">		getContentPane().setLayout(null);</span>
+<span class="nc" id="L23">		setSize(450, 280);</span>
+<span class="nc" id="L24">		setTitle(&quot;User Main Menu&quot;);</span>
+<span class="nc" id="L25">		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+
+<span class="nc" id="L27">		JLabel lblMainMenu = new JLabel(&quot;Main Menu&quot;);</span>
+<span class="nc" id="L28">		lblMainMenu.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L29">		lblMainMenu.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 16));</span>
+<span class="nc" id="L30">		lblMainMenu.setBounds(115, 25, 185, 29);</span>
+<span class="nc" id="L31">		getContentPane().add(lblMainMenu);</span>
+		
+<span class="nc" id="L33">		JButton btnCreateForecasts = new JButton(&quot;Create Forecasts&quot;);</span>
+<span class="nc" id="L34">		btnCreateForecasts.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L36">				JFrame a = new CreateForecastGUI();</span>
+<span class="nc" id="L37">				a.setVisible(true);</span>
+<span class="nc" id="L38">			}</span>
+		});
+<span class="nc" id="L40">		btnCreateForecasts.setBounds(22, 139, 123, 36);</span>
+<span class="nc" id="L41">		getContentPane().add(btnCreateForecasts);</span>
+		
+<span class="nc" id="L43">		JButton btnQueryQuestions = new JButton(&quot;Query Questions&quot;);</span>
+<span class="nc" id="L44">		btnQueryQuestions.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L46">				JFrame a = new FindQuestionsGUI();</span>
+<span class="nc" id="L47">				a.setVisible(true);</span>
+<span class="nc" id="L48">			}</span>
+		});
+<span class="nc" id="L50">		btnQueryQuestions.setBounds(171, 86, 113, 42);</span>
+<span class="nc" id="L51">		getContentPane().add(btnQueryQuestions);</span>
+		
+<span class="nc" id="L53">		JButton btnQueryEvents = new JButton(&quot;Query Events&quot;);</span>
+<span class="nc" id="L54">		btnQueryEvents.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L56">				JFrame a = new FindEventsGUI();</span>
+<span class="nc" id="L57">				a.setVisible(true);</span>
+<span class="nc" id="L58">			}</span>
+		});
+<span class="nc" id="L60">		btnQueryEvents.setBounds(171, 139, 113, 36);</span>
+<span class="nc" id="L61">		getContentPane().add(btnQueryEvents);</span>
+		
+<span class="nc" id="L63">		JLabel lblWelcomeBackUsername = new JLabel(&quot;Welcome back, &quot; + LoginRegisterGUI.getBusinessLogic().getLoggedUsername());</span>
+<span class="nc" id="L64">		lblWelcomeBackUsername.setFont(new Font(&quot;Tahoma&quot;, Font.ITALIC, 14));</span>
+<span class="nc" id="L65">		lblWelcomeBackUsername.setBounds(22, 202, 303, 21);</span>
+<span class="nc" id="L66">		getContentPane().add(lblWelcomeBackUsername);</span>
+		
+<span class="nc" id="L68">		JButton btnClose = new JButton(&quot;Close&quot;);</span>
+<span class="nc" id="L69">		btnClose.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L71">				LoginRegisterGUI.getBusinessLogic().logout();</span>
+<span class="nc" id="L72">				LoginRegisterGUI.endAndCloseProgram();</span>
+<span class="nc" id="L73">				setVisible(false);</span>
+<span class="nc" id="L74">				customCloseWindow();</span>
+<span class="nc" id="L75">			}</span>
+		});
+<span class="nc" id="L77">		btnClose.setBounds(335, 211, 89, 23);</span>
+<span class="nc" id="L78">		getContentPane().add(btnClose);</span>
+		
+<span class="nc" id="L80">		JButton btnLogOut = new JButton(&quot;Log out&quot;);</span>
+<span class="nc" id="L81">		btnLogOut.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L83">				LoginRegisterGUI.getBusinessLogic().logout();</span>
+<span class="nc" id="L84">				LoginRegisterGUI.setLoginVisibility(true);</span>
+<span class="nc" id="L85">				setVisible(false);</span>
+<span class="nc" id="L86">			}</span>
+		});
+<span class="nc" id="L88">		btnLogOut.setBounds(335, 187, 89, 23);</span>
+<span class="nc" id="L89">		getContentPane().add(btnLogOut);</span>
+		
+<span class="nc" id="L91">		JButton btnAccount = new JButton(&quot;Account&quot;);</span>
+<span class="nc" id="L92">		btnAccount.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L94">				JFrame a = new AccountGUI();</span>
+<span class="nc" id="L95">				a.setVisible(true);</span>
+<span class="nc" id="L96">			}</span>
+		});
+<span class="nc" id="L98">		btnAccount.setBounds(335, 11, 89, 23);</span>
+<span class="nc" id="L99">		getContentPane().add(btnAccount);</span>
+		
+<span class="nc" id="L101">		JButton btnNewButton = new JButton(&quot;Your Forecasts&quot;);</span>
+<span class="nc" id="L102">		btnNewButton.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L104">				JFrame a = new ForecastsListGUI();</span>
+<span class="nc" id="L105">				a.setVisible(true);</span>
+<span class="nc" id="L106">			}</span>
+		});
+<span class="nc" id="L108">		btnNewButton.setBounds(22, 85, 123, 43);</span>
+<span class="nc" id="L109">		getContentPane().add(btnNewButton);</span>
+<span class="nc" id="L110">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

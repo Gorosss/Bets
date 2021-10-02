@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BLFacadeImplementation.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">businessLogic</a> &gt; <span class="el_source">BLFacadeImplementation.java</span></div><h1>BLFacadeImplementation.java</h1><pre class="source lang-java linenums">package businessLogic;
+import java.util.ArrayList;
+//hola
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Vector;
+
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
+import configuration.ConfigXML;
+import dataAccess.DataAccess;
+import domain.*;
+import exceptions.EventFinished;
+import exceptions.QuestionAlreadyExist;
+
+/**
+ * It implements the business logic as a web service.
+ */
+@WebService(endpointInterface = &quot;businessLogic.BLFacade&quot;)
+public class BLFacadeImplementation  implements BLFacade {
+	DataAccess dbManager;
+<span class="fc" id="L24">	private static String loggedUser = null;				// Si es null, no se esta loggeado. Si es no nulo, este campo</span>
+															// contiene el username del usuario loggeado. 
+	
+<span class="pc" id="L27">	private String initialize=&quot;initialize&quot;;</span>
+
+<span class="nc" id="L29">	public BLFacadeImplementation()  {		</span>
+<span class="nc" id="L30">		System.err.println(&quot;Creating BLFacadeImplementation instance&quot;);</span>
+<span class="nc" id="L31">		ConfigXML c=ConfigXML.getInstance();</span>
+		
+<span class="nc bnc" id="L33" title="All 2 branches missed.">		if (c.getDataBaseOpenMode().equals(initialize)) {</span>
+<span class="nc" id="L34">		    dbManager=new DataAccess(c.getDataBaseOpenMode().equals(initialize));</span>
+<span class="nc" id="L35">			dbManager.initializeDB();</span>
+<span class="nc" id="L36">			dbManager.close();</span>
+			}
+		
+<span class="nc" id="L39">	}</span>
+	
+<span class="fc" id="L41">    public BLFacadeImplementation(DataAccess da)  {</span>
+		
+<span class="fc" id="L43">		System.out.println(&quot;Creating BLFacadeImplementation instance with DataAccess parameter&quot;);</span>
+<span class="fc" id="L44">		ConfigXML c=ConfigXML.getInstance();</span>
+		
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">		if (c.getDataBaseOpenMode().equals(initialize)) {</span>
+<span class="fc" id="L47">			da.open(true);</span>
+<span class="fc" id="L48">			da.initializeDB();</span>
+<span class="fc" id="L49">			da.close();</span>
+
+		}
+<span class="fc" id="L52">		dbManager=da;		</span>
+<span class="fc" id="L53">	}</span>
+	
+
+	/**
+	 * This method creates a question for an event, with a question text and the minimum bet
+	 * 
+	 * @param event to which question is added
+	 * @param question text of the question
+	 * @param betMinimum minimum quantity of the bet
+	 * @return the created question, or null, or an exception
+	 * @throws EventFinished if current data is after data of the event
+ 	 * @throws QuestionAlreadyExist if the same question already exists for the event
+	 */
+   @WebMethod
+   public Question createQuestion(Event event, String question, float betMinimum, int questionType,String pMultipliers) throws EventFinished, QuestionAlreadyExist{
+	   
+	    //The minimum bed must be greater than 0
+<span class="fc" id="L70">		dbManager.open(false);</span>
+<span class="fc" id="L71">		Question qry=null;</span>
+		
+	    
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">		if(new Date().compareTo(event.getEventDate())&gt;0)</span>
+<span class="nc" id="L75">			throw new EventFinished(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ErrorEventHasFinished&quot;));</span>
+				
+		
+<span class="fc" id="L78">		qry=dbManager.createQuestion(event,question,betMinimum, questionType, pMultipliers);		</span>
+
+<span class="fc" id="L80">		dbManager.close();</span>
+		
+<span class="fc" id="L82">		return qry;</span>
+   };
+	
+	/**
+	 * This method invokes the data access to retrieve the events of a given date 
+	 * 
+	 * @param date in which events are retrieved
+	 * @return collection of events
+	 */
+    @WebMethod	
+	public Vector&lt;Event&gt; getEvents(Date date)  {
+<span class="nc" id="L93">		dbManager.open(false);</span>
+<span class="nc" id="L94">		Vector&lt;Event&gt;  events=dbManager.getEvents(date);</span>
+<span class="nc" id="L95">		dbManager.close();</span>
+<span class="nc" id="L96">		return events;</span>
+	}
+
+    
+	/**
+	 * This method invokes the data access to retrieve the dates a month for which there are events
+	 * 
+	 * @param date of the month for which days with events want to be retrieved 
+	 * @return collection of dates
+	 */
+	@WebMethod public Vector&lt;Date&gt; getEventsMonth(Date date) {
+<span class="nc" id="L107">		dbManager.open(false);</span>
+<span class="nc" id="L108">		Vector&lt;Date&gt;  dates=dbManager.getEventsMonth(date);</span>
+<span class="nc" id="L109">		dbManager.close();</span>
+<span class="nc" id="L110">		return dates;</span>
+	}
+	
+	
+	public void close() {
+<span class="nc" id="L115">		DataAccess dB4oManager=new DataAccess(false);</span>
+
+<span class="nc" id="L117">		dB4oManager.close();</span>
+
+<span class="nc" id="L119">	}</span>
+
+	/**
+	 * This method invokes the data access to initialize the database with some events and questions.
+	 * It is invoked only when the option &quot;initialize&quot; is declared in the tag dataBaseOpenMode of resources/config.xml file
+	 */	
+    @WebMethod	
+	 public void initializeBD(){
+<span class="nc" id="L127">    	dbManager.open(false);</span>
+<span class="nc" id="L128">		dbManager.initializeDB();</span>
+<span class="nc" id="L129">		dbManager.close();</span>
+<span class="nc" id="L130">	}</span>
+
+    
+    /**
+     * Add user to de DB
+     */
+    @WebMethod
+    public boolean addUser(String pUsername, String pUserPassword, String pUserEmail, String pBankCardNumber, String pUserRealName, String pUserSurname) {
+<span class="nc" id="L138">    	dbManager.open(false);</span>
+<span class="nc" id="L139">    	Account a=new Account(pUsername, pUserPassword, false,pUserEmail,pBankCardNumber,pUserRealName,pUserSurname);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if(dbManager.isUsernameAvailable(a)) {</span>
+<span class="nc" id="L141">            dbManager.storeAccount(new Account(pUsername, pUserPassword, false,pUserEmail,pBankCardNumber,pUserRealName,pUserSurname));</span>
+<span class="nc" id="L142">            dbManager.close();</span>
+<span class="nc" id="L143">            System.out.println(&quot;New Account created: &quot; + pUsername);</span>
+<span class="nc" id="L144">            return true;</span>
+        }
+        
+<span class="nc" id="L147">        System.out.println(&quot;Account could not be created.&quot;);</span>
+<span class="nc" id="L148">        return false;</span>
+    }
+
+    
+    /**
+     * @return True if the user logged successfully else not
+     */
+    @WebMethod
+	public boolean tryToLogin(String pUsername, String pPassword) {
+<span class="nc bnc" id="L157" title="All 2 branches missed.">    	if (loggedUser == null) {</span>
+<span class="nc" id="L158">	    	dbManager.open(false);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">	    	if(dbManager.tryToLogin(pUsername, pPassword)) {</span>
+<span class="nc" id="L160">	    		loggedUser = pUsername;</span>
+<span class="nc" id="L161">	    		dbManager.close();</span>
+<span class="nc" id="L162">	    		System.out.println(&quot;User &quot; + pUsername + &quot; has logged in successfully.&quot;);</span>
+<span class="nc" id="L163">	    		return true;</span>
+	    	} 
+<span class="nc" id="L165">	    	System.out.println(&quot;Unsuccessful loggin by &quot; + pUsername + &quot; user.&quot;);</span>
+<span class="nc" id="L166">			dbManager.close();</span>
+<span class="nc" id="L167">	    	return false;</span>
+    	}
+<span class="nc" id="L169">    	System.out.println(&quot;Someone is already logged in. To log in with another account reboot the application.&quot;);</span>
+<span class="nc" id="L170">    	return false;</span>
+	}
+    
+    
+    /**
+     * @return true if the logged user is admin
+     */
+    public boolean isAdmin() {
+<span class="nc" id="L178">    	dbManager.open(false);</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">    	if (loggedUser != null &amp;&amp; dbManager.isAdministrator(loggedUser)) {</span>
+<span class="nc" id="L180">    		dbManager.close();</span>
+<span class="nc" id="L181">    		return true;</span>
+    	}
+<span class="nc" id="L183">    	dbManager.close();</span>
+<span class="nc" id="L184">    	return false;</span>
+    }
+    
+    
+    /**
+     * Add event to the DB
+     */
+    @WebMethod
+    public void addEvent(Integer eventNumber, String description,Date eventDate) {
+<span class="nc" id="L193">    	dbManager.open(false);</span>
+<span class="nc" id="L194">        Event event=new Event(eventNumber,description,eventDate);        </span>
+<span class="nc" id="L195">        dbManager.storeEvent(event);</span>
+<span class="nc" id="L196">        dbManager.close();</span>
+<span class="nc" id="L197">    }</span>
+    
+    /**
+     * @return the last event nuber that was added
+     */
+    @WebMethod
+    public Integer lastEventNum() {
+<span class="nc" id="L204">    	dbManager.open(false);</span>
+<span class="nc" id="L205">        ArrayList&lt;Event&gt; events=(ArrayList&lt;Event&gt;) dbManager.LastEventNumber();</span>
+<span class="nc" id="L206">        Event lastEvent=events.get(events.size()-1);</span>
+<span class="nc" id="L207">        dbManager.close();</span>
+<span class="nc" id="L208">        return lastEvent.getEventNumber();</span>
+    }
+    
+    
+    /**
+     * @return Question of the number gived
+     */
+    @WebMethod
+    public Question getQuestionFromNumber(Integer numero) {
+<span class="nc" id="L217">    	dbManager.open(false);</span>
+<span class="nc" id="L218">    	Question pregunta = dbManager.getQuestionFromNumber(numero);</span>
+<span class="nc" id="L219">    	dbManager.close();</span>
+<span class="nc" id="L220">    	return pregunta;</span>
+    }
+    
+    /**
+     * Return the multiplers of a question from a number of the question
+     */
+    @WebMethod
+    public ArrayList&lt;Float&gt; getQuestionMultiplerFromNumber(Integer numero) {
+<span class="nc" id="L228">    	dbManager.open(false);</span>
+<span class="nc" id="L229">    	ArrayList&lt;Float&gt; multiplers = dbManager.getQuestionMultiplersFromNumber(numero);</span>
+<span class="nc" id="L230">    	dbManager.close();</span>
+<span class="nc" id="L231">    	return multiplers;</span>
+    }
+    
+    
+    /**
+     * Set the result of the Question
+     */
+    @WebMethod
+    public void setQuestionResult(Integer numero, String result) {
+<span class="nc" id="L240">    	dbManager.open(false);</span>
+<span class="nc" id="L241">    	dbManager.setQuestionResult(numero, result);</span>
+<span class="nc" id="L242">    	dbManager.close();</span>
+
+<span class="nc" id="L244">    }</span>
+    
+    
+    /**
+     * Add a Forecast to the user forecast list, user forecasts
+     */
+    @WebMethod
+    public void addUsersForecast(Forecast pForecast) {
+<span class="nc" id="L252">    	dbManager.open(false);</span>
+    
+<span class="nc" id="L254">    	Account cuenta = dbManager.getUser(loggedUser);</span>
+<span class="nc" id="L255">    	cuenta.addForecast(pForecast);</span>
+<span class="nc" id="L256">    }</span>
+    
+    /**
+     * Method to logout
+     */
+    @WebMethod
+    public void logout() {
+<span class="nc" id="L263">    	loggedUser = null;</span>
+<span class="nc" id="L264">    	customClose();</span>
+<span class="nc" id="L265">    }</span>
+    
+    
+    /**
+     * Method to close a event
+     */
+    @WebMethod
+    public void closeEvent(Event e) {
+<span class="nc" id="L273">    	dbManager.open(false);</span>
+<span class="nc" id="L274">    	dbManager.closeEvent(e);</span>
+<span class="nc" id="L275">    	dbManager.close();</span>
+
+<span class="nc" id="L277">    }</span>
+    
+    
+    private void customClose() {
+<span class="nc" id="L281">		dbManager.close();</span>
+<span class="nc" id="L282">		System.out.println(&quot;Database closed custom.&quot;);</span>
+<span class="nc" id="L283">	}</span>
+    
+    /**
+     * Return the logged user username
+     */
+    @WebMethod
+    public String getLoggedUsername() {
+<span class="nc" id="L290">    	return loggedUser;</span>
+    }
+    
+    /**
+     * Add forecast to the DB
+     */
+    @WebMethod
+    public void addForecast(Question pQuestion, double pBet, String pGuess, double win) {
+<span class="nc" id="L298">    	dbManager.open(false);</span>
+<span class="nc" id="L299">    	Forecast f=new Forecast(pQuestion, pBet, pGuess,win);</span>
+<span class="nc" id="L300">    	Question q=dbManager.getQuestionFromNumber(pQuestion.getQuestionNumber());</span>
+<span class="nc" id="L301">    	f.setQuestion(q);</span>
+<span class="nc" id="L302">    	f.linkMultiplierToGuess();</span>
+<span class="nc" id="L303">    	addUsersForecast(f);</span>
+<span class="nc" id="L304">    	dbManager.storeForecast(f);</span>
+<span class="nc" id="L305">    	dbManager.close();</span>
+<span class="nc" id="L306">    }</span>
+    
+    
+    /**
+     * Return forecasts of the user logged
+     */
+    @WebMethod
+    public ArrayList&lt;Forecast&gt; getForecasts(Question pQuestion) {
+<span class="nc" id="L314">    	ArrayList&lt;Forecast&gt; objs = null;</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">    	if (pQuestion != null) {</span>
+<span class="nc" id="L316">    		dbManager.open(false);</span>
+<span class="nc" id="L317">    		objs = dbManager.retrieveForecast(pQuestion, loggedUser);</span>
+<span class="nc" id="L318">    		dbManager.close();</span>
+    	}
+<span class="nc" id="L320">    	return objs;</span>
+    }
+    
+    
+    /**
+     * Return true if the Question haver a result
+     */
+    @WebMethod
+    public boolean questionHaveResult(Vector&lt;Question&gt; queries) {
+<span class="nc bnc" id="L329" title="All 2 branches missed.">    	for(Question q:queries) {</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">    		if(q.getResult()==null) {</span>
+<span class="nc" id="L331">    			return false;</span>
+    		}
+    	}
+    	
+<span class="nc" id="L335">    	return true;</span>
+    }
+    
+    
+    /**
+     * Method to paid the user when they win a guess, checking all questions and forecast
+     * 
+     * @param queries of question that you want to check
+     * @throws NullPointerException if the queries or question is null 
+     * @throws RuntimeExceptionhas if the question has no event
+     */
+    @WebMethod
+    public void paidUsers(Vector&lt;Question&gt; queries) throws NullPointerException,RuntimeException {
+
+<span class="fc" id="L349">    	dbManager.open(false);</span>
+
+<span class="fc bfc" id="L351" title="All 2 branches covered.">    	if(queries==null) {</span>
+<span class="fc" id="L352">    		throw new NullPointerException(&quot;queries is null&quot;);</span>
+    	}
+
+<span class="fc bfc" id="L355" title="All 2 branches covered.">    	for(Question q:queries) {</span>
+<span class="fc bfc" id="L356" title="All 4 branches covered.">    		if(q==null || q.getEvent()==null) {</span>
+<span class="fc" id="L357">    			throw new NullPointerException(&quot;There is a question that is null or has no event&quot;);</span>
+    		}
+    	}
+
+<span class="fc bfc" id="L361" title="All 2 branches covered.">    	for(Question q:queries) {</span>
+<span class="fc" id="L362">    		ArrayList&lt;Forecast&gt; forecasts=(ArrayList&lt;Forecast&gt;) dbManager.getForecastsOfQuestion(q);</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">    		for(Forecast f:forecasts) {</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">    			if(q.getResult().equals(f.getMyGuess())) {</span>
+<span class="fc" id="L365">    				dbManager.paid(f.getUser(),f.getWin());</span>
+    			}
+    		}
+
+    	}
+<span class="fc" id="L370">    	dbManager.close();</span>
+<span class="fc" id="L371">    }</span>
+
+    /**
+     * Method to paid user when the cancel a forecast
+     */
+    @WebMethod
+    public void paidUsers(String user,double money) {
+    	
+<span class="nc" id="L379">    	dbManager.open(false);</span>
+<span class="nc" id="L380">    	dbManager.paid(user,money);</span>
+<span class="nc" id="L381">    	dbManager.close();</span>
+
+<span class="nc" id="L383">    }</span>
+    
+    
+    /**
+     * Method that return the user wallet
+     * 
+     */
+    @WebMethod
+    public double getUserWallet(String username) {
+<span class="nc" id="L392">    	dbManager.open(false);</span>
+<span class="nc" id="L393">    	Account cuenta = dbManager.getUser(username);</span>
+<span class="nc" id="L394">    	dbManager.close();</span>
+<span class="nc" id="L395">    	return cuenta.getWallet();</span>
+    }
+    
+    /**
+	 * Method to get user forecasts
+     */
+    @WebMethod
+    public List&lt;Forecast&gt; getUserForecasts(String username) {
+<span class="nc" id="L403">    	dbManager.open(false);</span>
+<span class="nc" id="L404">    	List&lt;Forecast&gt; forecasts = dbManager.getuserForecasts(username);</span>
+<span class="nc" id="L405">    	dbManager.close();</span>
+<span class="nc" id="L406">    	return forecasts;</span>
+    }
+    /**
+	 * Method to get user forecasts
+     */
+    @WebMethod
+    public void restUserMoney(String username, Double money) {
+<span class="nc" id="L413">    	dbManager.open(false);</span>
+<span class="nc" id="L414">    	dbManager.restMoneyToUser(username,money);</span>
+<span class="nc" id="L415">    	dbManager.close();</span>
+<span class="nc" id="L416">    }</span>
+    
+    /**
+	 * Method to delet a forecast
+     */
+    @WebMethod
+    public void deleteForecast(Forecast forecast) {
+<span class="nc" id="L423">    	dbManager.open(false);</span>
+<span class="nc" id="L424">    	dbManager.deleteForecast(forecast,loggedUser);</span>
+<span class="nc" id="L425">    	dbManager.close();</span>
+<span class="nc" id="L426">    }</span>
+    
+    
+    /**
+	 * Method to get the actual user information
+     */
+	@WebMethod
+    public String getAccountInfo(String info) {
+<span class="nc" id="L434">    	dbManager.open(false);</span>
+<span class="nc" id="L435">    	Account cuenta = dbManager.getUser(loggedUser);</span>
+<span class="nc" id="L436">    	String s = null;</span>
+<span class="nc bnc" id="L437" title="All 8 branches missed.">    	switch (info.toLowerCase()) {</span>
+		case &quot;username&quot;:
+<span class="nc" id="L439">			s = loggedUser;</span>
+<span class="nc" id="L440">			break;</span>
+		case &quot;password&quot;:
+<span class="nc" id="L442">			s = cuenta.getPassword();</span>
+<span class="nc" id="L443">			break;</span>
+		case &quot;name&quot;:
+<span class="nc" id="L445">			s = cuenta.getRealName();</span>
+<span class="nc" id="L446">			break;</span>
+		case &quot;surname&quot;:
+<span class="nc" id="L448">			s = cuenta.getSurname();</span>
+<span class="nc" id="L449">			break;</span>
+		case &quot;card&quot;:
+<span class="nc" id="L451">			s = cuenta.getUserBankCard();</span>
+<span class="nc" id="L452">			break;</span>
+		case &quot;email&quot;:
+<span class="nc" id="L454">			s = cuenta.getUserEmail();</span>
+<span class="nc" id="L455">			break;</span>
+		case &quot;wallet&quot;:
+<span class="nc" id="L457">			s = Double.toString(cuenta.getWallet());</span>
+<span class="nc" id="L458">			break;</span>
+		default:
+<span class="nc" id="L460">			System.out.println(&quot;Error. La informacion deseada no esta contemplada. Codigo 12&quot;);</span>
+			break;
+		} 
+<span class="nc" id="L463">    	dbManager.close();</span>
+<span class="nc" id="L464">    	return s;</span>
+    }
+    
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

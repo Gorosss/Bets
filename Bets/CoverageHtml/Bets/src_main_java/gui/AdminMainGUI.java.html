@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>AdminMainGUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">AdminMainGUI.java</span></div><h1>AdminMainGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import javax.swing.*;
+
+import domain.Event;
+//import businessLogic.BLFacade;
+
+import java.awt.Color;
+import java.awt.Font;
+//import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Vector;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class AdminMainGUI extends JFrame {
+	
+	private void customCloseWindow() {
+<span class="nc" id="L23">		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));</span>
+<span class="nc" id="L24">	}</span>
+	
+<span class="nc" id="L26">	public AdminMainGUI() {</span>
+<span class="nc" id="L27">		getContentPane().setLayout(null);</span>
+<span class="nc" id="L28">		setSize(500, 300);</span>
+<span class="nc" id="L29">		setTitle(&quot;Admin Main Menu&quot;);</span>
+<span class="nc" id="L30">		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+		
+<span class="nc" id="L32">		JLabel lblAdministratorMainMenu = new JLabel(&quot;ADMINISTRATOR Main Menu&quot;);</span>
+<span class="nc" id="L33">		lblAdministratorMainMenu.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 16));</span>
+<span class="nc" id="L34">		lblAdministratorMainMenu.setBounds(111, 26, 250, 32);</span>
+<span class="nc" id="L35">		getContentPane().add(lblAdministratorMainMenu);</span>
+		
+<span class="nc" id="L37">		JButton btnQueryEvent = new JButton(&quot;Query Event&quot;);</span>
+<span class="nc" id="L38">		btnQueryEvent.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L40">				JFrame a = new FindEventsGUI();</span>
+<span class="nc" id="L41">				a.setVisible(true);</span>
+<span class="nc" id="L42">			}</span>
+		});
+<span class="nc" id="L44">		btnQueryEvent.setBounds(26, 90, 115, 32);</span>
+<span class="nc" id="L45">		getContentPane().add(btnQueryEvent);</span>
+		
+<span class="nc" id="L47">		JButton btnCreateEvent = new JButton(&quot;Create Event&quot;);</span>
+<span class="nc" id="L48">		btnCreateEvent.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L50">				JFrame a = new CreateEventsGUI();</span>
+<span class="nc" id="L51">				a.setVisible(true);</span>
+<span class="nc" id="L52">			}</span>
+		});
+<span class="nc" id="L54">		btnCreateEvent.setBounds(26, 133, 115, 32);</span>
+<span class="nc" id="L55">		getContentPane().add(btnCreateEvent);</span>
+		
+<span class="nc" id="L57">		JButton btnQueryQuestions = new JButton(&quot;Query Questions&quot;);</span>
+<span class="nc" id="L58">		btnQueryQuestions.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L60">				JFrame a = new FindQuestionsGUI();</span>
+<span class="nc" id="L61">				a.setVisible(true);</span>
+<span class="nc" id="L62">			}</span>
+		});
+<span class="nc" id="L64">		btnQueryQuestions.setBounds(171, 90, 115, 32);</span>
+<span class="nc" id="L65">		getContentPane().add(btnQueryQuestions);</span>
+		
+<span class="nc" id="L67">		JButton btnCreateQuestion = new JButton(&quot;Create Question&quot;);</span>
+<span class="nc" id="L68">		btnCreateQuestion.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L70">				JFrame a = new CreateQuestionGUI(new Vector&lt;Event&gt;());</span>
+<span class="nc" id="L71">				a.setVisible(true);</span>
+<span class="nc" id="L72">			}</span>
+		});
+<span class="nc" id="L74">		btnCreateQuestion.setBounds(171, 133, 115, 32);</span>
+<span class="nc" id="L75">		getContentPane().add(btnCreateQuestion);</span>
+		
+<span class="nc" id="L77">		JLabel lblWelcomeBackUsername = new JLabel(&quot;Welcome back, &quot; + LoginRegisterGUI.getBusinessLogic().getLoggedUsername());</span>
+<span class="nc" id="L78">		lblWelcomeBackUsername.setFont(new Font(&quot;Tahoma&quot;, Font.ITALIC, 14));</span>
+<span class="nc" id="L79">		lblWelcomeBackUsername.setHorizontalAlignment(SwingConstants.LEFT);</span>
+<span class="nc" id="L80">		lblWelcomeBackUsername.setBounds(26, 189, 242, 32);</span>
+<span class="nc" id="L81">		getContentPane().add(lblWelcomeBackUsername);</span>
+		
+<span class="nc" id="L83">		JButton btnClose = new JButton(&quot;Close&quot;);</span>
+<span class="nc" id="L84">		btnClose.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L86">				LoginRegisterGUI.getBusinessLogic().logout();</span>
+<span class="nc" id="L87">				LoginRegisterGUI.endAndCloseProgram();</span>
+<span class="nc" id="L88">				setVisible(false);</span>
+<span class="nc" id="L89">				customCloseWindow();</span>
+<span class="nc" id="L90">			}</span>
+		});
+<span class="nc" id="L92">		btnClose.setBounds(371, 196, 89, 23);</span>
+<span class="nc" id="L93">		getContentPane().add(btnClose);</span>
+		
+<span class="nc" id="L95">		JButton btnLogOut = new JButton(&quot;Log out&quot;);</span>
+<span class="nc" id="L96">		btnLogOut.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L98">				LoginRegisterGUI.getBusinessLogic().logout();</span>
+<span class="nc" id="L99">				LoginRegisterGUI.setLoginVisibility(true);</span>
+<span class="nc" id="L100">				setVisible(false);</span>
+<span class="nc" id="L101">			}</span>
+		});
+<span class="nc" id="L103">		btnLogOut.setBounds(272, 196, 89, 23);</span>
+<span class="nc" id="L104">		getContentPane().add(btnLogOut);</span>
+		
+<span class="nc" id="L106">		JButton ForecastResult = new JButton(&quot;ForecastResult&quot;);</span>
+<span class="nc" id="L107">		ForecastResult.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L109">				JFrame a = new ForecastResultGUI();</span>
+<span class="nc" id="L110">				a.setVisible(true);</span>
+				
+<span class="nc" id="L112">			}</span>
+		});
+<span class="nc" id="L114">		ForecastResult.setBounds(306, 90, 121, 32);</span>
+<span class="nc" id="L115">		getContentPane().add(ForecastResult);</span>
+		
+<span class="nc" id="L117">		JButton btnNewButton = new JButton(&quot;Close event&quot;);</span>
+<span class="nc" id="L118">		btnNewButton.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L120">				JFrame a = new CloseEventGUI();</span>
+<span class="nc" id="L121">				a.setVisible(true);</span>
+<span class="nc" id="L122">			}</span>
+		});
+<span class="nc" id="L124">		btnNewButton.setBounds(316, 138, 111, 23);</span>
+<span class="nc" id="L125">		getContentPane().add(btnNewButton);</span>
+<span class="nc" id="L126">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

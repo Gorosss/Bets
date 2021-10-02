@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CreateQuestionBLTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">CreateQuestionBLTest.java</span></div><h1>CreateQuestionBLTest.java</h1><pre class="source lang-java linenums">import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Vector;
+
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import businessLogic.BLFacadeImplementation;
+import configuration.ConfigXML;
+import dataAccess.DataAccess;
+import domain.Event;
+import domain.Question;
+import exceptions.EventFinished;
+import exceptions.QuestionAlreadyExist;
+import utility.TestUtilityFacadeImplementation;
+
+<span class="fc" id="L26">class CreateQuestionBLTest {</span>
+<span class="fc" id="L27">	private DataAccess da = new DataAccess(ConfigXML.getInstance().getDataBaseOpenMode().equals(&quot;initialize&quot;));</span>
+
+<span class="fc" id="L29">	private  BLFacadeImplementation sut= new BLFacadeImplementation(da);</span>
+<span class="fc" id="L30">	private  TestUtilityFacadeImplementation testBL= new TestUtilityFacadeImplementation();</span>
+
+	private Event ev;
+
+
+	@Test
+	// sut.createQuestion: The event has one question with a queryText.
+	void test1() throws EventFinished, QuestionAlreadyExist {
+		try {
+			// configure the state of the system (create object in the dabatase)
+<span class="fc" id="L40">			String eventText = &quot;Event Text&quot;;</span>
+<span class="fc" id="L41">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L42">			Date oneDate = sdf.parse(&quot;05/10/2022&quot;);</span>
+<span class="fc" id="L43">			String queryText = &quot;Query Text&quot;;</span>
+<span class="fc" id="L44">			Float betMinimum = 2f;</span>
+<span class="fc" id="L45">			int questionType= 2;</span>
+<span class="fc" id="L46">			String multipliers=&quot;2,3&quot;;</span>
+<span class="fc" id="L47">			Integer evNum=1;</span>
+
+<span class="fc" id="L49">			ev = testBL.addEventWithQuestion(evNum,eventText, oneDate, queryText, betMinimum);</span>
+
+			// invoke System Under Test (sut)
+<span class="pc" id="L52">			assertThrows(QuestionAlreadyExist.class, () -&gt; sut.createQuestion(ev, queryText, betMinimum,questionType,multipliers));</span>
+
+			// Remove the created objects in the database (cascade removing)
+<span class="fc" id="L55">			boolean b = testBL.removeEvent(ev);</span>
+<span class="fc" id="L56">			System.out.println(&quot;Finally &quot; + b);</span>
+<span class="pc" id="L57">		} catch (ParseException e) {</span>
+<span class="nc" id="L58">			fail(&quot;It should be correct: check the date format&quot;);</span>
+		}
+<span class="fc" id="L60">	}</span>
+
+	@Test
+	// sut.createQuestion: The event has NOT one question with a queryText.
+	void test2() {
+		try {
+			// configure the state of the system (create object in the dabatase)
+<span class="fc" id="L67">			String eventText = &quot;Event Text&quot;;</span>
+<span class="fc" id="L68">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L69">			Date oneDate = sdf.parse(&quot;05/10/2022&quot;);</span>
+<span class="fc" id="L70">			Integer evNum=1;</span>
+
+<span class="fc" id="L72">			ev = testBL.addEventWithQuestion(evNum,eventText, oneDate, &quot;One&quot;, 3f);</span>
+
+			// invoke System Under Test (sut)
+<span class="fc" id="L75">			String queryText = &quot;Query Text&quot;;</span>
+<span class="fc" id="L76">			Float betMinimum = 2f;</span>
+<span class="fc" id="L77">			int questionType= 2;</span>
+<span class="fc" id="L78">			String multipliers=&quot;2,3&quot;;</span>
+			try {
+<span class="fc" id="L80">				Question q = sut.createQuestion(ev, queryText, betMinimum,questionType,multipliers);</span>
+
+				// verify the results
+<span class="fc" id="L83">				assertNotNull(q);</span>
+<span class="fc" id="L84">				assertEquals(queryText, q.getQuestion());</span>
+<span class="fc" id="L85">				assertEquals(betMinimum, q.getBetMinimum());</span>
+				
+				// verify DB
+<span class="fc" id="L88">				Vector&lt;Event&gt; es = testBL.getEvents(oneDate);</span>
+
+<span class="fc" id="L90">				assertEquals(1, es.size());</span>
+<span class="fc" id="L91">				assertEquals(2, es.get(0).getQuestions().size());</span>
+<span class="fc" id="L92">				assertEquals(queryText, es.get(0).getQuestions().get(1).getQuestion());</span>
+<span class="fc" id="L93">				assertEquals(betMinimum, es.get(0).getQuestions().get(1).getBetMinimum());</span>
+
+
+				// Remove the created objects in the database (cascade removing)
+<span class="fc" id="L97">				boolean b = testBL.removeEvent(ev);</span>
+<span class="fc" id="L98">				System.out.println(&quot;Finally &quot; + b);</span>
+
+<span class="pc" id="L100">			} catch (QuestionAlreadyExist e) {</span>
+				// if the program goes to this point fail
+<span class="nc" id="L102">				fail(&quot;The event does not have queryText&quot;);</span>
+<span class="nc" id="L103">			} catch (EventFinished e) {</span>
+				// if the program goes to this point fail
+<span class="nc" id="L105">				fail(&quot;The event date is later than the current date&quot;);</span>
+			} 
+<span class="nc" id="L107">		} catch (ParseException e) {</span>
+<span class="nc" id="L108">			fail(&quot;It should be correct: check the date format&quot;);</span>
+		}
+
+<span class="fc" id="L111">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

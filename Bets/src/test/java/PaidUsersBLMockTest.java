@@ -257,23 +257,5 @@ class PaidUsersBLMockTest {
 
 	}
 	
-	@DisplayName("Test 70")
-	@Test
-	void testPaidUsersVectorOfQuestion() {
-		
-		Question q = new Question();
-		ArrayList<Question> qList = new ArrayList<Question>();
-		qList.add(q);
-		Vector<Question> queries = new Vector<Question>(qList);
-			
-		try {
-		Mockito.when(dataAccess.getForecastsOfQuestion(Mockito.any(Question.class))).thenThrow(RuntimeException.class);
-
-		assertThrows(RuntimeException.class, ()-> sut.paidUsers(queries));
-		} catch (NullPointerException e) {
-			fail("Mock DataAccess should not raise the exception NullPointerException");
-		}
-	}
-
 
 }

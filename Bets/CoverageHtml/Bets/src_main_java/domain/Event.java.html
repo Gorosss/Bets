@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Event.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Event.java</span></div><h1>Event.java</h1><pre class="source lang-java linenums">package domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Vector;
+
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@Entity
+public class Event implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
+	@XmlID
+	@XmlJavaTypeAdapter(IntegerAdapter.class)
+	@Id @GeneratedValue
+	private Integer eventNumber;
+	private String description; 
+	private Date eventDate;
+	
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+<span class="pc" id="L31">	private Vector&lt;Question&gt; questions=new Vector&lt;Question&gt;();</span>
+
+	public Vector&lt;Question&gt; getQuestions() {
+<span class="fc" id="L34">		return questions;</span>
+	}
+
+	public void setQuestions(Vector&lt;Question&gt; questions) {
+<span class="nc" id="L38">		this.questions = questions;</span>
+<span class="nc" id="L39">	}</span>
+
+	public Event() {
+<span class="fc" id="L42">		super();</span>
+<span class="fc" id="L43">	}</span>
+
+<span class="fc" id="L45">	public Event(Integer eventNumber, String description,Date eventDate) {</span>
+<span class="fc" id="L46">		this.eventNumber = eventNumber;</span>
+<span class="fc" id="L47">		this.description = description;</span>
+<span class="fc" id="L48">		this.eventDate=eventDate;</span>
+<span class="fc" id="L49">	}</span>
+	
+<span class="nc" id="L51">	public Event( String description,Date eventDate) {</span>
+		
+<span class="nc" id="L53">		this.description = description;</span>
+<span class="nc" id="L54">		this.eventDate=eventDate;</span>
+<span class="nc" id="L55">	}</span>
+
+	public Integer getEventNumber() {
+<span class="fc" id="L58">		return eventNumber;</span>
+	}
+
+	public void setEventNumber(Integer eventNumber) {
+<span class="nc" id="L62">		this.eventNumber = eventNumber;</span>
+<span class="nc" id="L63">	}</span>
+
+	public String getDescription() {
+<span class="fc" id="L66">		return description;</span>
+	}
+	
+	public void setDescription(String description) {
+<span class="nc" id="L70">		this.description=description;</span>
+<span class="nc" id="L71">	}</span>
+
+	public Date getEventDate() {
+<span class="fc" id="L74">		return eventDate;</span>
+	}
+
+	public void setEventDate(Date eventDate) {
+<span class="nc" id="L78">		this.eventDate = eventDate;</span>
+<span class="nc" id="L79">	}</span>
+	
+	
+	public String toString(){
+<span class="fc" id="L83">		return eventNumber+&quot;: &quot;+description;</span>
+	}
+	
+	/**
+	 * This method creates a bet with a question, minimum bet ammount and percentual profit
+	 * 
+	 * @param question to be added to the event
+	 * @param betMinimum of that question
+	 * @return Bet
+	 */
+	public Question addQuestion(String question, float betMinimum, int questionType,String pMultipliers)  {
+<span class="fc" id="L94">        Question q=new Question(question,betMinimum, this, questionType, pMultipliers);</span>
+<span class="fc" id="L95">        questions.add(q);</span>
+<span class="fc" id="L96">        return q;</span>
+	}
+	
+
+	
+	/**
+	 * This method checks if the question already exists for that event
+	 * 
+	 * @param question that needs to be checked if there exists
+	 * @return true if the question exists and false in other case
+	 */
+	public boolean DoesQuestionExists(String question)  {	
+<span class="fc bfc" id="L108" title="All 2 branches covered.">		for (Question q:this.getQuestions()){</span>
+<span class="fc" id="L109">			System.out.println(&quot;-----------------------&quot;);</span>
+<span class="fc" id="L110">			System.out.println(question.toString());</span>
+<span class="fc" id="L111">			System.out.println(q.toString());</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">			if (q.getQuestion().compareTo(question)==0)</span>
+<span class="fc" id="L113">				return true;</span>
+		}
+<span class="fc" id="L115">		return false;</span>
+	}
+		
+
+	
+	@Override
+	public int hashCode() {
+<span class="nc" id="L122">		final int prime = 31;</span>
+<span class="nc" id="L123">		int result = 1;</span>
+<span class="nc" id="L124">		result = prime * result + eventNumber;</span>
+<span class="nc" id="L125">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L131">			return true;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L133">			return false;</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L135">			return false;</span>
+<span class="nc" id="L136">		Event other = (Event) obj;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (eventNumber != other.eventNumber)</span>
+<span class="nc" id="L138">			return false;</span>
+<span class="nc" id="L139">		return true;</span>
+	}
+	
+	
+	
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

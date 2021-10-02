@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>AccountGUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">AccountGUI.java</span></div><h1>AccountGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import java.awt.Font;
+
+public class AccountGUI extends JFrame {
+<span class="nc" id="L8">	public AccountGUI() {</span>
+<span class="nc" id="L9">		getContentPane().setLayout(null);</span>
+<span class="nc" id="L10">		setSize(392, 275);</span>
+		
+<span class="nc" id="L12">		JLabel lblUserInformation = new JLabel(&quot;Account Information&quot;);</span>
+<span class="nc" id="L13">		lblUserInformation.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD | Font.ITALIC, 16));</span>
+<span class="nc" id="L14">		lblUserInformation.setBounds(21, 21, 180, 29);</span>
+<span class="nc" id="L15">		getContentPane().add(lblUserInformation);</span>
+		
+<span class="nc" id="L17">		JLabel lblNombreApellido = new JLabel(&quot;NOMBRE, APELLIDO&quot;);</span>
+<span class="nc" id="L18">		lblNombreApellido.setBounds(21, 61, 314, 23);</span>
+<span class="nc" id="L19">		getContentPane().add(lblNombreApellido);</span>
+<span class="nc" id="L20">		lblNombreApellido.setText(LoginRegisterGUI.getBusinessLogic().getAccountInfo(&quot;name&quot;) + &quot; &quot; + LoginRegisterGUI.getBusinessLogic().getAccountInfo(&quot;surname&quot;));</span>
+		
+<span class="nc" id="L22">		JLabel lblUsername = new JLabel(&quot;Username:&quot;);</span>
+<span class="nc" id="L23">		lblUsername.setBounds(21, 90, 79, 23);</span>
+<span class="nc" id="L24">		getContentPane().add(lblUsername);</span>
+		
+<span class="nc" id="L26">		JLabel lblPassword = new JLabel(&quot;Password: &quot;);</span>
+<span class="nc" id="L27">		lblPassword.setBounds(21, 111, 79, 23);</span>
+<span class="nc" id="L28">		getContentPane().add(lblPassword);</span>
+		
+<span class="nc" id="L30">		JLabel lblBankAccount = new JLabel(&quot;Bank Account:&quot;);</span>
+<span class="nc" id="L31">		lblBankAccount.setBounds(21, 145, 90, 23);</span>
+<span class="nc" id="L32">		getContentPane().add(lblBankAccount);</span>
+		
+<span class="nc" id="L34">		JLabel lblWallet = new JLabel(&quot;Wallet:&quot;);</span>
+<span class="nc" id="L35">		lblWallet.setBounds(21, 168, 46, 14);</span>
+<span class="nc" id="L36">		getContentPane().add(lblWallet);</span>
+		
+<span class="nc" id="L38">		JLabel lblEmail = new JLabel(&quot;EMAIL&quot;);</span>
+<span class="nc" id="L39">		lblEmail.setBounds(21, 200, 329, 23);</span>
+<span class="nc" id="L40">		getContentPane().add(lblEmail);</span>
+<span class="nc" id="L41">		lblEmail.setText(LoginRegisterGUI.getBusinessLogic().getAccountInfo(&quot;email&quot;));</span>
+		
+<span class="nc" id="L43">		JLabel lblUsername_1 = new JLabel(&quot;username&quot;);</span>
+<span class="nc" id="L44">		lblUsername_1.setBounds(90, 95, 260, 19);</span>
+<span class="nc" id="L45">		getContentPane().add(lblUsername_1);</span>
+<span class="nc" id="L46">		lblUsername_1.setText(LoginRegisterGUI.getBusinessLogic().getAccountInfo(&quot;username&quot;));</span>
+		
+<span class="nc" id="L48">		JLabel lblContrasena = new JLabel(&quot;contrasena&quot;);</span>
+<span class="nc" id="L49">		lblContrasena.setBounds(83, 115, 267, 14);</span>
+<span class="nc" id="L50">		getContentPane().add(lblContrasena);</span>
+<span class="nc" id="L51">		lblContrasena.setText(LoginRegisterGUI.getBusinessLogic().getAccountInfo(&quot;password&quot;));</span>
+		
+<span class="nc" id="L53">		JLabel lblDineros = new JLabel(&quot;dineros&quot;);</span>
+<span class="nc" id="L54">		lblDineros.setBounds(65, 168, 285, 14);</span>
+<span class="nc" id="L55">		getContentPane().add(lblDineros);</span>
+<span class="nc" id="L56">		lblDineros.setText(LoginRegisterGUI.getBusinessLogic().getAccountInfo(&quot;wallet&quot;));</span>
+		
+<span class="nc" id="L58">		JLabel lblDineroscuenta = new JLabel(&quot;dinerosCuenta&quot;);</span>
+<span class="nc" id="L59">		lblDineroscuenta.setBounds(98, 149, 252, 14);</span>
+<span class="nc" id="L60">		getContentPane().add(lblDineroscuenta);</span>
+<span class="nc" id="L61">		lblDineroscuenta.setText(LoginRegisterGUI.getBusinessLogic().getAccountInfo(&quot;card&quot;));</span>
+		
+		
+<span class="nc" id="L64">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

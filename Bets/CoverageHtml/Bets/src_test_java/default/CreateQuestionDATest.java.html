@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CreateQuestionDATest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">CreateQuestionDATest.java</span></div><h1>CreateQuestionDATest.java</h1><pre class="source lang-java linenums">
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Vector;
+
+import org.junit.jupiter.api.Test;
+
+import configuration.ConfigXML;
+import dataAccess.DataAccess;
+import domain.Event;
+import domain.Question;
+import exceptions.QuestionAlreadyExist;
+import utility.TestUtilityDataAccess;
+
+<span class="fc" id="L24">class CreateQuestionDATest {</span>
+
+<span class="fc" id="L26">	static DataAccess sut = new DataAccess(ConfigXML.getInstance().getDataBaseOpenMode().equals(&quot;initialize&quot;));;</span>
+<span class="fc" id="L27">	static TestUtilityDataAccess testDA = new TestUtilityDataAccess();</span>
+
+	private Event ev;
+
+	@Test
+	// sut.createQuestion: The event has one question with a queryText.
+	void test1() {
+
+		try {
+			// configure the state of the system (create object in the dabatase)
+<span class="fc" id="L37">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L38">			Date oneDate = sdf.parse(&quot;05/10/2022&quot;);</span>
+<span class="fc" id="L39">			String eventText = &quot;Event Text&quot;;</span>
+<span class="fc" id="L40">			String queryText = &quot;Query Text&quot;;</span>
+<span class="fc" id="L41">			Float betMinimum = 100f;</span>
+<span class="fc" id="L42">			int questionType= 2;</span>
+<span class="fc" id="L43">			String multipliers=&quot;2,3&quot;;</span>
+<span class="fc" id="L44">			Integer evNum=1;</span>
+
+<span class="fc" id="L46">			testDA.open();</span>
+<span class="fc" id="L47">			ev = testDA.addEventWithQuestion(evNum,eventText, oneDate, queryText, betMinimum);</span>
+<span class="fc" id="L48">			testDA.close();</span>
+
+			// invoke System Under Test (sut) and Assert
+<span class="pc" id="L51">			assertThrows(QuestionAlreadyExist.class, () -&gt; sut.createQuestion(ev, queryText, betMinimum,questionType,multipliers));</span>
+
+<span class="pc" id="L53">		} catch (ParseException e) {</span>
+<span class="nc" id="L54">			fail(&quot;It should be correct: check the date format&quot;);</span>
+		}
+
+		// Remove the created objects in the database (cascade removing)
+<span class="fc" id="L58">		testDA.open();</span>
+	
+<span class="fc" id="L60">		boolean b = testDA.removeEvent(ev);</span>
+		
+<span class="fc" id="L62">		System.out.println(&quot;Removed event &quot; + b);</span>
+<span class="fc" id="L63">		testDA.close();</span>
+
+<span class="fc" id="L65">	}</span>
+
+	@Test
+	// sut.createQuestion: The event has NOT one question with a queryText.
+	void test2() {
+		try {
+
+			// configure the state of the system (create object in the dabatase)
+<span class="fc" id="L73">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L74">			Date oneDate = sdf.parse(&quot;05/10/2022&quot;);</span>
+<span class="fc" id="L75">			String eventText = &quot;Event Text&quot;;</span>
+<span class="fc" id="L76">			Float betMinimum = 2f;</span>
+<span class="fc" id="L77">			int questionType= 2;</span>
+<span class="fc" id="L78">			String multipliers=&quot;2,3&quot;;</span>
+<span class="fc" id="L79">			Integer evNum=30;</span>
+			
+		
+<span class="fc" id="L82">			testDA.open();</span>
+<span class="fc" id="L83">			ev = testDA.addEventWithQuestion(evNum,eventText, oneDate, &quot;otra&quot;, 10.0f);</span>
+<span class="fc" id="L84">			testDA.close();</span>
+
+<span class="fc" id="L86">			String queryText = &quot;Query Text2&quot;;</span>
+			try {
+<span class="fc" id="L88">				testDA.open();</span>
+				// invoke System Under Test (sut)
+<span class="fc" id="L90">				Question q = sut.createQuestion(ev, queryText, betMinimum,questionType,multipliers);</span>
+
+<span class="fc" id="L92">				testDA.close();</span>
+				// verify the results returned
+<span class="fc" id="L94">				assertNotNull(q);</span>
+<span class="fc" id="L95">				assertEquals(queryText, q.getQuestion());</span>
+<span class="fc" id="L96">				assertEquals(betMinimum, q.getBetMinimum());</span>
+				
+				// verify DB
+<span class="fc" id="L99">				testDA.open();</span>
+<span class="fc" id="L100">				Vector&lt;Event&gt; es = testDA.getEvents(oneDate);</span>
+<span class="fc" id="L101">				testDA.close();</span>
+
+<span class="fc" id="L103">				assertEquals(1, es.size());</span>
+<span class="fc" id="L104">				assertEquals(2, es.get(0).getQuestions().size());</span>
+<span class="fc" id="L105">				assertEquals(queryText, es.get(0).getQuestions().get(1).getQuestion());</span>
+<span class="fc" id="L106">				assertEquals(betMinimum, es.get(0).getQuestions().get(1).getBetMinimum());</span>
+<span class="pc" id="L107">			} catch (QuestionAlreadyExist e) {</span>
+				// if the program goes to this point fail
+<span class="nc" id="L109">				fail();</span>
+			} finally {
+				// Remove the created objects in the database (cascade removing)
+<span class="fc" id="L112">				testDA.open();</span>
+<span class="fc" id="L113">				boolean b = testDA.removeEvent(ev);</span>
+<span class="fc" id="L114">				testDA.close();</span>
+<span class="fc" id="L115">				System.out.println(&quot;Finally &quot; + b);</span>
+			}
+<span class="nc" id="L117">		} catch (ParseException e) {</span>
+<span class="nc" id="L118">			fail(&quot;It should be correct: check the date format&quot;);</span>
+		}
+
+<span class="fc" id="L121">	}</span>
+	
+	@Test
+	// sut.createQuestion: The event is null.
+	void test3() {
+
+			// configure the state of the system (create object in the dabatase)
+<span class="fc" id="L128">			Float betMinimum = 2f;</span>
+<span class="fc" id="L129">			String queryText = &quot;Query Text&quot;;</span>
+<span class="fc" id="L130">			int questionType= 2;</span>
+<span class="fc" id="L131">			String multipliers=&quot;2,3&quot;;</span>
+			// invoke System Under Test (sut)
+<span class="pc" id="L133">			assertThrows(NullPointerException.class, () -&gt; sut.createQuestion(null, queryText, betMinimum,questionType,multipliers)); </span>
+<span class="fc" id="L134">	}</span>
+	
+	@Test
+	// sut.createQuestion: The queryText is null.
+	void test4() {
+		try {
+
+			// configure the state of the system (create object in the dabatase)
+<span class="fc" id="L142">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L143">			Date oneDate = sdf.parse(&quot;05/10/2022&quot;);</span>
+<span class="fc" id="L144">			String eventText = &quot;Event Text&quot;;</span>
+<span class="fc" id="L145">			Float betMinimum = 2f;</span>
+<span class="fc" id="L146">			Integer evNum=1;</span>
+
+<span class="fc" id="L148">			testDA.open();</span>
+<span class="fc" id="L149">			ev = testDA.addEventWithQuestion(evNum,eventText, oneDate, &quot;una&quot;, 0.0f);</span>
+<span class="fc" id="L150">			System.out.println(&quot;**************&quot;+ev.getEventNumber());</span>
+<span class="fc" id="L151">			testDA.close();</span>
+			
+
+<span class="fc" id="L154">			String queryText = null;</span>
+<span class="fc" id="L155">			int questionType= 2;</span>
+<span class="fc" id="L156">			String multipliers=&quot;2,3&quot;;</span>
+			
+			try {
+				// invoke System Under Test (sut)
+				
+<span class="pc" id="L161">				assertThrows(NullPointerException.class, () -&gt;sut.createQuestion(ev, queryText, betMinimum,questionType,multipliers));</span>
+				
+				
+				
+				
+
+<span class="fc" id="L167">			} finally {</span>
+				// Remove the created objects in the database (cascade removing)
+<span class="fc" id="L169">				testDA.open();</span>
+<span class="fc" id="L170">				boolean b = testDA.removeEvent(ev);</span>
+<span class="fc" id="L171">				System.out.println(&quot;Finally &quot; + b);</span>
+<span class="fc" id="L172">				testDA.close();</span>
+			}
+<span class="nc" id="L174">		} catch (ParseException e) {</span>
+<span class="nc" id="L175">			fail(&quot;It should be correct: check the date format&quot;);</span>
+		}
+
+<span class="fc" id="L178">	}</span>
+	
+	@Test
+	// sut.createQuestion: The betMinimum is negative.
+	void test5() {
+		try {
+
+			// configure the state of the system (create object in the dabatase)
+<span class="fc" id="L186">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L187">			Date oneDate = sdf.parse(&quot;05/10/2022&quot;);</span>
+<span class="fc" id="L188">			String eventText = &quot;Event Text&quot;;</span>
+<span class="fc" id="L189">			Float betMinimum = -2f;</span>
+<span class="fc" id="L190">			int questionType= 2;</span>
+<span class="fc" id="L191">			String multipliers=&quot;2,3&quot;;</span>
+<span class="fc" id="L192">			Integer evNum=50;</span>
+			
+<span class="fc" id="L194">			testDA.open();</span>
+<span class="fc" id="L195">			ev = testDA.addEventWithQuestion(evNum,eventText, oneDate, &quot;otra&quot;, 0.0f);</span>
+<span class="fc" id="L196">			testDA.close();</span>
+
+<span class="fc" id="L198">			String queryText = &quot;Query Text&quot;;</span>
+			try {
+				// invoke System Under Test (sut)
+<span class="fc" id="L201">				Question q = sut.createQuestion(ev, queryText, betMinimum,questionType,multipliers);</span>
+
+				// verify the results returned
+<span class="fc" id="L204">				assertNotNull(q);</span>
+<span class="fc" id="L205">				assertEquals(queryText, q.getQuestion());</span>
+<span class="fc" id="L206">				assertEquals(betMinimum, q.getBetMinimum(), 0);</span>
+				
+				// verify DB
+<span class="fc" id="L209">				testDA.open();</span>
+<span class="fc" id="L210">				Vector&lt;Event&gt; es = testDA.getEvents(oneDate);</span>
+<span class="fc" id="L211">				testDA.close();			</span>
+				
+<span class="fc" id="L213">				assertEquals(1, es.size());</span>
+<span class="fc" id="L214">				assertEquals(eventText, es.get(0).getDescription());</span>
+<span class="fc" id="L215">				assertEquals(oneDate, es.get(0).getEventDate());</span>
+
+
+<span class="pc" id="L218">			} catch (QuestionAlreadyExist e) {</span>
+				// if the program goes to this point fail
+<span class="nc" id="L220">				fail();</span>
+			} finally {
+				// Remove the created objects in the database (cascade removing)
+<span class="fc" id="L223">				testDA.open();</span>
+<span class="fc" id="L224">				boolean b = testDA.removeEvent(ev);</span>
+<span class="fc" id="L225">				testDA.close();</span>
+<span class="fc" id="L226">				System.out.println(&quot;Finally &quot; + b);</span>
+			}
+<span class="nc" id="L228">		} catch (ParseException e) {</span>
+<span class="nc" id="L229">			fail(&quot;It should be correct: check the date format&quot;);</span>
+		}
+
+<span class="fc" id="L232">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

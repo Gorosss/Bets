@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>LoginGUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">LoginGUI.java</span></div><h1>LoginGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import javax.swing.JFrame;
+import com.toedter.calendar.JCalendar;
+import domain.Question;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.beans.*;
+import java.text.DateFormat;
+import java.util.*;
+
+import javax.swing.table.DefaultTableModel;
+
+public class LoginGUI extends JFrame {
+	
+	private JTextField txt_username;
+	private JPasswordField txtpw_userpassword;
+	private JLabel lblLoginSucessful;
+	
+	private void customCloseWindow() {
+<span class="nc" id="L22">		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));</span>
+<span class="nc" id="L23">	}</span>
+	
+<span class="nc" id="L25">	public LoginGUI() {</span>
+<span class="nc" id="L26">		getContentPane().setLayout(null);</span>
+<span class="nc" id="L27">		setTitle(&quot;Login&quot;);</span>
+<span class="nc" id="L28">		this.setSize(new Dimension(479, 306));</span>
+<span class="nc" id="L29">		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+		
+<span class="nc" id="L31">		txt_username = new JTextField();</span>
+<span class="nc" id="L32">		txt_username.setBounds(212, 48, 159, 20);</span>
+<span class="nc" id="L33">		getContentPane().add(txt_username);</span>
+<span class="nc" id="L34">		txt_username.setColumns(10);</span>
+		
+<span class="nc" id="L36">		JLabel lblUsuario = new JLabel(&quot;Username&quot;);</span>
+<span class="nc" id="L37">		lblUsuario.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 14));</span>
+<span class="nc" id="L38">		lblUsuario.setHorizontalAlignment(SwingConstants.LEFT);</span>
+<span class="nc" id="L39">		lblUsuario.setBounds(53, 42, 123, 29);</span>
+<span class="nc" id="L40">		getContentPane().add(lblUsuario);</span>
+		
+<span class="nc" id="L42">		JLabel lblContrasea = new JLabel(&quot;Password&quot;);</span>
+<span class="nc" id="L43">		lblContrasea.setHorizontalAlignment(SwingConstants.LEFT);</span>
+<span class="nc" id="L44">		lblContrasea.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 14));</span>
+<span class="nc" id="L45">		lblContrasea.setBounds(53, 91, 113, 24);</span>
+<span class="nc" id="L46">		getContentPane().add(lblContrasea);</span>
+		
+<span class="nc" id="L48">		JButton btnIniciarSesin = new JButton(&quot;Login&quot;);</span>
+<span class="nc" id="L49">		btnIniciarSesin.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					
+<span class="nc" id="L53">					String str_username = txt_username.getText();</span>
+<span class="nc" id="L54">					String str_password = new String(txtpw_userpassword.getPassword());</span>
+					
+<span class="nc" id="L56">					boolean error = false;</span>
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">					if (str_username.length() &lt; 1) {</span>
+<span class="nc" id="L59">						System.out.println(&quot;Error. No username was entered.&quot;);</span>
+<span class="nc" id="L60">						error = true;</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">					} else if (str_password.length() &lt; 1){</span>
+<span class="nc" id="L62">						System.out.println(&quot;Error. No password was entered.&quot;);</span>
+<span class="nc" id="L63">						error = true;</span>
+					}
+					
+<span class="nc bnc" id="L66" title="All 2 branches missed.">					if (!error) {</span>
+<span class="nc" id="L67">						error = LoginRegisterGUI.getBusinessLogic().tryToLogin(str_username, str_password);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">						if (error) {</span>
+							//lblLoginSucessful.setText(&quot;Logged in successfully.&quot;);
+<span class="nc bnc" id="L70" title="All 2 branches missed.">							if (LoginRegisterGUI.getBusinessLogic().isAdmin()) {</span>
+								// ABRIR GUI DE LOS ADMINS
+<span class="nc" id="L72">								AdminMainGUI menu = new AdminMainGUI();</span>
+<span class="nc" id="L73">								menu.setVisible(true);</span>
+<span class="nc" id="L74">							} else {</span>
+								// ABRIR GUI DE LOS USUARIOS
+<span class="nc" id="L76">								UserMainGUI menu = new UserMainGUI();</span>
+<span class="nc" id="L77">								menu.setVisible(true);</span>
+							}
+						}
+						//customCloseWindow();
+<span class="nc" id="L81">						setVisible(false);</span>
+<span class="nc" id="L82">						LoginRegisterGUI.setVisibility(false);</span>
+						//LoginRegisterGUI.setVisibility(false);
+<span class="nc" id="L84">					} else { </span>
+<span class="nc" id="L85">						lblLoginSucessful.setText(&quot;Failed to log in.&quot;);  </span>
+					}
+<span class="nc" id="L87">					System.out.println(&quot;\n\n&quot;);</span>
+					
+<span class="nc" id="L89">				} catch (Exception e) {</span>
+<span class="nc" id="L90">					System.out.println(&quot;Error. Illegal Login Format. Code 7.&quot;);</span>
+				} finally {
+				}
+				
+				
+<span class="nc" id="L95">			}</span>
+		});
+		
+<span class="nc" id="L98">		btnIniciarSesin.setFont(new Font(&quot;Tahoma&quot;, Font.BOLD, 14));</span>
+<span class="nc" id="L99">		btnIniciarSesin.setBounds(53, 163, 141, 44);</span>
+<span class="nc" id="L100">		getContentPane().add(btnIniciarSesin);</span>
+		
+<span class="nc" id="L102">		JButton btnRegistrarse = new JButton(&quot;Register&quot;);</span>
+<span class="nc" id="L103">		btnRegistrarse.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L105">				JFrame r = new RegisterGUI();</span>
+<span class="nc" id="L106">				r.setVisible(true);</span>
+<span class="nc" id="L107">			}</span>
+		});
+<span class="nc" id="L109">		btnRegistrarse.setFont(new Font(&quot;Tahoma&quot;, Font.ITALIC, 12));</span>
+<span class="nc" id="L110">		btnRegistrarse.setBounds(241, 178, 145, 29);</span>
+<span class="nc" id="L111">		getContentPane().add(btnRegistrarse);</span>
+		
+<span class="nc" id="L113">		JLabel lblNoTienesCuenta = new JLabel(&quot;You don't have an account?&quot;);</span>
+<span class="nc" id="L114">		lblNoTienesCuenta.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L115">		lblNoTienesCuenta.setBounds(241, 142, 165, 29);</span>
+<span class="nc" id="L116">		getContentPane().add(lblNoTienesCuenta);</span>
+		
+<span class="nc" id="L118">		lblLoginSucessful = new JLabel(&quot;&quot;);</span>
+<span class="nc" id="L119">		lblLoginSucessful.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 12));</span>
+<span class="nc" id="L120">		lblLoginSucessful.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L121">		lblLoginSucessful.setBounds(53, 218, 333, 32);</span>
+<span class="nc" id="L122">		getContentPane().add(lblLoginSucessful);</span>
+		
+<span class="nc" id="L124">		txtpw_userpassword = new JPasswordField();</span>
+<span class="nc" id="L125">		txtpw_userpassword.setBounds(212, 95, 159, 20);</span>
+<span class="nc" id="L126">		getContentPane().add(txtpw_userpassword);</span>
+<span class="nc" id="L127">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DataAccess.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">dataAccess</a> &gt; <span class="el_source">DataAccess.java</span></div><h1>DataAccess.java</h1><pre class="source lang-java linenums">package dataAccess;
+
+import java.util.ArrayList;
+//hello
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Vector;
+
+
+
+//import javax.persistence.EntityExistsException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+//import javax.persistence.PersistenceException;
+//import javax.persistence.RollbackException;
+import javax.persistence.TypedQuery;
+
+//import com.sun.xml.bind.v2.model.core.Element;
+
+import configuration.ConfigXML;
+import configuration.UtilDate;
+import domain.Account;
+import domain.Event;
+import domain.Forecast;
+import domain.Question;
+import exceptions.EventFinished;
+import exceptions.QuestionAlreadyExist;
+
+/**
+ * It implements the data access to the objectDb database
+ */
+public class DataAccess  {
+	protected static EntityManager  db;
+	protected static EntityManagerFactory emf;
+
+
+<span class="fc" id="L43">	ConfigXML c=ConfigXML.getInstance();</span>
+
+<span class="fc" id="L45">	public DataAccess(boolean initializeMode)  {</span>
+
+<span class="fc" id="L47">		System.out.println(&quot;Creating DataAccess instance =&gt; isDatabaseLocal: &quot;+c.isDatabaseLocal()+&quot; getDatabBaseOpenMode: &quot;+c.getDataBaseOpenMode());</span>
+
+<span class="fc" id="L49">		open(initializeMode);</span>
+
+<span class="fc" id="L51">	}</span>
+
+	public DataAccess()  {	
+<span class="nc" id="L54">		this(false);</span>
+<span class="nc" id="L55">	}</span>
+
+	/**
+	 * This is the data access method that initializes the database with some events and questions.
+	 * This method is invoked by the business logic (constructor of BLFacadeImplementation) when the option &quot;initialize&quot; is declared in the tag dataBaseOpenMode of resources/config.xml file
+	 */	
+	public void initializeDB(){
+
+<span class="fc" id="L63">		db.getTransaction().begin();</span>
+		try {
+
+
+//			Calendar today = Calendar.getInstance();
+//
+//			int month=today.get(Calendar.MONTH);
+//			month+=1;
+//			int year=today.get(Calendar.YEAR);
+//			if (month==12) { month=0; year+=1;}  
+//
+//			Event ev1=new Event(1, &quot;Atlético-Athleti&quot;, UtilDate.newDate(year,month,17));
+//			Event ev2=new Event(2, &quot;Eibar-Barcelona&quot;, UtilDate.newDate(year,month,17));
+//			Event ev3=new Event(3, &quot;Getafe-Celta&quot;, UtilDate.newDate(year,month,17));
+//			Event ev4=new Event(4, &quot;Alavés-Deportivo&quot;, UtilDate.newDate(year,month,17));
+//			Event ev5=new Event(5, &quot;Español-Villareal&quot;, UtilDate.newDate(year,month,17));
+//			Event ev6=new Event(6, &quot;Las Palmas-Sevilla&quot;, UtilDate.newDate(year,month,17));
+//			Event ev7=new Event(7, &quot;Malaga-Valencia&quot;, UtilDate.newDate(year,month,17));
+//			Event ev8=new Event(8, &quot;Girona-Leganés&quot;, UtilDate.newDate(year,month,17));
+//			Event ev9=new Event(9, &quot;Real Sociedad-Levante&quot;, UtilDate.newDate(year,month,17));
+//			Event ev10=new Event(10, &quot;Betis-Real Madrid&quot;, UtilDate.newDate(year,month,17));
+//
+//			Event ev11=new Event(11, &quot;Atletico-Athletic&quot;, UtilDate.newDate(year,month,1));
+//			Event ev12=new Event(12, &quot;Eibar-Barcelona&quot;, UtilDate.newDate(year,month,1));
+//			Event ev13=new Event(13, &quot;Getafe-Celta&quot;, UtilDate.newDate(year,month,1));
+//			Event ev14=new Event(14, &quot;Alavés-Deportivo&quot;, UtilDate.newDate(year,month,1));
+//			Event ev15=new Event(15, &quot;Español-Villareal&quot;, UtilDate.newDate(year,month,1));
+//			Event ev16=new Event(16, &quot;Las Palmas-Sevilla&quot;, UtilDate.newDate(year,month,1));
+//
+//
+//			Event ev17=new Event(17, &quot;Málaga-Valencia&quot;, UtilDate.newDate(year,month+1,28));
+//			Event ev18=new Event(18, &quot;Girona-Leganés&quot;, UtilDate.newDate(year,month+1,28));
+//			Event ev19=new Event(19, &quot;Real Sociedad-Levante&quot;, UtilDate.newDate(year,month+1,28));
+//			Event ev20=new Event(20, &quot;Betis-Real Madrid&quot;, UtilDate.newDate(year,month+1,28));
+//			
+//
+//			Question q1;
+//			Question q2;
+//			Question q3;
+//			Question q4;
+//			Question q5;
+//			Question q6;
+//
+//		if (Locale.getDefault().equals(new Locale(&quot;es&quot;))) {
+//				q1=ev1.addQuestion(&quot;¿Quién ganará el partido?&quot;,1,1,&quot;1.0,2.0,3.0&quot;);
+//				q2=ev1.addQuestion(&quot;¿Quién meterá el primer gol?&quot;,2,2,&quot;1.0,2.0,3.0&quot;);
+//				q3=ev11.addQuestion(&quot;¿Quién ganará el partido?&quot;,1,1,&quot;1.0,2.0,3.0&quot;);
+//				q4=ev11.addQuestion(&quot;¿Cuántos goles se marcarán?&quot;,2,3,&quot;1.0,2.0,3.0&quot;);
+//				q5=ev17.addQuestion(&quot;¿Quién ganará el partido?&quot;,1,1,&quot;1.0,2.0,3.0&quot;);
+//				q6=ev17.addQuestion(&quot;¿Habrá goles en la primera parte?&quot;,2,2,&quot;1.0,2.0,3.0&quot;);
+//			}
+//		else if (Locale.getDefault().equals(new Locale(&quot;en&quot;))) {
+//				q1=ev1.addQuestion(&quot;Who will win the match?&quot;,1, 1,&quot;1.0,2.0,3.0&quot;);
+//				q2=ev1.addQuestion(&quot;Who will score first?&quot;,2, 2,&quot;1.0,2.0,3.0&quot;);
+//				q3=ev11.addQuestion(&quot;Who will win the match?&quot;,1, 1,&quot;1.0,2.0,3.0&quot;);
+//				q4=ev11.addQuestion(&quot;How many goals will be scored in the match?&quot;,2, 3,&quot;1.0,2.0,3.0&quot;);
+//				q5=ev17.addQuestion(&quot;Who will win the match?&quot;,1, 1,&quot;1.0,2.0,3.0&quot;);
+//				q6=ev17.addQuestion(&quot;Will there be goals in the first half?&quot;,2, 2,&quot;1.0,2.0,3.0&quot;);
+//				
+//			}			
+//			else {
+//				q1=ev1.addQuestion(&quot;Zeinek irabaziko du partidua?&quot;,1,1,&quot;1.0,2.0,3.0&quot;);
+//				q2=ev1.addQuestion(&quot;Zeinek sartuko du lehenengo gola?&quot;,2,2,&quot;1.0,2.0,3.0&quot;);
+//				q3=ev11.addQuestion(&quot;Zeinek irabaziko du partidua?&quot;,1,1,&quot;1.0,2.0,3.0&quot;);
+//				q4=ev11.addQuestion(&quot;Zenbat gol sartuko dira?&quot;,2,3,&quot;1.0,2.0,3.0&quot;);
+//				q5=ev17.addQuestion(&quot;Zeinek irabaziko du partidua?&quot;,1,1,&quot;1.0,2.0,3.0&quot;);
+//				q6=ev17.addQuestion(&quot;Golak sartuko dira lehenengo zatian?&quot;,2,2,&quot;1.0,2.0,3.0&quot;);
+//
+//			}
+//
+//			db.persist(new Account(&quot;admin&quot;, &quot;admin&quot;, true,&quot;admin&quot;,null,null,null));
+//			db.persist(new Account(&quot;user&quot;, &quot;user&quot;, false,&quot;user&quot;,null,null,null));
+//			
+//			db.persist(q1);
+//			db.persist(q2);
+//			db.persist(q3);
+//			db.persist(q4);
+//			db.persist(q5);
+//			db.persist(q6);
+//
+//
+//			db.persist(ev1);
+//			db.persist(ev2);
+//			db.persist(ev3);
+//			db.persist(ev4);
+//			db.persist(ev5);
+//			db.persist(ev6);
+//			db.persist(ev7);
+//			db.persist(ev8);
+//			db.persist(ev9);
+//			db.persist(ev10);
+//			db.persist(ev11);
+//			db.persist(ev12);
+//			db.persist(ev13);
+//			db.persist(ev14);
+//			db.persist(ev15);
+//			db.persist(ev16);
+//			db.persist(ev17);
+//			db.persist(ev18);
+//			db.persist(ev19);
+//			db.persist(ev20);
+//			
+
+<span class="fc" id="L166">			db.getTransaction().commit();</span>
+<span class="fc" id="L167">			System.out.println(&quot;Db initialized&quot;);</span>
+<span class="fc" id="L168">		}</span>
+<span class="nc" id="L169">		catch (Exception e){</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L172">	}</span>
+
+	/**
+	 * This method creates a question for an event, with a question text and the minimum bet
+	 * 
+	 * @param event to which question is added
+	 * @param question text of the question
+	 * @param betMinimum minimum quantity of the bet
+	 * @return the created question, or null, or an exception
+	 * @throws QuestionAlreadyExist if the same question already exists for the event
+	 */
+	public Question createQuestion(Event event, String question, float betMinimum, int questionType,String pMultipliers) throws  QuestionAlreadyExist {
+<span class="fc" id="L184">		System.out.println(&quot;&gt;&gt; DataAccess: createQuestion=&gt; event= &quot;+event+&quot; question= &quot;+question+&quot; betMinimum=&quot;+betMinimum);</span>
+
+<span class="fc" id="L186">		Event ev = db.find(Event.class, event.getEventNumber());</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		if (ev.DoesQuestionExists(question)) throw new QuestionAlreadyExist(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ErrorQueryAlreadyExist&quot;));</span>
+
+		
+<span class="fc" id="L190">		db.getTransaction().begin();</span>
+<span class="fc" id="L191">		Question q = ev.addQuestion(question, betMinimum, questionType, pMultipliers);</span>
+		//db.persist(q);
+		
+<span class="fc" id="L194">		db.persist(ev); // db.persist(q) not required when CascadeType.PERSIST is added in questions property of Event class</span>
+		// @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+<span class="fc" id="L196">		db.getTransaction().commit();</span>
+<span class="fc" id="L197">		return q;</span>
+
+	}
+
+	/**
+	 * This method retrieves from the database the events of a given date 
+	 * 
+	 * @param date in which events are retrieved
+	 * @return collection of events
+	 */
+	public Vector&lt;Event&gt; getEvents(Date date) {
+<span class="nc" id="L208">		System.out.println(&quot;&gt;&gt; DataAccess: getEvents&quot;);</span>
+<span class="nc" id="L209">		Vector&lt;Event&gt; res = new Vector&lt;Event&gt;();	</span>
+<span class="nc" id="L210">		TypedQuery&lt;Event&gt; query = db.createQuery(&quot;SELECT ev FROM Event ev WHERE ev.eventDate=?1&quot;,Event.class);   </span>
+<span class="nc" id="L211">		query.setParameter(1, date);</span>
+<span class="nc" id="L212">		List&lt;Event&gt; events = query.getResultList();</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		for (Event ev:events){</span>
+<span class="nc" id="L214">			System.out.println(ev.toString());		 </span>
+<span class="nc" id="L215">			res.add(ev);</span>
+		}
+<span class="nc" id="L217">		return res;</span>
+	}
+
+	/**
+	 * This method retrieves from the database the dates a month for which there are events
+	 * 
+	 * @param date of the month for which days with events want to be retrieved 
+	 * @return collection of dates
+	 */
+	public Vector&lt;Date&gt; getEventsMonth(Date date) {
+<span class="nc" id="L227">		System.out.println(&quot;&gt;&gt; DataAccess: getEventsMonth&quot;);</span>
+<span class="nc" id="L228">		Vector&lt;Date&gt; res = new Vector&lt;Date&gt;();	</span>
+
+<span class="nc" id="L230">		Date firstDayMonthDate= UtilDate.firstDayMonth(date);</span>
+<span class="nc" id="L231">		Date lastDayMonthDate= UtilDate.lastDayMonth(date);</span>
+
+
+<span class="nc" id="L234">		TypedQuery&lt;Date&gt; query = db.createQuery(&quot;SELECT DISTINCT ev.eventDate FROM Event ev WHERE ev.eventDate BETWEEN ?1 and ?2&quot;,Date.class);   </span>
+<span class="nc" id="L235">		query.setParameter(1, firstDayMonthDate);</span>
+<span class="nc" id="L236">		query.setParameter(2, lastDayMonthDate);</span>
+<span class="nc" id="L237">		List&lt;Date&gt; dates = query.getResultList();</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		for (Date d:dates){</span>
+<span class="nc" id="L239">			System.out.println(d.toString());		 </span>
+<span class="nc" id="L240">			res.add(d);</span>
+		}
+<span class="nc" id="L242">		return res;</span>
+	}
+
+
+	public void open(boolean initializeMode) {
+
+<span class="fc" id="L248">		System.out.println(&quot;Opening DataAccess instance =&gt; isDatabaseLocal: &quot;+c.isDatabaseLocal()+&quot; getDatabBaseOpenMode: &quot;+c.getDataBaseOpenMode());</span>
+
+<span class="fc" id="L250">		String fileName=c.getDbFilename();</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">		if (initializeMode) {</span>
+<span class="fc" id="L252">			fileName=fileName+&quot;;drop&quot;;</span>
+<span class="fc" id="L253">			System.out.println(&quot;Deleting the DataBase&quot;);</span>
+		}
+
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">		if (c.isDatabaseLocal()) {</span>
+<span class="fc" id="L257">			emf = Persistence.createEntityManagerFactory(&quot;objectdb:&quot;+fileName);</span>
+<span class="fc" id="L258">			db = emf.createEntityManager();</span>
+<span class="fc" id="L259">		} else {</span>
+<span class="nc" id="L260">			Map&lt;String, String&gt; properties = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L261">			properties.put(&quot;javax.persistence.jdbc.user&quot;, c.getUser());</span>
+<span class="nc" id="L262">			properties.put(&quot;javax.persistence.jdbc.password&quot;, c.getPassword());</span>
+
+<span class="nc" id="L264">			emf = Persistence.createEntityManagerFactory(&quot;objectdb://&quot;+c.getDatabaseNode()+&quot;:&quot;+c.getDatabasePort()+&quot;/&quot;+fileName, properties);</span>
+
+<span class="nc" id="L266">			db = emf.createEntityManager();</span>
+		}
+
+<span class="fc" id="L269">	}</span>
+	public boolean existQuestion(Event event, String question) {
+<span class="nc" id="L271">		System.out.println(&quot;&gt;&gt; DataAccess: existQuestion=&gt; event= &quot;+event+&quot; question= &quot;+question);</span>
+<span class="nc" id="L272">		Event ev = db.find(Event.class, event.getEventNumber());</span>
+<span class="nc" id="L273">		return ev.DoesQuestionExists(question);</span>
+
+	}
+	public void close(){
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">		if (db.isOpen())</span>
+<span class="fc" id="L278">			db.close();</span>
+		
+<span class="fc" id="L280">		System.out.println(&quot;DataBase closed&quot;);</span>
+<span class="fc" id="L281">	}</span>
+	
+	public void storeAccount(Account user) {
+<span class="nc" id="L284">        db.getTransaction().begin();</span>
+<span class="nc" id="L285">        db.persist(user);</span>
+<span class="nc" id="L286">        db.getTransaction().commit();</span>
+<span class="nc" id="L287">	}</span>
+    
+	public boolean isUsernameAvailable(Account acc) {
+
+<span class="nc" id="L291">		Account cuenta = db.find(Account.class, acc.getUserName());</span>
+
+		
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		if (cuenta != null) {</span>
+<span class="nc" id="L295">			System.out.println(&quot;*** &quot; + acc.getUserName() + &quot; *** username is already taken. Code 4.&quot;);</span>
+<span class="nc" id="L296">			return false;</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">		}else if(!isEmailAvailable(acc.getUserEmail())) {</span>
+<span class="nc" id="L298">			System.out.println(&quot;*** &quot; + acc.getUserEmail() + &quot; *** email is already taken. Code 4.&quot;);</span>
+<span class="nc" id="L299">			return false;</span>
+		}else {
+<span class="nc" id="L301">			System.out.println(&quot;There are no account(s) with that username.&quot;);</span>
+<span class="nc" id="L302">			System.out.println(&quot;*** &quot; + acc.getUserName() + &quot; *** username is available.&quot;);</span>
+<span class="nc" id="L303">			return true;</span>
+			
+		}
+		
+	}
+	
+	 public boolean isEmailAvailable(String pCorreo) {
+<span class="nc" id="L310">		   ArrayList&lt;Account&gt;acc=(ArrayList&lt;Account&gt;) getAllUsers();</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		   for(Account a:acc) {</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">			   if(a.getUserEmail().equals(pCorreo)) {</span>
+<span class="nc" id="L313">				   return false;</span>
+			   }
+		   }
+<span class="nc" id="L316">		   return true;</span>
+	 }
+	
+    public List&lt;Account&gt; getAllUsers() {
+<span class="nc" id="L320">    	TypedQuery&lt;Account&gt; query = db.createQuery(&quot;SELECT a FROM Account a&quot;,Account.class);</span>
+<span class="nc" id="L321">        List&lt;Account&gt; accounts = query.getResultList();</span>
+<span class="nc" id="L322">        return accounts;</span>
+    }
+	
+	public boolean tryToLogin(String pUsername, String pPassword) { 
+<span class="nc" id="L326">		Account obj = db.find(Account.class, pUsername); </span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		if (obj == null) {</span>
+<span class="nc" id="L328">			System.out.println(&quot;Account doesn't exist.&quot;);</span>
+<span class="nc" id="L329">			return false;</span>
+		} else {
+<span class="nc bnc" id="L331" title="All 2 branches missed.">			if (obj.getPassword().equals(pPassword)) </span>
+<span class="nc" id="L332">				return true;</span>
+		}
+<span class="nc" id="L334">		System.out.println(&quot;Wrong Password.&quot;);</span>
+<span class="nc" id="L335">		return false;</span>
+	}
+	
+	public boolean isAdministrator(String pUsername) {
+<span class="nc" id="L339">		Account obj = db.find(Account.class, pUsername); </span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">		if (obj == null) {</span>
+<span class="nc" id="L341">			return false;</span>
+		} else {
+<span class="nc bnc" id="L343" title="All 2 branches missed.">			if (obj.getAdmin()) {</span>
+<span class="nc" id="L344">				return true;</span>
+			}
+		}
+<span class="nc" id="L347">		return false;</span>
+	}
+	
+	public List&lt;Event&gt; LastEventNumber() {
+<span class="nc" id="L351">        TypedQuery&lt;Event&gt; query = db.createQuery(&quot;SELECT e FROM Event e&quot;,Event.class);</span>
+<span class="nc" id="L352">        List&lt;Event&gt; events = query.getResultList();</span>
+<span class="nc" id="L353">        return events;</span>
+    }
+	
+	public void storeEvent(Event evento) {
+<span class="nc" id="L357">		db.getTransaction().begin();</span>
+<span class="nc" id="L358">		db.persist(evento);</span>
+<span class="nc" id="L359">		db.getTransaction().commit();</span>
+<span class="nc" id="L360">	}</span>
+	
+	public Question getQuestionFromNumber(Integer numero) {
+<span class="nc" id="L363">		TypedQuery&lt;Question&gt; query = db.createQuery(&quot;SELECT p FROM Question p WHERE p.questionNumber= &quot;+numero+&quot;&quot;, Question.class);</span>
+<span class="nc" id="L364">		List&lt;Question&gt; questions = query.getResultList();</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">		if(questions.size()&lt;1) {</span>
+<span class="nc" id="L366">			System.out.println(&quot;Error. Lista de preguntas nula&quot;);</span>
+<span class="nc" id="L367">			return null;</span>
+		}
+		else {
+<span class="nc" id="L370">			return questions.get(0);</span>
+		}
+		
+	}
+	
+
+		
+	public List&lt;Forecast&gt; getuserForecasts(String user) {
+		
+<span class="nc" id="L379">		Account u =getUser(user);</span>
+		
+<span class="nc" id="L381">		List&lt;Forecast&gt; forecasts = u.getAllUserForecast();</span>
+		
+<span class="nc bnc" id="L383" title="All 2 branches missed.">		if(forecasts.size()&lt;1) {</span>
+<span class="nc" id="L384">			System.out.println(&quot;Error. Lista de preguntas nula&quot;);</span>
+<span class="nc" id="L385">			return null;</span>
+		}
+		else {
+<span class="nc" id="L388">			return forecasts;</span>
+			}			
+				
+	}
+	
+	
+	public List&lt;Forecast&gt; getAllForecasts() {
+<span class="fc" id="L395">		List&lt;Forecast&gt; forecasts=null;</span>
+		try {
+<span class="fc" id="L397">			TypedQuery&lt;Forecast&gt; query = db.createQuery(&quot;SELECT f FROM Forecast f&quot;,Forecast.class);</span>
+<span class="fc" id="L398">	        forecasts = query.getResultList();</span>
+<span class="fc" id="L399">		} catch (Exception e) {</span>
+			//There is no forecast in DB
+<span class="fc" id="L401">			return null;</span>
+		}
+    	
+<span class="fc" id="L404">        return forecasts;</span>
+    }
+	
+	
+	
+	/*
+	 * This method returns a forecast list of the given question
+	 * 
+	 * @param question from which we are going to receive the forecast
+	 * @return List of Forecasts
+ 	 * @throws NullPointerException if the question is null 
+ 	 * @throws RuntimeException if the question has no event
+	 */
+	public List&lt;Forecast&gt; getForecastsOfQuestion(Question question) throws NullPointerException,RuntimeException{
+		
+<span class="fc bfc" id="L419" title="All 2 branches covered.">		if(question==null) {</span>
+<span class="fc" id="L420">			throw new NullPointerException(&quot;Question is null&quot;);</span>
+		}
+		
+<span class="fc bfc" id="L423" title="All 2 branches covered.">		if(question.getEvent()==(null)) {</span>
+<span class="fc" id="L424">			throw new RuntimeException(&quot;Question have no an event&quot;);</span>
+		}
+		
+<span class="fc" id="L427">		ArrayList&lt;Forecast&gt; forecasts = (ArrayList&lt;Forecast&gt;) getAllForecasts();</span>
+<span class="fc" id="L428">		List&lt;Forecast&gt; forecastsOfQuestion=new ArrayList&lt;Forecast&gt;();</span>
+		
+<span class="fc bfc" id="L430" title="All 2 branches covered.">		if(forecasts ==null) {</span>
+<span class="fc" id="L431">			return forecastsOfQuestion;</span>
+
+		}
+		else {
+<span class="fc bfc" id="L435" title="All 2 branches covered.">			for(Forecast f:forecasts) {</span>
+<span class="fc bfc" id="L436" title="All 2 branches covered.">				if(f.getQuestion().getQuestionNumber()==question.getQuestionNumber()) {</span>
+<span class="fc" id="L437">					f.setQuestion(question);</span>
+<span class="fc" id="L438">					forecastsOfQuestion.add(f);</span>
+				}
+			}			
+<span class="fc" id="L441">			return forecastsOfQuestion;</span>
+		}
+		
+	}
+	
+	
+	public ArrayList&lt;Float&gt; getQuestionMultiplersFromNumber(Integer numero) {
+<span class="nc" id="L448">		TypedQuery&lt;Question&gt; query = db.createQuery(&quot;SELECT p FROM Question p WHERE p.questionNumber= &quot;+numero+&quot;&quot;, Question.class);</span>
+<span class="nc" id="L449">		List&lt;Question&gt; questions = query.getResultList();</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">		if(questions.size()&lt;1) {</span>
+<span class="nc" id="L451">			System.out.println(&quot;Error. Lista de preguntas nula&quot;);</span>
+<span class="nc" id="L452">			return null;</span>
+		}
+		else {
+<span class="nc" id="L455">			ArrayList&lt;Float&gt; f=questions.get(0).getMultipliers();</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">			for(@SuppressWarnings(&quot;unused&quot;) Float asd:f) {</span>
+			}
+<span class="nc" id="L458">			return f;</span>
+		}
+		
+	}
+	
+	public void setQuestionResult(Integer numero, String result) {
+<span class="nc" id="L464">		db.getTransaction().begin();</span>
+<span class="nc" id="L465">		Question q= db.find(Question.class, numero);</span>
+<span class="nc" id="L466">		q.setResult(result);		</span>
+<span class="nc" id="L467">		db.getTransaction().commit();</span>
+<span class="nc" id="L468">	}</span>
+	
+	public void deleteForecast(Forecast forecast,String loggedUser) {
+<span class="nc" id="L471">		db.getTransaction().begin();</span>
+<span class="nc" id="L472">		Account a =db.find(Account.class, loggedUser);</span>
+<span class="nc" id="L473">		Forecast f= db.find(Forecast.class, forecast.getForecastNumber());</span>
+<span class="nc" id="L474">		a.deletIndexForecast(f);</span>
+<span class="nc" id="L475">		db.remove(f);		</span>
+<span class="nc" id="L476">		db.getTransaction().commit();</span>
+<span class="nc" id="L477">	}</span>
+	
+	public void paid(String user, double win) {
+<span class="nc" id="L480">		db.getTransaction().begin();</span>
+<span class="nc" id="L481">		Account u= db.find(Account.class, user);</span>
+<span class="nc" id="L482">		u.paid(win);		</span>
+<span class="nc" id="L483">		db.getTransaction().commit();</span>
+<span class="nc" id="L484">	}</span>
+	
+	public void restMoneyToUser(String pUserName, Double money) {
+<span class="nc" id="L487">		db.getTransaction().begin();</span>
+<span class="nc" id="L488">		Account u= db.find(Account.class, pUserName);</span>
+<span class="nc" id="L489">		u.rest(money);		</span>
+<span class="nc" id="L490">		db.getTransaction().commit();</span>
+<span class="nc" id="L491">	}</span>
+	
+	public void closeEvent(Event e) {
+<span class="nc" id="L494">		db.getTransaction().begin();</span>
+<span class="nc" id="L495">		Event evento= db.find(Event.class, e.getEventNumber());</span>
+<span class="nc" id="L496">		db.remove(evento);</span>
+<span class="nc" id="L497">		db.getTransaction().commit();</span>
+<span class="nc" id="L498">	}</span>
+	
+	public void removeQuestion(Question Question) {
+<span class="nc" id="L501">		db.getTransaction().begin();</span>
+<span class="nc" id="L502">		Question q= db.find(Question.class, Question.getQuestionNumber());</span>
+<span class="nc" id="L503">		db.remove(q);</span>
+<span class="nc" id="L504">		db.getTransaction().commit();</span>
+<span class="nc" id="L505">	}</span>
+	
+	
+	
+	public Account getUser(String pUserName) {
+<span class="nc" id="L510">		Account cuenta = db.find(Account.class, pUserName);</span>
+<span class="nc" id="L511">		return cuenta;</span>
+	}
+	
+	
+
+	public void storeForecast(Forecast pForecast) {
+<span class="nc" id="L517">		db.getTransaction().begin();</span>
+<span class="nc" id="L518">		db.persist(pForecast);</span>
+<span class="nc" id="L519">		db.getTransaction().commit();</span>
+<span class="nc" id="L520">	}</span>
+	
+	
+	public ArrayList&lt;Forecast&gt; retrieveForecast(Question pQuestion, String pUser) {
+<span class="nc" id="L524">		TypedQuery&lt;Forecast&gt; res = db.createQuery(&quot;SELECT f FROM Forecast f WHERE f.question.questionNumber=&quot;+pQuestion.getQuestionNumber()+&quot; and f.user=&quot;+pUser+&quot;&quot;, Forecast.class);</span>
+<span class="nc" id="L525">		ArrayList&lt;Forecast&gt; fores = (ArrayList&lt;Forecast&gt;) res.getResultList();</span>
+<span class="nc" id="L526">		return fores;</span>
+	}
+	
+	public void removeAllForecast() {
+<span class="nc" id="L530">		List&lt;Forecast&gt; forecasts=null;</span>
+<span class="nc" id="L531">		TypedQuery&lt;Forecast&gt; query = db.createQuery(&quot;SELECT f FROM Forecast f&quot;,Forecast.class);</span>
+<span class="nc" id="L532">        forecasts = query.getResultList();</span>
+<span class="nc bnc" id="L533" title="All 2 branches missed.">        for(Forecast f: forecasts) {</span>
+<span class="nc" id="L534">        	System.out.println(&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;);</span>
+<span class="nc" id="L535">        	db.getTransaction().begin();</span>
+<span class="nc" id="L536">    		db.remove(f);</span>
+<span class="nc" id="L537">    		db.getTransaction().commit();</span>
+        }
+<span class="nc" id="L539">	}</span>
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

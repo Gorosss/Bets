@@ -1,8 +1,5 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,8 +7,7 @@ import java.util.Date;
 import java.util.Vector;
 
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 
 import businessLogic.BLFacadeImplementation;

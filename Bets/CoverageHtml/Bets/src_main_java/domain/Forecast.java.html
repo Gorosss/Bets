@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Forecast.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Forecast.java</span></div><h1>Forecast.java</h1><pre class="source lang-java linenums">package domain;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import gui.LoginRegisterGUI;
+
+@Entity
+public class Forecast {
+	
+<span class="fc" id="L14">	private static int numberOfForecasts = 0;</span>
+	
+	@Id
+	private int forecastNumber;
+	private Question question;		// Pregunta a la que el pronostico esta relacionado
+	private double myBet;			// Lo que yo he apostado
+	private double win;
+	private String user;			// Usuario que ha hecho el forecast
+	private String myGuess;			// Lo que yo creo q va a pasar . Para determinar si el pronostico 
+									// ha sido acertado, comparar con el attributo result de la pregunta
+									// asociada. Ambos campos (result y este mismo) son strings para 
+									// almacenar &quot;1&quot;, &quot;X&quot; ó &quot;2&quot;.
+	private float multiplier;
+	
+<span class="nc" id="L28">	public Forecast(Question pQuestion, double pBet, String pGuess, double win) {</span>
+<span class="nc" id="L29">		this.forecastNumber = Forecast.numberOfForecasts++;</span>
+<span class="nc" id="L30">		this.question = pQuestion;</span>
+<span class="nc" id="L31">		this.myBet = pBet;</span>
+<span class="nc" id="L32">		this.myGuess = pGuess;</span>
+<span class="nc" id="L33">		this.user = LoginRegisterGUI.getBusinessLogic().getLoggedUsername();</span>
+<span class="nc" id="L34">		this.win=win;</span>
+<span class="nc" id="L35">	}</span>
+<span class="fc" id="L36">	public Forecast(Question pQuestion, double pBet, String pGuess, double win,String u) {</span>
+<span class="fc" id="L37">		this.forecastNumber = Forecast.numberOfForecasts++;</span>
+<span class="fc" id="L38">		this.question = pQuestion;</span>
+<span class="fc" id="L39">		this.myBet = pBet;</span>
+<span class="fc" id="L40">		this.myGuess = pGuess;</span>
+<span class="fc" id="L41">		this.win=win;</span>
+<span class="fc" id="L42">		this.user=u;</span>
+<span class="fc" id="L43">	}</span>
+	
+	
+
+	public int getForecastNumber() {
+<span class="fc" id="L48">		return forecastNumber;</span>
+	}
+	
+	public double getMyBet() {
+<span class="nc" id="L52">		return myBet;</span>
+	}
+		
+	public Question getQuestion() {
+<span class="fc" id="L56">		return question;</span>
+	}
+	
+	public void setQuestion(Question q) {
+<span class="fc" id="L60">		this.question=q;</span>
+<span class="fc" id="L61">	}</span>
+	
+	
+	
+	public String getMyGuess() {
+<span class="fc" id="L66">		return myGuess;</span>
+	}
+	
+	public void setMyGuess (String pMyGuess) {
+<span class="nc" id="L70">		this.myGuess = pMyGuess;</span>
+<span class="nc" id="L71">	}</span>
+	
+	public String getUser() {
+<span class="fc" id="L74">		return user;</span>
+	}
+	
+	public double getWin() {
+<span class="fc" id="L78">		return this.win;</span>
+	}
+	
+	public boolean won() {
+<span class="nc" id="L82">		return myGuess.equals(question.getResult());</span>
+	}
+
+	public void linkMultiplierToGuess(){
+<span class="nc" id="L86">		ArrayList&lt;Float&gt; qMultipliers = this.question.getMultipliers();</span>
+		
+<span class="nc" id="L88">		System.out.println(this.question.toString());</span>
+		
+<span class="nc" id="L90">		System.out.println(qMultipliers.get(0));</span>
+<span class="nc bnc" id="L91" title="All 3 branches missed.">		switch(question.getQuestionType()) {</span>
+			case 1:
+			case 2:
+<span class="nc bnc" id="L94" title="All 4 branches missed.">				switch(this.myGuess){</span>
+					case &quot;1&quot;:
+<span class="nc" id="L96">						this.multiplier = qMultipliers.get(0);</span>
+<span class="nc" id="L97">						break;</span>
+					case &quot;x&quot;:
+<span class="nc" id="L99">						this.multiplier = qMultipliers.get(1);</span>
+<span class="nc" id="L100">						break;</span>
+					case &quot;2&quot;:
+<span class="nc" id="L102">						this.multiplier = qMultipliers.get(2);</span>
+<span class="nc" id="L103">						break;</span>
+					default:
+<span class="nc" id="L105">						System.out.println(&quot;ERROR. Este mensaje no se tiene que imprimir. Codigo 10&quot;);	</span>
+						break;
+				}
+<span class="nc" id="L108">				break;</span>
+			case 3: 
+			case 4:
+<span class="nc" id="L111">				this.multiplier=qMultipliers.get(0);</span>
+<span class="nc" id="L112">				break;</span>
+			default: 
+<span class="nc" id="L114">				System.out.println(&quot;ERROR. Este mensaje no se tiene que imprimir. Codigo 11&quot;); </span>
+				break;
+		}
+<span class="nc" id="L117">	}</span>
+	
+	@Override
+	public String toString() {
+<span class="nc" id="L121">		return question.getEvent()+&quot;-&quot;+question.getQuestion() + &quot;: Your guess: &quot; + myGuess + &quot;; Your bet: &quot; + myBet;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

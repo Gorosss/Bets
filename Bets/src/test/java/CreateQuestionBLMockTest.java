@@ -1,9 +1,4 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -29,7 +24,6 @@ class CreateQuestionBLMockTest {
 
 	BLFacade sut = new BLFacadeImplementation(dataAccess);
 
-	@SuppressWarnings("unchecked")
 	@DisplayName("sut.createQuestion: The event has one question with a queryText.")
 	@Test
 	void test1() {

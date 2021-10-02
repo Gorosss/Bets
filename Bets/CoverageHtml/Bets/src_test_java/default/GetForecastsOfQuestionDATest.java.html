@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>GetForecastsOfQuestionDATest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">GetForecastsOfQuestionDATest.java</span></div><h1>GetForecastsOfQuestionDATest.java</h1><pre class="source lang-java linenums">import static org.junit.jupiter.api.Assertions.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import configuration.ConfigXML;
+import dataAccess.DataAccess;
+import domain.Account;
+import domain.Event;
+import domain.Forecast;
+import domain.Question;
+import exceptions.QuestionAlreadyExist;
+import utility.TestUtilityDataAccess;
+
+<span class="fc" id="L21">class GetForecastsOfQuestionDATest {</span>
+
+<span class="fc" id="L23">	static DataAccess sut = new DataAccess(ConfigXML.getInstance().getDataBaseOpenMode().equals(&quot;initialize&quot;));;</span>
+<span class="fc" id="L24">	static TestUtilityDataAccess testDA = new TestUtilityDataAccess();</span>
+	
+	private Event ev;
+	
+	@Test
+	@DisplayName(&quot;Test 1: Quesion is null&quot;)
+	void testGetForecastsOfQuestion1() {
+		
+		try {
+			
+<span class="fc" id="L34">			Question q=null;</span>
+<span class="pc" id="L35">			assertThrows(NullPointerException.class, () -&gt; sut.getForecastsOfQuestion(q));</span>
+			
+<span class="pc" id="L37">		} catch (RuntimeException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L39">			fail();</span>
+		}		
+<span class="fc" id="L41">	}</span>
+	
+	@Test
+	@DisplayName(&quot;Test 2: Question is not in the DB&quot;)
+	void testGetForecastsOfQuestion2() {
+		
+<span class="fc" id="L47">		String queryText = &quot;QueryNotInDB&quot;;</span>
+<span class="fc" id="L48">		Float betMinimum = 10f;</span>
+<span class="fc" id="L49">		int questionType= 2;</span>
+<span class="fc" id="L50">		String multipliers=&quot;2,3&quot;;</span>
+		
+<span class="fc" id="L52">		Question q = new Question(queryText, betMinimum, ev, questionType, multipliers);</span>
+		
+		try {
+
+<span class="pc" id="L56">			assertThrows(RuntimeException.class, () -&gt; sut.getForecastsOfQuestion(q));</span>
+
+<span class="pc" id="L58">		}catch (NullPointerException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L60">			fail();</span>
+		}
+<span class="fc" id="L62">	}</span>
+	
+	@Test
+	@DisplayName(&quot;Test 3: No forecast in DB&quot;)
+	void testGetForecastsOfQuestion3() {
+	
+		try {
+<span class="fc" id="L69">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L70">			Date oneDate = sdf.parse(&quot;05/10/2022&quot;);</span>
+<span class="fc" id="L71">			String eventText = &quot;Event Text&quot;;</span>
+<span class="fc" id="L72">			String queryText = &quot;Query Text&quot;;</span>
+<span class="fc" id="L73">			Float betMinimum = 100f;</span>
+<span class="fc" id="L74">			Integer evNum=1;</span>
+
+<span class="fc" id="L76">			testDA.open();</span>
+<span class="fc" id="L77">			ev = testDA.addEventWithQuestion(evNum,eventText, oneDate, queryText, betMinimum);</span>
+<span class="fc" id="L78">			testDA.close();</span>
+			
+<span class="fc" id="L80">			Question q=ev.getQuestions().get(0);</span>
+			
+	
+<span class="fc" id="L83">			List&lt;Forecast&gt; fList=sut.getForecastsOfQuestion(q);</span>
+			
+			
+<span class="fc" id="L86">			ArrayList&lt;Forecast&gt; fListExpected=new ArrayList&lt;Forecast&gt;();</span>
+			
+			
+<span class="fc" id="L89">			assertEquals(fListExpected, fList);</span>
+			
+<span class="pc" id="L91">		} catch (NullPointerException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L93">			fail();</span>
+<span class="nc" id="L94">		}catch (ParseException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L96">			fail();</span>
+<span class="nc" id="L97">		}catch (RuntimeException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L99">			fail();</span>
+		}finally {
+			// Remove the created objects in the database (cascade removing)
+<span class="fc" id="L102">			testDA.open();</span>
+		
+<span class="fc" id="L104">			boolean b = testDA.removeEvent(ev);</span>
+			
+<span class="fc" id="L106">			System.out.println(&quot;Removed event &quot; + b);</span>
+<span class="fc" id="L107">			testDA.close();</span>
+		}
+		
+<span class="fc" id="L110">	}</span>
+	
+	
+	
+	@Test
+	@DisplayName(&quot;Test 4: Case with one forecast&quot;)
+	void testGetForecastsOfQuestion4() {
+		
+<span class="fc" id="L118">		Account user= new Account(&quot;Jon&quot;, &quot;pass&quot;, false, &quot;jon@gmail.com&quot;, &quot;cardNum&quot;, &quot;Jon&quot;, &quot;Gorostegui&quot;);</span>
+		
+<span class="fc" id="L120">		Forecast f= new Forecast(null, 2, &quot;2&quot;, 2,user.getUserName());</span>
+		try {
+			
+<span class="fc" id="L123">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L124">			Date oneDate = sdf.parse(&quot;05/10/2022&quot;);</span>
+<span class="fc" id="L125">			String eventText = &quot;Event Text&quot;;</span>
+<span class="fc" id="L126">			String queryText = &quot;Query Text&quot;;</span>
+<span class="fc" id="L127">			Float betMinimum = 100f;</span>
+<span class="fc" id="L128">			Integer evNum=1;</span>
+
+<span class="fc" id="L130">			testDA.open();</span>
+<span class="fc" id="L131">			ev = testDA.addEventWithQuestion(evNum,eventText, oneDate, queryText, betMinimum);</span>
+<span class="fc" id="L132">			testDA.close();</span>
+			
+<span class="fc" id="L134">			Question q=ev.getQuestions().get(0);		</span>
+	
+<span class="fc" id="L136">			f.setQuestion(q);</span>
+<span class="fc" id="L137">			user.addForecast(f);</span>
+			
+<span class="fc" id="L139">			testDA.open();</span>
+<span class="fc" id="L140">			testDA.storeForecast(f);</span>
+<span class="fc" id="L141">			testDA.storeAccount(user);</span>
+<span class="fc" id="L142">			testDA.close();</span>
+			
+<span class="fc" id="L144">			ArrayList&lt;Forecast&gt; fList=(ArrayList&lt;Forecast&gt;) sut.getForecastsOfQuestion(q);</span>
+
+<span class="fc" id="L146">			ArrayList&lt;Forecast&gt; fListExpected=new ArrayList&lt;Forecast&gt;();</span>
+<span class="fc" id="L147">			fListExpected.add(f);</span>
+			
+		
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">			assertTrue(fListExpected.get(0).getForecastNumber() == fList.get(0).getForecastNumber());</span>
+			
+			
+<span class="pc" id="L153">		}catch (NullPointerException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L155">			fail();</span>
+<span class="nc" id="L156">		}catch (ParseException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L158">			fail();</span>
+<span class="nc" id="L159">		}catch (RuntimeException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L161">			fail();</span>
+		}finally {
+<span class="fc" id="L163">			testDA.open();</span>
+<span class="fc" id="L164">			boolean a = testDA.removeEvent(ev);</span>
+<span class="fc" id="L165">			boolean b = testDA.deleteForecastAndUser(f, f.getUser());</span>
+<span class="fc" id="L166">			testDA.close();</span>
+<span class="fc" id="L167">			System.out.println(&quot;Finally &quot; + a +&quot; &quot;+ b);</span>
+		}
+		
+<span class="fc" id="L170">	}</span>
+	
+	
+	@Test
+	@DisplayName(&quot;Test 5: More than one forecast&quot;)
+	void testGetForecastsOfQuestion5() {
+<span class="fc" id="L176">		Account user= new Account(&quot;Jon&quot;, &quot;pass&quot;, false, &quot;jon@gmail.com&quot;, &quot;cardNum&quot;, &quot;Jon&quot;, &quot;Gorostegui&quot;);</span>
+		
+<span class="fc" id="L178">		Forecast f=new Forecast(null, 2, &quot;2&quot;, 2,user.getUserName());</span>
+<span class="fc" id="L179">		Forecast f2=new Forecast(null, 3, &quot;1&quot;, 6,user.getUserName());</span>
+<span class="fc" id="L180">		Forecast f3=new Forecast(null, 3, &quot;1&quot;, 6,user.getUserName());</span>
+
+		
+		try {
+			
+<span class="fc" id="L185">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L186">			Date oneDate = sdf.parse(&quot;05/10/2022&quot;);</span>
+<span class="fc" id="L187">			String eventText = &quot;Event Text&quot;;</span>
+<span class="fc" id="L188">			String queryText = &quot;Query Text&quot;;</span>
+<span class="fc" id="L189">			Float betMinimum = 2f;</span>
+<span class="fc" id="L190">			int questionType= 2;</span>
+<span class="fc" id="L191">			String multipliers=&quot;2,3&quot;;</span>
+<span class="fc" id="L192">			Integer evNum=1;</span>
+
+<span class="fc" id="L194">			testDA.open();</span>
+<span class="fc" id="L195">			ev = testDA.addEventWithQuestion(evNum,eventText, oneDate, queryText, 0.0f);</span>
+<span class="fc" id="L196">			testDA.close();</span>
+			
+<span class="fc" id="L198">			Question q = ev.getQuestions().get(0);</span>
+<span class="fc" id="L199">			Question q2 = new Question(queryText, betMinimum, ev, questionType, multipliers);</span>
+			
+			
+<span class="fc" id="L202">			f.setQuestion(q);</span>
+<span class="fc" id="L203">			f2.setQuestion(q);</span>
+<span class="fc" id="L204">			f3.setQuestion(q2);</span>
+<span class="fc" id="L205">			user.addForecast(f);</span>
+<span class="fc" id="L206">			user.addForecast(f2);</span>
+<span class="fc" id="L207">			user.addForecast(f3);</span>
+			
+<span class="fc" id="L209">			testDA.open();</span>
+<span class="fc" id="L210">			testDA.storeForecast(f);</span>
+<span class="fc" id="L211">			testDA.storeForecast(f2);</span>
+<span class="fc" id="L212">			testDA.storeForecast(f3);</span>
+<span class="fc" id="L213">			testDA.storeAccount(user);</span>
+<span class="fc" id="L214">			testDA.close();</span>
+			
+<span class="fc" id="L216">			List&lt;Forecast&gt; fList=sut.getForecastsOfQuestion(q);</span>
+<span class="fc" id="L217">			List&lt;Forecast&gt; fListExpected=new ArrayList&lt;Forecast&gt;();</span>
+<span class="fc" id="L218">			fListExpected.add(f);</span>
+<span class="fc" id="L219">			fListExpected.add(f2);</span>
+						
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">			assertTrue(fListExpected.get(0).getForecastNumber() == fList.get(0).getForecastNumber());</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">			assertTrue(fListExpected.get(1).getForecastNumber() == fList.get(1).getForecastNumber());</span>
+			
+			
+			
+			
+<span class="pc" id="L227">		}catch (NullPointerException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L229">			fail();</span>
+<span class="nc" id="L230">		}catch (ParseException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L232">			fail();</span>
+<span class="nc" id="L233">		}catch (RuntimeException e) {</span>
+			// if the program goes to this point fail
+<span class="nc" id="L235">			fail();</span>
+		}finally {
+<span class="fc" id="L237">			testDA.open();	</span>
+<span class="fc" id="L238">			boolean a = testDA.deleteForecastAndUser(f, f.getUser());</span>
+<span class="fc" id="L239">			boolean b = testDA.removeEvent(ev);						</span>
+<span class="fc" id="L240">			testDA.close();</span>
+<span class="fc" id="L241">			System.out.println(&quot;Finally &quot; +a+&quot; &quot;+b);</span>
+		}
+		
+<span class="fc" id="L244">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

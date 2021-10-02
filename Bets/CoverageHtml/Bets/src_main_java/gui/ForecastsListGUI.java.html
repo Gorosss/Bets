@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ForecastsListGUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">ForecastsListGUI.java</span></div><h1>ForecastsListGUI.java</h1><pre class="source lang-java linenums">package gui;
+
+import businessLogic.BLFacade;
+
+import com.toedter.calendar.JCalendar;
+
+import domain.Forecast;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.beans.*;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
+
+
+public class ForecastsListGUI extends JFrame {
+	private static final long serialVersionUID = 1L;
+<span class="nc" id="L21">	private final JLabel jLabelEvents = new JLabel(&quot;Forecasts&quot;); </span>
+
+	// Code for JCalendar
+<span class="nc" id="L24">	private JCalendar jCalendar1 = new JCalendar();</span>
+<span class="nc" id="L25">	private JScrollPane scrollPaneEvents = new JScrollPane();</span>
+	
+
+<span class="nc" id="L28">	private JTable tableForecasts= new JTable();</span>
+
+	private DefaultTableModel tableModelForecasts;
+
+	
+<span class="nc" id="L33">	private BLFacade facade=LoginRegisterGUI.getBusinessLogic();</span>
+	
+<span class="nc" id="L35">	private String[] columnNamesEvents = new String[] {</span>
+<span class="nc" id="L36">		&quot;ForecastN&quot;,</span>
+<span class="nc" id="L37">		&quot;Forecast&quot;, </span>
+
+	};
+	
+	protected Forecast selectedForecast;
+<span class="nc" id="L42">	private final JButton btnNewButton = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ForecastsListGUI.btnNewButton.text&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L43">	private final JButton btnClose = new JButton(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ForecastsListGUI.btnClose.text&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+
+<span class="nc" id="L45">	public ForecastsListGUI()</span>
+	{
+		try
+		{
+<span class="nc" id="L49">			jbInit();</span>
+<span class="nc" id="L50">		}</span>
+<span class="nc" id="L51">		catch(Exception e)</span>
+		{
+<span class="nc" id="L53">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L55">	}</span>
+
+	
+	private void jbInit() throws Exception
+	{
+
+<span class="nc" id="L61">		this.getContentPane().setLayout(null);</span>
+<span class="nc" id="L62">		this.setSize(new Dimension(701, 318));</span>
+<span class="nc" id="L63">		this.setTitle(ResourceBundle.getBundle(&quot;Etiquetas&quot;).getString(&quot;ForecastsListGUI.this.title&quot;)); //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="nc" id="L64">		jLabelEvents.setBounds(40, 23, 259, 16);</span>
+<span class="nc" id="L65">		this.getContentPane().add(jLabelEvents);</span>
+
+<span class="nc" id="L67">		this.jCalendar1.addPropertyChangeListener(new PropertyChangeListener()</span>
+		{
+			public void propertyChange(PropertyChangeEvent propertychangeevent)
+			{
+
+
+<span class="nc" id="L73">						tableModelForecasts.setDataVector(null, columnNamesEvents);</span>
+
+						
+
+						
+<span class="nc" id="L78">						List&lt;Forecast&gt; forecasts=facade.getUserForecasts(facade.getLoggedUsername());</span>
+
+<span class="nc bnc" id="L80" title="All 4 branches missed.">						if (forecasts==null || forecasts.isEmpty() ) jLabelEvents.setText(&quot;There are no forecasts&quot;);</span>
+<span class="nc" id="L81">						else {jLabelEvents.setText(&quot;Your forecasts:&quot;);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">						for (Forecast f:forecasts){</span>
+<span class="nc" id="L83">							Vector&lt;Object&gt; row = new Vector&lt;Object&gt;();</span>
+
+<span class="nc" id="L85">							System.out.println(&quot;Events &quot;+f);</span>
+
+<span class="nc" id="L87">							row.add(f.getForecastNumber());</span>
+<span class="nc" id="L88">							row.add(f.toString());</span>
+							
+<span class="nc" id="L90">							row.add(f); </span>
+<span class="nc" id="L91">							tableModelForecasts.addRow(row);		</span>
+						}
+<span class="nc" id="L93">						tableForecasts.getColumnModel().getColumn(0).setPreferredWidth(10);</span>
+<span class="nc" id="L94">						tableForecasts.getColumnModel().getColumn(1).setPreferredWidth(268);</span>
+
+					
+						}
+				
+<span class="nc" id="L99">			} </span>
+		});
+
+<span class="nc" id="L102">		this.getContentPane().add(jCalendar1, null);</span>
+		
+<span class="nc" id="L104">		scrollPaneEvents.setBounds(new Rectangle(40, 50, 598, 150));</span>
+
+<span class="nc" id="L106">		tableForecasts.addMouseListener(new MouseAdapter() {</span>
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			
+<span class="nc" id="L110">				btnNewButton.setVisible(true);</span>
+<span class="nc" id="L111">				int i=tableForecasts.getSelectedRow();</span>
+<span class="nc" id="L112">				Integer numeroForecast = (Integer)tableModelForecasts.getValueAt(i,0);</span>
+<span class="nc" id="L113">				selectedForecast=facade.getUserForecasts(facade.getLoggedUsername()).get(numeroForecast);</span>
+<span class="nc" id="L114">				System.out.println(selectedForecast.toString());</span>
+
+				
+	
+<span class="nc" id="L118">			}</span>
+		});
+
+<span class="nc" id="L121">		scrollPaneEvents.setViewportView(tableForecasts);</span>
+<span class="nc" id="L122">		tableModelForecasts = new DefaultTableModel(null, columnNamesEvents);</span>
+
+<span class="nc" id="L124">		tableForecasts.setModel(tableModelForecasts);</span>
+<span class="nc" id="L125">		tableForecasts.getColumnModel().getColumn(0).setPreferredWidth(25);</span>
+<span class="nc" id="L126">		tableForecasts.getColumnModel().getColumn(1).setPreferredWidth(268);</span>
+
+<span class="nc" id="L128">		this.getContentPane().add(scrollPaneEvents, null);</span>
+<span class="nc" id="L129">		btnNewButton.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 16));</span>
+<span class="nc" id="L130">		btnNewButton.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L132">				Double returnMoney=selectedForecast.getMyBet()*0.6;</span>
+<span class="nc" id="L133">				System.out.println(Math.round(returnMoney*100.0)/100.0);</span>
+				
+				
+<span class="nc" id="L136">				facade.paidUsers(facade.getLoggedUsername(),Math.round(returnMoney*100.0)/100.0);</span>
+<span class="nc" id="L137">				facade.deleteForecast(selectedForecast);</span>
+<span class="nc" id="L138">				btnNewButton.setVisible(false);</span>
+
+<span class="nc" id="L140">			}</span>
+		});
+<span class="nc" id="L142">		btnNewButton.setBounds(479, 231, 159, 37);</span>
+<span class="nc" id="L143">		btnNewButton.setVisible(false);</span>
+<span class="nc" id="L144">		getContentPane().add(btnNewButton);</span>
+<span class="nc" id="L145">		btnClose.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L147">				jButtonClose_actionPerformed(arg0);</span>
+<span class="nc" id="L148">			}</span>
+		});
+<span class="nc" id="L150">		btnClose.setBounds(40, 245, 89, 23);</span>
+		
+<span class="nc" id="L152">		getContentPane().add(btnClose);</span>
+
+<span class="nc" id="L154">	}</span>
+
+	private void jButtonClose_actionPerformed(ActionEvent e) {
+<span class="nc" id="L157">		this.setVisible(false);</span>
+<span class="nc" id="L158">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

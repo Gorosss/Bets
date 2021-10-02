@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Account.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Account.java</span></div><h1>Account.java</h1><pre class="source lang-java linenums">package domain;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity 
+public class Account {
+
+	@Id
+	private String userName;
+	private String userRealName;
+	private String userSurname;
+	private String userPassword;
+	private ArrayList&lt;Forecast&gt; userForecasts;
+	private String userEmail;
+	private String bankCardNumber;
+	private double userWallet;
+	private boolean isAdmin;
+
+
+	public Account(String pUserName, String pUserPassword, boolean pIsAdmin, String pUserEmail, String pBankCardNumber, String pUserRealName, String pUserSurname) {
+<span class="fc" id="L25">		super();</span>
+<span class="fc" id="L26">		this.userName = pUserName;</span>
+<span class="fc" id="L27">		this.userPassword = pUserPassword;</span>
+<span class="fc" id="L28">		this.userWallet = 0;</span>
+<span class="fc" id="L29">		this.isAdmin = pIsAdmin;</span>
+<span class="fc" id="L30">		this.userForecasts = new ArrayList&lt;Forecast&gt;();</span>
+<span class="fc" id="L31">		this.userEmail = pUserEmail;</span>
+<span class="fc" id="L32">		this.bankCardNumber = pBankCardNumber;</span>
+<span class="fc" id="L33">		this.userRealName = pUserRealName;</span>
+<span class="fc" id="L34">		this.userSurname = pUserSurname;</span>
+<span class="fc" id="L35">		this.userWallet=10;</span>
+<span class="fc" id="L36">	}</span>
+
+	public String getSurname() {
+<span class="nc" id="L39">		return userSurname;</span>
+	}
+	
+	public String getRealName() {
+<span class="nc" id="L43">		return userRealName;</span>
+	}
+	
+	public String getUserBankCard() {
+<span class="nc" id="L47">		return bankCardNumber;</span>
+	}
+	
+	public String getUserEmail() {
+<span class="nc" id="L51">		return userEmail;</span>
+	}
+	
+	public String getUserName() {
+<span class="fc" id="L55">		return userName;</span>
+	}
+	
+	public String getPassword() {
+<span class="nc" id="L59">		return userPassword;</span>
+	}
+	
+	public double getWallet() {
+<span class="nc" id="L63">		return userWallet;</span>
+	}
+	
+	public void paid(double money) {
+<span class="nc" id="L67">		userWallet=+money;</span>
+<span class="nc" id="L68">	}</span>
+	
+	public void rest(double money) {
+<span class="nc" id="L71">		userWallet=userWallet-money;</span>
+<span class="nc" id="L72">	}</span>
+	
+	
+	public boolean getAdmin() {
+<span class="nc" id="L76">		return isAdmin;</span>
+	}
+	
+	public boolean haveEnoughWallet(double pDelta) {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		return (userWallet + pDelta) &gt; 0;</span>
+	}
+	
+	public boolean changeWallet(double pDelta) {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		if(userWallet + pDelta &lt; 0) {</span>
+<span class="nc" id="L85">			return false;</span>
+		}
+<span class="nc" id="L87">		this.userWallet += pDelta;</span>
+<span class="nc" id="L88">		return true;</span>
+	}
+	
+	public void deletIndexForecast(Forecast f) {
+<span class="fc" id="L92">		userForecasts.remove(userForecasts.indexOf(f));</span>
+<span class="fc" id="L93">	}</span>
+	
+	public void addForecast(Forecast pForecast) {
+		
+		//	ESTAS COMPROBACIONES LAS HE PUESTO AQUI PERO HAY QUE HACERLAS EN businessLogic
+		//	HAY QUE DESPLAZARLAS A ALGUNA CLASE DE businessLogic, Y QUE ESA CLASE ACCEDA A 
+		//	LOS DATOS DE LA CUENTA DE TURNO PARA VER SI SE PUEDE HACER O NO EL PRONOSTICO
+		//	SI DESDE LA CLASE DE businessLogic SE DECIDE QUE SI QUE SE PUEDE HACER EL PRONOSTICO, 
+		//	SE ***ACTUALIZA*** LA CUENTA DE TURNO ***EN LA BASE DE DATOS DIRECTAMENTE*** AÑADIENDOLE
+		//  EL PRONOSTICO LEGAL MEDIANTE ESTE METODO
+		
+<span class="fc" id="L104">		userForecasts.add(pForecast);</span>
+		
+		
+<span class="fc" id="L107">	}</span>
+	
+	public List&lt;Forecast&gt; getAllUserForecast () {
+<span class="nc" id="L110">		return userForecasts;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>

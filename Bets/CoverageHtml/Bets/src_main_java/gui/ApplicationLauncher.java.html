@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ApplicationLauncher.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Bets (1 oct 2021 16:36:53)</a> &gt; <a href="../../index.html" class="el_group">Bets</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">ApplicationLauncher.java</span></div><h1>ApplicationLauncher.java</h1><pre class="source lang-java linenums">package gui;
+
+import java.awt.Color;
+import java.net.URL;
+import java.util.Locale;
+
+import javax.swing.UIManager;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+
+import configuration.ConfigXML;
+import dataAccess.DataAccess;
+import businessLogic.BLFacade;
+import businessLogic.BLFacadeImplementation;
+
+<span class="nc" id="L16">public class ApplicationLauncher { </span>
+	
+	
+	
+	public static void main(String[] args) {
+
+<span class="nc" id="L22">		ConfigXML c=ConfigXML.getInstance();</span>
+	
+<span class="nc" id="L24">		System.out.println(c.getLocale());</span>
+		
+<span class="nc" id="L26">		Locale.setDefault(new Locale(c.getLocale()));</span>
+		
+<span class="nc" id="L28">		System.out.println(&quot;Locale: &quot;+Locale.getDefault());</span>
+		
+<span class="nc" id="L30">		LoginRegisterGUI a = new LoginRegisterGUI();</span>
+		//a.setVisible(true);
+		//a.setBounds(160, 200, 300,300);
+
+		try {
+			
+			BLFacade appFacadeInterface;
+//			UIManager.setLookAndFeel(&quot;com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel&quot;);
+//			UIManager.setLookAndFeel(&quot;com.sun.java.swing.plaf.motif.MotifLookAndFeel&quot;);
+<span class="nc" id="L39">			UIManager.setLookAndFeel(&quot;javax.swing.plaf.metal.MetalLookAndFeel&quot;);</span>
+			
+<span class="nc bnc" id="L41" title="All 2 branches missed.">			if (c.isBusinessLogicLocal()) {</span>
+				
+				//In this option the DataAccess is created by FacadeImplementationWS
+				//appFacadeInterface=new BLFacadeImplementation();
+
+				//In this option, you can parameterize the DataAccess (e.g. a Mock DataAccess object)
+
+<span class="nc" id="L48">				DataAccess da= new DataAccess(c.getDataBaseOpenMode().equals(&quot;initialize&quot;));</span>
+<span class="nc" id="L49">				appFacadeInterface=new BLFacadeImplementation(da);</span>
+
+				
+<span class="nc" id="L52">			}</span>
+			
+			else { //If remote
+				
+<span class="nc" id="L56">				 String serviceName= &quot;http://&quot;+c.getBusinessLogicNode() +&quot;:&quot;+ c.getBusinessLogicPort()+&quot;/ws/&quot;+c.getBusinessLogicName()+&quot;?wsdl&quot;;</span>
+				 
+				//URL url = new URL(&quot;http://localhost:9999/ws/ruralHouses?wsdl&quot;);
+<span class="nc" id="L59">				URL url = new URL(serviceName);</span>
+
+		 
+		        //1st argument refers to wsdl document above
+				//2nd argument is service name, refer to wsdl document above
+//		        QName qname = new QName(&quot;http://businessLogic/&quot;, &quot;FacadeImplementationWSService&quot;);
+<span class="nc" id="L65">		        QName qname = new QName(&quot;http://businessLogic/&quot;, &quot;BLFacadeImplementationService&quot;);</span>
+		 
+<span class="nc" id="L67">		        Service service = Service.create(url, qname);</span>
+
+<span class="nc" id="L69">		         appFacadeInterface = service.getPort(BLFacade.class);</span>
+			} 
+			/*if (c.getDataBaseOpenMode().equals(&quot;initialize&quot;)) 
+				appFacadeInterface.initializeBD();
+				*/
+<span class="nc" id="L74">			LoginRegisterGUI.setBussinessLogic(appFacadeInterface);</span>
+
+		
+
+			
+<span class="nc" id="L79">		}catch (Exception e) {</span>
+//			a.jLabelSelectOption.setText(&quot;Error: &quot;+e.toString());
+//			a.jLabelSelectOption.setForeground(Color.RED);	
+			
+<span class="nc" id="L83">			System.out.println(&quot;Error in ApplicationLauncher: &quot;+ e.toString());</span>
+		}
+		//a.pack();
+
+
+<span class="nc" id="L88">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span>Bets (1 oct 2021 16:36:53)</div></body></html>
