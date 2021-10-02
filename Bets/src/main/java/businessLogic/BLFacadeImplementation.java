@@ -341,7 +341,6 @@ public class BLFacadeImplementation  implements BLFacade {
      * 
      * @param queries of question that you want to check
      * @throws NullPointerException if the queries or question is null 
-     * @throws RuntimeExceptionhas if the question has no event
      */
     @WebMethod
     public void paidUsers(Vector<Question> queries) throws NullPointerException,RuntimeException {
